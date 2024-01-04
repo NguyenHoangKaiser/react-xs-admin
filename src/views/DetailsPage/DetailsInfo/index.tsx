@@ -15,7 +15,7 @@ const DatailsInfo = memo(() => {
   }, []);
   return (
     <>
-      {intl.formatMessage({ id: 'layout.memu.detailsPage' })}-{id}
+      {intl.formatMessage({ id: 'layout.menu.detailsPage' })}-{id}
     </>
   );
 });

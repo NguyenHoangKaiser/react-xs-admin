@@ -20,7 +20,7 @@ export function createVitePlugins(_isBuild = false, _configEnv: ConfigEnv) {
 
   vitePlugins.push(configSvgPlugin());
 
-  vitePlugins.push(configMockPlugin());
+  vitePlugins.push(configMockPlugin(_isBuild));
 
   return vitePlugins;
 }

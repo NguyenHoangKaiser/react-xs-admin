@@ -1,13 +1,14 @@
-import { defineFakeRoute } from 'vite-plugin-fake-server/client';
-
+import type { MockMethod, Recordable } from 'vite-plugin-mock';
+// const testENV = process.env.TEST_EN;
 const userInfo = {
-  name: '爱喝蜂蜜绿的小斯斯',
+  name: 'Little Green, who loves to drink honey green',
   userid: '00000001',
   email: '1531733886@qq.com',
-  signature: '甜甜的蜂蜜，甘甜的绿茶，蜂蜜中和了绿茶的苦涩保留了绿茶回甘，绝妙啊',
-  introduction: '微笑着，努力着，欣赏着',
-  title: '小斯斯',
-  token: '',
+  signature:
+    'Sweet honey, sweet green tea, honey neutralizing the bitterness of green tea retains green tea back to sweet, wonderful',
+  introduction: 'Smile, work hard, appreciate',
+  title: 'Little',
+  token: 'testENV',
   power: 'admin',
 };
 
@@ -15,14 +16,14 @@ const userInfo2 = {
   name: 'test',
   userid: '00000002',
   email: '12312311223@qq.com',
-  signature: '小啊小啊浪',
-  introduction: '一个只会喝蜂蜜绿的小前端',
-  title: '咪咪咪',
+  signature: 'Little ah ah wave',
+  introduction: 'A small front end that can only drink honey green',
+  title: 'Mimi',
   token: '',
   power: 'test',
 };
 
-export default defineFakeRoute([
+export default [
   {
     url: '/mock_api/login',
     timeout: 1000,
@@ -47,7 +48,7 @@ export default defineFakeRoute([
         return {
           data: null,
           code: -1,
-          message: '账号密码错误',
+          message: 'Account password error',
         };
       }
     },
@@ -68,7 +69,7 @@ export default defineFakeRoute([
       return userInfo;
     },
   },
-]);
+] as MockMethod[];
 
 function genID(length: number) {
   return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);

@@ -15,7 +15,7 @@ const DetailsParams = memo(() => {
   }, []);
   return (
     <>
-      {intl.formatMessage({ id: 'layout.memu.detailsPage' })}Params-{id}
+      {intl.formatMessage({ id: 'layout.menu.detailsPage' })}Params-{id}
     </>
   );
 });

@@ -23,7 +23,7 @@ const DateilsPage = () => {
         {[1, 2, 3, 4, 5].map((i) => {
           return (
             <Button key={i} style={{ marginRight: 12 }} onClick={() => qureyChange('qurey', i)}>
-              {intl.formatMessage({ id: 'layout.memu.detailsPage' })}-{i}
+              {intl.formatMessage({ id: 'layout.menu.detailsPage' })}-{i}
             </Button>
           );
         })}
@@ -32,7 +32,7 @@ const DateilsPage = () => {
         {[1, 2, 3, 4, 5].map((i) => {
           return (
             <Button key={i} style={{ marginRight: 12 }} onClick={() => qureyChange('params', i)}>
-              {intl.formatMessage({ id: 'layout.memu.detailsPage' })}Params-{i}
+              {intl.formatMessage({ id: 'layout.menu.detailsPage' })}Params-{i}
             </Button>
           );
         })}

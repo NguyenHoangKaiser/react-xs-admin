@@ -6,10 +6,10 @@ import {
 } from '@ant-design/icons';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
-import type { RouteList } from '@/router/route';
-import { FormattedMessage } from '@/locales';
 import Layout from '@/layout';
 import Authority from '@/layout/Authority';
+import { FormattedMessage } from '@/locales';
+import type { RouteList } from '@/router/route';
 
 const Home = lazy(() => import('@/views/Home'));
 const Menu1_1 = lazy(() => import('@/views/Nested/Menu1/Menu1-1'));
@@ -26,13 +26,13 @@ export const defaultRoute: RouteList[] = [
     path: '/home',
     id: 'Home',
     element: <Home />,
-    meta: { label: FormattedMessage({ id: 'layout.memu.home' }), icon: <HomeOutlined /> },
+    meta: { label: FormattedMessage({ id: 'layout.menu.home' }), icon: <HomeOutlined /> },
   },
   {
     path: '/nested',
     id: 'Nested',
     redirect: '/nested/menu1',
-    meta: { label: FormattedMessage({ id: 'layout.memu.nesting' }), icon: <AppstoreOutlined /> },
+    meta: { label: FormattedMessage({ id: 'layout.menu.nesting' }), icon: <AppstoreOutlined /> },
     children: [
       {
         path: 'menu1',
@@ -61,7 +61,7 @@ export const defaultRoute: RouteList[] = [
     id: 'Power',
     redirect: '/power/permissions',
     meta: {
-      label: FormattedMessage({ id: 'layout.memu.permissions' }),
+      label: FormattedMessage({ id: 'layout.menu.permissions' }),
       icon: <UserSwitchOutlined />,
     },
     children: [
@@ -69,19 +69,19 @@ export const defaultRoute: RouteList[] = [
         path: 'permissions',
         id: 'Permissions',
         element: <Permissions />,
-        meta: { label: FormattedMessage({ id: 'layout.memu.permissionsPage' }) },
+        meta: { label: FormattedMessage({ id: 'layout.menu.permissionsPage' }) },
       },
       {
         path: 'test-permissions-a',
         id: 'TestPermissionsA',
         element: <TestPermissionsA />,
-        meta: { label: FormattedMessage({ id: 'layout.memu.testPermissionsPage1' }) },
+        meta: { label: FormattedMessage({ id: 'layout.menu.testPermissionsPage1' }) },
       },
       {
         path: 'test-permissions-b',
         id: 'TestPermissionsB',
         element: <TestPermissionsB />,
-        meta: { label: FormattedMessage({ id: 'layout.memu.testPermissionsPage2' }) },
+        meta: { label: FormattedMessage({ id: 'layout.menu.testPermissionsPage2' }) },
       },
     ],
   },
@@ -90,14 +90,14 @@ export const defaultRoute: RouteList[] = [
     id: 'DetailsPage',
     redirect: '/details-page/index',
     alwaysShow: false,
-    meta: { label: FormattedMessage({ id: 'layout.memu.detailsPage' }), whiteList: true },
+    meta: { label: FormattedMessage({ id: 'layout.menu.detailsPage' }), whiteList: true },
     children: [
       {
         path: 'index',
         id: 'INDEX',
         element: <DetailsPage />,
         meta: {
-          label: FormattedMessage({ id: 'layout.memu.detailsPage' }),
+          label: FormattedMessage({ id: 'layout.menu.detailsPage' }),
           icon: <DatabaseOutlined />,
         },
       },

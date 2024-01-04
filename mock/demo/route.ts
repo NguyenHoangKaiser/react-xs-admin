@@ -1,5 +1,41 @@
-import { defineFakeRoute } from 'vite-plugin-fake-server/client';
+import type { MockMethod, Recordable } from 'vite-plugin-mock';
 
+// const power = [
+//   {
+//     path: '/home',
+//     id: 'Home',
+//   },
+//   {
+//     path: '/building-cluster',
+//     id: 'BuildingCluster',
+//   },
+//   {
+//     path: '/announcement-campaign',
+//     id: 'AnnouncementCampaign',
+//   },
+//   {
+//     path: '/user',
+//     id: 'User',
+//   },
+//   {
+//     path: '/apartment-map-resident-user',
+//     id: 'ApartmentMapResidentUser',
+//   },
+//   {
+//     path: '/setting',
+//     id: 'Setting',
+//     children: [
+//       {
+//         path: 'announcement-template',
+//         id: 'AnnouncementTemplate',
+//       },
+//       {
+//         path: 'user-role',
+//         id: 'UserRole',
+//       },
+//     ],
+//   },
+// ];
 const power = [
   {
     path: '/home',
@@ -61,10 +97,10 @@ const testRoute = [
   },
 ];
 
-export default defineFakeRoute([
+export default [
   {
     url: '/mock_api/getRoute',
-    timeout: 500,
+    timeout: 0,
     method: 'post',
     response: ({ body }: { body: Recordable }) => {
       const { name } = body;
@@ -84,9 +120,9 @@ export default defineFakeRoute([
         return {
           data: [],
           code: -1,
-          message: '账号错误',
+          message: 'Account error',
         };
       }
     },
   },
-]);
+] as MockMethod[];

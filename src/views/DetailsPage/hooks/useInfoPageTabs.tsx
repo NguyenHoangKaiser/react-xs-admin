@@ -11,13 +11,13 @@ export const useInfoPageTabs = () => {
       tabs = {
         key: `/details-page/details-params/${id}`,
         label: `Params-${id}`,
-        localeLabel: `layout.memu.detailsPage`,
+        localeLabel: `layout.menu.detailsPage`,
       };
     } else {
       tabs = {
         key: `/details-page/details-info?id=${id}`,
         label: `-${id}`,
-        localeLabel: `layout.memu.detailsPage`,
+        localeLabel: `layout.menu.detailsPage`,
       };
     }
     dispatch(setStoreMultiTabs({ type, tabs }));
