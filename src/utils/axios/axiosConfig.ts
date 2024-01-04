@@ -1,5 +1,5 @@
 /**
- * axios 数据处理类
+ * Axios data processing class
  */
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import type { RequestOptions, Result } from '#/axios';
@@ -14,37 +14,37 @@ type RequestInterceptorsConfig = Pick<CreateAxiosOptions, 'requestOptions' | 'in
 
 export abstract class AxiosInterceptor {
   /**
-   * @description: 请求前的配置
+   * @description: Configuration before request
    */
   beforeRequestHook?: (config: AxiosRequestConfig, options: RequestOptions) => AxiosRequestConfig;
 
   /**
-   * @description: 请求成功的处理
+   * @description: Request successful treatment
    */
   requestHook?: (res: AxiosResponse<Result>, options: RequestOptions) => any;
 
   /**
-   * @description: 请求失败处理
+   * @description: Request failure treatment
    */
   requestCatchHook?: (e: Error, options: RequestOptions) => Promise<any>;
 
   /**
-   * @description: 请求之前的拦截器
+   * @description: Request the previous interceptor
    */
   requestInterceptors?: (config: RequestInterceptorsConfig) => RequestInterceptorsConfig;
 
   /**
-   * @description: 请求之前的拦截器错误处理
+   * @description: Request the previous interceptor error processing
    */
   requestInterceptorsCatch?: (error: Error) => void;
 
   /**
-   * @description: 请求之后的拦截器
+   * @description: The interceptor after request
    */
   responseInterceptors?: (res: AxiosResponse<any>) => AxiosResponse<any>;
 
   /**
-   * @description: 请求之后的拦截器错误处理
+   * @description: After the request, the interceptor is wrong
    */
   responseInterceptorsCatch?: (error: Error) => void;
 }

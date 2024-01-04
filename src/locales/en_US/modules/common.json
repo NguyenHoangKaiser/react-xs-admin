@@ -1,0 +1,11 @@
+{
+  "common.vietnamese": "Vietnamese",
+  "common.english": "English",
+  "form.required": "can not be empty",
+  "form.invalid": "is invalid",
+  "form.userName": "User name",
+  "form.password": "Password",
+  "form.forgotPassword": "Forgot password",
+  "form.rememberMe": "Remember login",
+  "form.logIn": "Log in"
+}

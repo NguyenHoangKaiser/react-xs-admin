@@ -1,0 +1,11 @@
+{
+  "common.vietnamese": "Tiếng Việt",
+  "common.english": "Tiếng Anh",
+  "form.required": "không được để trống",
+  "form.invalid": "không hợp lệ",
+  "form.userName": "Tên đăng nhập",
+  "form.password": "Mật khẩu",
+  "form.forgotPassword": "Quên mật khẩu",
+  "form.rememberMe": "Ghi nhớ đăng nhập",
+  "form.logIn": "Đăng nhập"
+}

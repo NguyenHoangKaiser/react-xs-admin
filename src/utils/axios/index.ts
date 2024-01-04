@@ -6,16 +6,16 @@ import { errorData } from './errorConfig';
 import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
 
 /**
- * @description:一下所有拦截器请根据自身使用场景更改
+ * @description: Please change all the interceptor according to your own usage scenario
  */
 const interceptor: AxiosInterceptor = {
   /**
-   * @description: 处理请求数据。如果数据不是预期格式，可直接抛出错误
+   * @description: Process request data.If the data is not an expected format, you can directly throw an error
    */
   requestHook: (res, options) => {
     /**
-     * 此处方法是对请求回来的数据进行处理，
-     * 根据自己的使用场景更改
+     * The method here is to process the data requested.
+     * Change according to your own use scenario
      */
     const { data } = res;
     const { errorMessageMode } = options;
@@ -43,14 +43,14 @@ const interceptor: AxiosInterceptor = {
   },
 
   /**
-   * @description: 请求失败的错误处理
+   * @description: Error handling of request failure
    */
   requestCatchHook: (e, _options) => {
     return Promise.reject(e);
   },
 
   /**
-   * @description: 请求之前处理config
+   * @description: CONFIG before request
    */
   beforeRequestHook: (config, options) => {
     const { urlPrefix } = options;
@@ -59,7 +59,7 @@ const interceptor: AxiosInterceptor = {
   },
 
   /**
-   * @description: 请求拦截器处理
+   * @description: Request interceptor processing
    */
   requestInterceptors: (config) => {
     const { requestOptions } = config;
@@ -73,21 +73,21 @@ const interceptor: AxiosInterceptor = {
   },
 
   /**
-   * @description: 请求拦截器错误处理
+   * @description: Request interceptor error treatment
    */
   requestInterceptorsCatch: (error) => {
     return error;
   },
 
   /**
-   * @description: 响应拦截器处理
+   * @description: Response interceptor processing
    */
   responseInterceptors: (res) => {
     return res;
   },
 
   /**
-   * @description: 响应拦截器错误处理
+   * @description: Response interceptor error treatment
    */
   responseInterceptorsCatch: (error: any) => {
     const { response, message, config } = error || {};
@@ -100,13 +100,12 @@ const interceptor: AxiosInterceptor = {
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new iAxios({
     ...{
-      acoisadmisf: '',
-      // 请求时间
+      // Request time
       timeout: 10 * 1000,
-      // (拦截器)数据处理方式
+      // (Interceptor) Data processing method
       interceptor,
       headers: { 'Content-Type': 'application/json' },
-      // 配置项（需要在拦截器中做的处理），下面的选项都可以在独立的接口请求中覆盖
+      // Configuration items (need to be processed in the interceptor), the following options can be covered in independent interface requests
       requestOptions: {
         withToken: true,
         errorMessageMode: 'message',

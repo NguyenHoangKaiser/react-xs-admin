@@ -1,5 +1,5 @@
 import type { MockMethod, Recordable } from 'vite-plugin-mock';
-// const testENV = process.env.TEST_EN;
+// const testENV = import.meta.env.VITE_BASE_URL;
 const userInfo = {
   name: 'Little Green, who loves to drink honey green',
   userid: '00000001',

@@ -50,30 +50,30 @@ export function createRouterList(routeList: RouteObject[]) {
   return createBrowserRouter(routeList);
 }
 
-// 通过path获取父级路径
+// Get the parent -level path through PATH
 export function getParentPaths(routePath: string, routes: MenuItem[]): string[] {
-  // 深度遍历查找
+  // Deep traversal search
   function dfs(routes: MenuItem[], key: string, parents: string[]) {
     for (let i = 0; i < routes.length; i++) {
       const item = routes[i];
-      // 找到key则返回父级key
+      // Find key and return to the parent level key
       if (item.key === key) return [item.key];
-      // children不存在或为空则不递归
+      // Children does not exist or is empty if it is empty
       if (!item.children || !item.children.length) continue;
-      // 往下查找时将当前key入栈
+      // When you look down, put the current key into the stack
       parents.push(item.key as string);
 
       if (dfs(item.children, key, parents).length) return parents;
-      // 深度遍历查找未找到时当前path 出栈
+      // Deep traversal finds the current PATH out of the stack when it is not found
       parents.pop();
     }
-    // 未找到时返回空数组
+    // Back to the empty array when not found
     return [];
   }
   return dfs(routes, routePath, []);
 }
 
-// 查找对应path的路由信息
+// Find the routing information of the corresponding path
 export function findRouteByPath(path: Key, routes: MenuItem[]): MenuItem | null {
   const res = routes.find((item) => item.key == path) || null;
   if (res) {
@@ -93,7 +93,7 @@ export function findRouteByPath(path: Key, routes: MenuItem[]): MenuItem | null 
   }
 }
 
-// 拼接路径 伪path resolve
+// Pseudo -pseudo Path RESOLVE
 function pathResolve(...paths: string[]) {
   let resolvePath = '';
   let isAbsolutePath = false;
@@ -119,7 +119,7 @@ function pathResolve(...paths: string[]) {
   return resolvePath;
 }
 
-// 设置完整路由path,
+// Set the full routing Path,
 export function setUpRoutePath(routeList: AsyncRouteType[], pathName = '') {
   for (const node of routeList) {
     if (pathName) {
@@ -132,7 +132,7 @@ export function setUpRoutePath(routeList: AsyncRouteType[], pathName = '') {
   return routeList;
 }
 
-// 扁平路由
+// Flat route
 export function formatFlatteningRoutes(routesList: AsyncRouteType[]) {
   if (routesList.length === 0) return routesList;
   let hierarchyList = routesList;

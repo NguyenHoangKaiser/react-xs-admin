@@ -15,7 +15,7 @@ export interface AppConfigMode {
 
 const initialState: AppConfigMode = {
   collapsed: false,
-  locale: 'zh-CN',
+  locale: 'vi-VN',
   themeMode: 'light',
   sidebarMode: 'vertical',
   color: '#409eff',

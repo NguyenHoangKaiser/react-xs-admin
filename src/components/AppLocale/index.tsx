@@ -2,9 +2,9 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { memo, useMemo } from 'react';
 import SvgIcon from '../SvgIcon';
-import type { LocaleType } from '@/locales';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppLocale } from '@/store/modules/app';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import type { LocaleType } from '@/locales';
 
 const Locale = memo(() => {
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ const Locale = memo(() => {
 
   const menuItems: MenuProps['items'] = useMemo(() => {
     return [
-      { label: '中文', key: 'zh-CN', disabled: locale === 'zh-CN' }, // Be sure to fill in the menu item key
+      { label: 'Vietnamese', key: 'vi-VN', disabled: locale === 'vi-VN' }, // Be sure to fill in the menu item key
       { label: 'English', key: 'en-US', disabled: locale === 'en-US' },
     ];
   }, [locale]);

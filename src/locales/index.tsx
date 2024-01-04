@@ -1,16 +1,16 @@
 import type { IntlShape, MessageDescriptor } from 'react-intl';
-import { createIntl, useIntl, FormattedMessage as IntFormattedMessage } from 'react-intl';
+import { FormattedMessage as IntFormattedMessage, createIntl, useIntl } from 'react-intl';
 import en_US from './en_US';
-import zh_CN from './zh_CN';
+import vi_VN from './vi_VN';
 
 export const localeConfig = {
-  'zh-CN': zh_CN,
+  'vi-VN': vi_VN,
   'en-US': en_US,
 };
 
 export type LocaleType = keyof typeof localeConfig;
 
-export type LocaleId = keyof typeof en_US;
+export type LocaleId = keyof typeof vi_VN;
 
 interface Props extends MessageDescriptor {
   id: LocaleId;
@@ -35,33 +35,33 @@ export const useLocale = () => {
 let g_intl: IntlShape;
 
 /**
- * 获取当前的 intl 对象，可以在 node 中使用
- * @param locale 需要切换的语言类型
- * @param changeIntl 是否不使用 g_intl
+ * Get the current INTL object, you can use it in Node
+ * @param locale The language type that needs to be switched
+ * @param changeIntl Do you not use g_intl
  * @returns IntlShape
  */
 export const getIntl = (locale?: LocaleType, changeIntl?: boolean) => {
-  // 如果全局的 g_intl 存在，且不是 setIntl 调用
+  // If the global g_intl exists, and not setintl call
   if (g_intl && !changeIntl && !locale) {
     return g_intl;
   }
-  // 如果存在于 localeInfo 中
+  // If you exist in Localeinfo
   if (locale && localeConfig[locale]) {
     return createIntl({
       locale,
       messages: localeConfig[locale],
     });
   }
-  // 使用 zh-CN
-  if (localeConfig['zh-CN'])
+  // Use vi-vn
+  if (localeConfig['vi-VN'])
     return createIntl({
-      locale: 'zh-CN',
-      messages: localeConfig['zh-CN'],
+      locale: 'vi-VN',
+      messages: localeConfig['vi-VN'],
     });
 
-  // 如果还没有，返回一个空的
+  // If not yet, return a empty one
   return createIntl({
-    locale: 'zh-CN',
+    locale: 'vi-VN',
     messages: {},
   });
 };
@@ -71,8 +71,8 @@ export const getIntlText = (id: LocaleId) => {
 };
 
 /**
- * 切换全局的 intl 的设置
- * @param locale 语言的key
+ * Set the settings of the global INTL
+ * @param locale KEY of Language
  */
 export const setIntl = (locale: LocaleType) => {
   g_intl = getIntl(locale, true);

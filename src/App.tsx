@@ -1,19 +1,19 @@
 import { ConfigProvider, theme } from 'antd';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-import 'dayjs/locale/en';
-import zhCN from 'antd/locale/zh_CN';
-import enUS from 'antd/locale/en_US';
 import 'antd/dist/reset.css';
-import { IntlProvider } from 'react-intl';
+import enUS from 'antd/locale/en_US';
+import viVN from 'antd/locale/vi_VN';
+import dayjs from 'dayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/vi';
 import { Suspense, useEffect, useMemo } from 'react';
+import { IntlProvider } from 'react-intl';
 
 import { shallowEqual } from 'react-redux';
-import { localeConfig, setIntl } from './locales';
-import { useAppSelector } from './store/hooks';
-import { initAsyncRoute } from './router/utils';
 import LayoutSpin from './components/LayoutSpin';
+import { localeConfig, setIntl } from './locales';
 import RouteView from './router';
+import { initAsyncRoute } from './router/utils';
+import { useAppSelector } from './store/hooks';
 
 function App() {
   const { locale, color, themeMode } = useAppSelector(
@@ -33,8 +33,8 @@ function App() {
       dayjs.locale('en');
       return enUS;
     } else {
-      dayjs.locale('zh-cn');
-      return zhCN;
+      dayjs.locale('vi-VN');
+      return viVN;
     }
   }, [locale]);
 

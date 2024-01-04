@@ -6,7 +6,7 @@ import { isFunction } from '@/utils/is';
 import type { RequestOptions, Result } from '#/axios';
 
 /**
- * @description: axios 模块
+ * @description: axios module
  */
 export class iAxios {
   private axiosInstance: AxiosInstance;
@@ -19,14 +19,14 @@ export class iAxios {
   }
 
   /**
-   * @description:  创建axios
+   * @description:  Create AXIOS
    */
   private createAxios(config: CreateAxiosOptions): void {
     this.axiosInstance = axios.create(config);
   }
 
   /**
-   * @description 获取拦截器配置
+   * @description Get the interceptor configuration
    */
   private getInterceptor() {
     const { interceptor } = this.options;
@@ -34,7 +34,7 @@ export class iAxios {
   }
 
   /**
-   * @description: 重新配置 axios
+   * @description: Re -configure AXIOS
    */
   configAxios(config: CreateAxiosOptions) {
     if (!this.axiosInstance) {
@@ -44,7 +44,7 @@ export class iAxios {
   }
 
   /**
-   * @description 挂载拦截器
+   * @description Mount interceptor
    */
   private setupInterceptors() {
     const interceptor = this.getInterceptor();
@@ -58,59 +58,59 @@ export class iAxios {
       responseInterceptorsCatch,
     } = interceptor;
 
-    // 此方法为了过滤不挂载interceptor没配置的拦截器
+    // In order to filter the interceptor that the interceptor is not configured
 
-    // 请求拦截器配置
+    // Request interceptor configuration
     requestInterceptors &&
       isFunction(requestInterceptors) &&
       this.axiosInstance.interceptors.request.use(requestInterceptors, undefined);
 
-    // 请求拦截器失败配置
+    // The failure configuration of the request interceptor
     requestInterceptorsCatch &&
       isFunction(requestInterceptorsCatch) &&
       this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch);
 
-    // 响应拦截器配置
+    // Response interceptor configuration
     responseInterceptors &&
       isFunction(responseInterceptors) &&
       this.axiosInstance.interceptors.response.use(responseInterceptors, undefined);
 
-    // 响应拦截器失败配置
+    // Response interceptor failure configuration
     responseInterceptorsCatch &&
       isFunction(responseInterceptorsCatch) &&
       this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
   }
 
   /**
-   * @description get请求（config：axios请求配置, options：数据的特殊处理）
+   * @description GET request (config: Axios request configuration, Options: special processing of data)
    */
   get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<Result<T>> {
     return this.request<T>({ ...config, method: 'GET' }, options);
   }
 
   /**
-   * @description post请求（config：axios请求配置, options：数据的特殊处理）
+   * @description Post request (config: axios request configuration, Options: special processing of data)
    */
   post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<Result<T>> {
     return this.request<T>({ ...config, method: 'POST' }, options);
   }
 
   /**
-   * @description put请求（config：axios请求配置, options：数据的特殊处理）
+   * @description PUT request (config: Axios request configuration, Options: special processing of data)
    */
   put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<Result<T>> {
     return this.request<T>({ ...config, method: 'PUT' }, options);
   }
 
   /**
-   * @description delete请求（config：axios请求配置, options：数据的特殊处理）
+   * @description delete request (config: Axios request configuration, Options: special processing of data)
    */
   delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<Result<T>> {
     return this.request<T>({ ...config, method: 'DELETE' }, options);
   }
 
   /**
-   * @description 请求体
+   * @description Request
    */
   request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<Result<T>> {
     let conf: CreateAxiosOptions = cloneDeep(config);

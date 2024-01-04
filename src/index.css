@@ -33,11 +33,12 @@ ul {
   cursor: pointer;
 }
 
-/* 灰色 */
+/* grey */
 .html-grey {
   filter: grayscale(100%);
 }
-/* 色弱 */
+
+/* Weakness */
 .html-weakness {
   filter: invert(80%);
 }
