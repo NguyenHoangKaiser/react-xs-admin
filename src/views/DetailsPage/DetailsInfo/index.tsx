@@ -11,7 +11,7 @@ const DatailsInfo = memo(() => {
 
   useEffect(() => {
     setId(searchParams.get('id') || '');
-    handleTabs('qurey', 'update', Number(searchParams.get('id')));
+    handleTabs('query', 'update', Number(searchParams.get('id')));
   }, []);
   return (
     <>

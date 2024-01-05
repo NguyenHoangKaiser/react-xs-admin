@@ -8,7 +8,7 @@ const DateilsPage = () => {
   const intl = useLocale();
 
   const { handleTabs } = useInfoPageTabs();
-  const qureyChange = (pateType: 'qurey' | 'params', i: number) => {
+  const queryChange = (pateType: 'query' | 'params', i: number) => {
     let path = `/details-page/details-info?id=${i}`;
     if (pateType === 'params') {
       path = `/details-page/details-params/${i}`;
@@ -22,7 +22,7 @@ const DateilsPage = () => {
       <div>
         {[1, 2, 3, 4, 5].map((i) => {
           return (
-            <Button key={i} style={{ marginRight: 12 }} onClick={() => qureyChange('qurey', i)}>
+            <Button key={i} style={{ marginRight: 12 }} onClick={() => queryChange('query', i)}>
               {intl.formatMessage({ id: 'layout.menu.detailsPage' })}-{i}
             </Button>
           );
@@ -31,7 +31,7 @@ const DateilsPage = () => {
       <div style={{ marginTop: 12 }}>
         {[1, 2, 3, 4, 5].map((i) => {
           return (
-            <Button key={i} style={{ marginRight: 12 }} onClick={() => qureyChange('params', i)}>
+            <Button key={i} style={{ marginRight: 12 }} onClick={() => queryChange('params', i)}>
               {intl.formatMessage({ id: 'layout.menu.detailsPage' })}Params-{i}
             </Button>
           );

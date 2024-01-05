@@ -4,7 +4,7 @@ import { setStoreMultiTabs } from '@/store/modules/route';
 
 export const useInfoPageTabs = () => {
   const dispatch = useDispatch();
-  const handleTabs = (pateType: 'qurey' | 'params', type: 'add' | 'update', id: number) => {
+  const handleTabs = (pateType: 'query' | 'params', type: 'add' | 'update', id: number) => {
     let tabs: MultiTabsType;
 
     if (pateType === 'params') {

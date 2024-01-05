@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Card, Col, Progress, Row, theme } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
-import './index.less';
+// import './index.less';
 import { getNumericalValue } from './style';
 import AreaChart from './components/AreaChart';
 import RoseChart from './components/RoseChart';
@@ -13,22 +13,22 @@ const Home = memo(() => {
 
   const speedList = [
     {
-      title: '待办事项',
+      title: 'To do it',
       online: 24,
       total: 70,
     },
     {
-      title: '待办任务',
+      title: 'Upcoming Tasks',
       online: 39,
       total: 100,
     },
     {
-      title: '目标计划',
+      title: 'Target plan',
       online: 5,
       total: 10,
     },
     {
-      title: '评论回复',
+      title: 'Comment reply',
       online: 10,
       total: 40,
     },
