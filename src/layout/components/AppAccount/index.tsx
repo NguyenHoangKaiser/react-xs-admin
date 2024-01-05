@@ -6,6 +6,7 @@ import avatar from '@/assets/avatar.png';
 import { removeStorage } from '@/utils/storage';
 import { setSignOut } from '@/store/modules/user';
 import { useAppDispatch } from '@/store/hooks';
+import { FormattedMessage } from '@/locales';
 
 const AppAccount = () => {
   const { AccountDiv } = getAccountStyle();
@@ -17,11 +18,11 @@ const AppAccount = () => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: '退出登录',
+      label: FormattedMessage({ id: 'login.signOut' }),
     },
   ];
 
-  const memuChange: MenuProps['onClick'] = (_e) => {
+  const menuChange: MenuProps['onClick'] = (_e) => {
     removeStorage('userInfo');
     dispatch(setSignOut());
 
@@ -33,7 +34,7 @@ const AppAccount = () => {
       <Dropdown
         menu={{
           items,
-          onClick: memuChange,
+          onClick: menuChange,
         }}
         placement="bottom"
         arrow

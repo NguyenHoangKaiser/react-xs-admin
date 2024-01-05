@@ -26,14 +26,14 @@ export const getTabsStyle = (token: GlobalToken): CSSObject => {
     ['& .ant-tabs-nav .tabs-right-content']: {
       display: 'flex',
     },
-    ['& .ant-tabs-nav .tabs-right-content .right-down-fukked']: {
+    ['& .ant-tabs-nav .tabs-right-content .right-down-more']: {
       borderLeft: `1px solid ${token.colorBorder}`,
       borderBottom: 'none',
       borderTop: 'none',
       cursor: 'pointer',
       padding: `${token.paddingContentVerticalSM}px ${token.padding}px`,
     },
-    ['&.ant-tabs-small > .ant-tabs-nav .tabs-right-content .right-down-fukked']: {
+    ['&.ant-tabs-small > .ant-tabs-nav .tabs-right-content .right-down-more']: {
       padding: `${token.paddingContentVerticalSM - 2}px ${token.paddingContentVertical}px`,
     },
   };

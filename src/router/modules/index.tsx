@@ -21,23 +21,40 @@ const DetailsPage = lazy(() => import('@/views/DetailsPage'));
 const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
 
+export enum RouteEnum {
+  Home = '/home',
+  Login = '/login',
+  Nested = '/nested',
+  Menu1 = '/nested/menu1',
+  Menu1_1 = '/nested/menu1/menu1-1',
+  Menu1_2 = '/nested/menu1/menu1-2',
+  Power = '/power',
+  Permissions = '/power/permissions',
+  TestPermissionsA = '/power/test-permissions-a',
+  TestPermissionsB = '/power/test-permissions-b',
+  DetailsPage = '/details-page',
+  DetailPageIndex = '/details-page/index',
+  DetailsInfo = '/details-page/details-info',
+  DetailsParams = '/details-page/details-params',
+}
+
 export const defaultRoute: RouteList[] = [
   {
-    path: '/home',
+    path: RouteEnum.Home,
     id: 'Home',
     element: <Home />,
     meta: { label: FormattedMessage({ id: 'layout.menu.home' }), icon: <HomeOutlined /> },
   },
   {
-    path: '/nested',
+    path: RouteEnum.Nested,
     id: 'Nested',
-    redirect: '/nested/menu1',
+    redirect: RouteEnum.Menu1,
     meta: { label: FormattedMessage({ id: 'layout.menu.nesting' }), icon: <AppstoreOutlined /> },
     children: [
       {
         path: 'menu1',
         id: 'Menu1',
-        redirect: '/nested/menu1/menu1-1',
+        redirect: RouteEnum.Menu1_1,
         meta: { label: 'menu-1' },
         children: [
           {
@@ -57,9 +74,9 @@ export const defaultRoute: RouteList[] = [
     ],
   },
   {
-    path: '/power',
+    path: RouteEnum.Power,
     id: 'Power',
-    redirect: '/power/permissions',
+    redirect: RouteEnum.Permissions,
     meta: {
       label: FormattedMessage({ id: 'layout.menu.permissions' }),
       icon: <UserSwitchOutlined />,
@@ -86,9 +103,9 @@ export const defaultRoute: RouteList[] = [
     ],
   },
   {
-    path: '/details-page',
+    path: RouteEnum.DetailsPage,
     id: 'DetailsPage',
-    redirect: '/details-page/index',
+    redirect: RouteEnum.DetailPageIndex,
     alwaysShow: false,
     meta: { label: FormattedMessage({ id: 'layout.menu.detailsPage' }), whiteList: true },
     children: [
@@ -105,13 +122,13 @@ export const defaultRoute: RouteList[] = [
         path: 'details-info',
         id: 'DetailsInfo',
         element: <DetailsInfo />,
-        meta: { label: '详情页', hideSidebar: true },
+        meta: { label: 'Details info', hideSidebar: true },
       },
       {
         path: 'details-params/:id',
         id: 'DetailsParams',
         element: <DetailsParams />,
-        meta: { label: '详情页', hideSidebar: true },
+        meta: { label: 'Details page', hideSidebar: true },
       },
     ],
   },
@@ -147,7 +164,7 @@ export const baseRouter: RouteObject[] = [
     children: [...whiteList],
   },
   {
-    path: '/login',
+    path: RouteEnum.Login,
     element: <Login />,
   },
 ];

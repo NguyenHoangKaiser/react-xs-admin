@@ -73,6 +73,36 @@ export function getParentPaths(routePath: string, routes: MenuItem[]): string[] 
   return dfs(routes, routePath, []);
 }
 
+export function getBreadcrumbArr(
+  path: Key,
+  routes: MenuItem[],
+): {
+  title: React.ReactNode;
+  path: string;
+}[] {
+  const parentPaths = getParentPaths(path as string, routes);
+  if (parentPaths[0] === path)
+    return [
+      {
+        title: findRouteByPath(path, routes)?.label,
+        path: path.toString() || '',
+      },
+    ];
+  const breadcrumbArr = parentPaths
+    .map((i) => {
+      const route = findRouteByPath(i, routes);
+      return {
+        title: route?.label,
+        path: route?.key?.toString() || '',
+      };
+    })
+    .concat({
+      title: findRouteByPath(path, routes)?.label,
+      path: path.toString() || '',
+    });
+  return breadcrumbArr;
+}
+
 // Find the routing information of the corresponding path
 export function findRouteByPath(path: Key, routes: MenuItem[]): MenuItem | null {
   const res = routes.find((item) => item.key == path) || null;

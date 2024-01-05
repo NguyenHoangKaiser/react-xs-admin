@@ -1,17 +1,17 @@
 import type { TabsProps } from 'antd';
 import { Tabs, theme } from 'antd';
 import { memo, useEffect, useMemo } from 'react';
-import { useNavigate, useLocation, useMatch } from 'react-router-dom';
-import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
-import { getTabsStyle } from './style';
+import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+// import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
-import { useAppSelector } from '@/store/hooks';
-import { findRouteByPath } from '@/router/utils';
+import { getTabsStyle } from './style';
 import { defaultRoute } from '@/router/modules';
-import { useRefresh } from '@/hooks/web/useRefresh';
-import { FormattedMessage } from '@/locales';
+import { findRouteByPath } from '@/router/utils';
+import { useAppSelector } from '@/store/hooks';
+// import { useRefresh } from '@/hooks/web/useRefresh';
 import { useRouteList } from '@/hooks/useRouteList';
+import { FormattedMessage } from '@/locales';
 
 interface Props {
   maxLen?: number;
@@ -26,7 +26,7 @@ const TabsPage = memo((_props: Props) => {
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
   const { addRouteTabs, removeTab } = useTabsChange();
-  const { refresh } = useRefresh();
+  // const { refresh } = useRefresh();
 
   const thme = theme.useToken();
 
@@ -75,24 +75,26 @@ const TabsPage = memo((_props: Props) => {
       type={tabsItem.length > 1 ? 'editable-card' : 'card'}
       onChange={(key) => navigate(key)}
       onEdit={onEdit}
-      tabBarExtraContent={{
-        right: (
-          <div className="tabs-right-content">
-            <div className="right-down-fukked" onClick={() => refresh()}>
-              <ReloadOutlined />
-            </div>
-            <TabsItemLabel
-              eventType="click"
-              pathKey={location.pathname + location.search}
-              className="right-down-fukked"
-            >
-              <CaretDownFilled />
-            </TabsItemLabel>
-          </div>
-        ),
-      }}
+      // tabBarExtraContent={{
+      //   right: (
+      //     <div className="tabs-right-content">
+      //       <div className="right-down-more" onClick={() => refresh()}>
+      //         <ReloadOutlined />
+      //       </div>
+      //       <TabsItemLabel
+      //         eventType="click"
+      //         pathKey={location.pathname + location.search}
+      //         className="right-down-more"
+      //       >
+      //         <CaretDownFilled />
+      //       </TabsItemLabel>
+      //     </div>
+      //   ),
+      // }}
       tabBarStyle={{
         margin: 0,
+        marginLeft: 11,
+        paddingTop: 8,
       }}
       items={tabsItem}
     />

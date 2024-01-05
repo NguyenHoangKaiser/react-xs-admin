@@ -26,12 +26,12 @@ export const useTabsChange = () => {
     return location.pathname + location.search;
   };
 
-  // 添加标签
+  // Add tabs
   const addRouteTabs = () => {
     handleTabsList(getCurrentPathname(), 'add');
   };
 
-  // 关闭当前导航
+  // Turn off the current navigation
   const removeTab = (pathKey: string) => {
     const item = multiTabs.findIndex((i) => i.key === pathKey);
     const tabsLength = multiTabs.length;

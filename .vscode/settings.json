@@ -22,6 +22,12 @@
       "name": "React Intl 2",
       "description": "React Intl template v2",
       "template": "{intl.formatMessage({ id: '{key}' {args}})}"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-3",
+      "name": "React Intl 3",
+      "description": "React Intl template v3",
+      "template": "getIntlText('{key}')"
     }
   ]
 }

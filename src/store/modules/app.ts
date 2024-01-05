@@ -42,7 +42,7 @@ export const appSlice = createSlice({
     },
   },
 });
-// 每个 case reducer 函数会生成对应的 Action creators
+// Each case reducer function generates the corresponding Action Creators
 export const { setAppCollapsed, setAppColor, setAppLocale, setAppSidebarMode, setAppThemeMode } =
   appSlice.actions;
 

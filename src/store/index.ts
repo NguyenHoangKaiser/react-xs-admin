@@ -24,9 +24,9 @@ const reducers = combineReducers({
 const persistConfig = {
   key: 'react-xs',
   storage,
-  // 白名单
+  // whitelist
   whitelist: ['app', 'route', 'user'],
-  // 黑名单
+  // blacklist
   blacklist: [],
 };
 
@@ -42,9 +42,9 @@ const store = configureStore({
     }),
 });
 
-// 从 store 本身推断出 `RootState` 和 `AppDispatch` 类型
+// Inference from Store itself, `rootState` and` appDispatch` type
 export type RootState = ReturnType<typeof store.getState>;
-// 推断出类型: {posts: PostsState, comments: CommentsState, users: UsersState}
+// Inference type: {Posts: PostsState, Comments: CommentsState, Users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
 export const persistor = persistStore(store);

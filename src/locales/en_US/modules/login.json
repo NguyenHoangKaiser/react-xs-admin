@@ -4,6 +4,7 @@
   "login.password": "Password：admin123",
   "login.passwordRules": "Please input your Password!",
   "login.rememberPassword": "Remember password",
+  "login.signOut": "Sign out",
   "login.userNameRules": "Please input your Username!",
   "login.username": "UserName：admin"
 }

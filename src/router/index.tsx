@@ -40,9 +40,9 @@ const RouteView = memo(() => {
     setRoute(mapBaseRouter(baseRouter, asyncRouter));
   }, [asyncRouter]);
 
-  const routeElemt = createBrowserRouter(route);
+  const routeElement = createBrowserRouter(route);
 
-  return <RouterProvider router={routeElemt} />;
+  return <RouterProvider router={routeElement} />;
 });
 
 export default RouteView;

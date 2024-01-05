@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
+import { getIntlText } from '@/locales';
 
 export interface RightClickTags {
   text: string;
@@ -12,36 +13,36 @@ export const useTabsState = (pathKey: string, openDropdown: boolean) => {
 
   const [rightClickTags] = useState<RightClickTags[]>([
     {
-      text: '刷新',
+      text: getIntlText('tab.refresh'),
       disabled: false,
       code: 'refresh',
     },
     {
-      text: '关闭',
+      text: getIntlText('tab.close'),
       disabled: false,
       code: 'close',
     },
     {
-      text: '关闭其他标签',
+      text: getIntlText('tab.closeOther'),
       disabled: false,
       code: 'closeOther',
     },
     {
-      text: '关闭左侧其他标签',
+      text: getIntlText('tab.closeLeft'),
       disabled: false,
       code: 'closeLeftOther',
     },
     {
-      text: '关闭右侧其他标签',
+      text: getIntlText('tab.closeRight'),
       disabled: false,
       code: 'closeRightOther',
     },
   ]);
 
-  const getDisabledStatus = (code: string, multFindIndex: number, multlength: number) => {
-    const isFirstTab = multFindIndex === 0 && multlength > 1;
-    const isLastTab = multFindIndex === multlength - 1 && multlength > 1;
-    const isOnlyTab = multlength === 1;
+  const getDisabledStatus = (code: string, multiFindIndex: number, multiLength: number) => {
+    const isFirstTab = multiFindIndex === 0 && multiLength > 1;
+    const isLastTab = multiFindIndex === multiLength - 1 && multiLength > 1;
+    const isOnlyTab = multiLength === 1;
 
     const disableCodesForOnlyTab = ['close', 'closeOther', 'closeLeftOther', 'closeRightOther'];
 
@@ -53,12 +54,12 @@ export const useTabsState = (pathKey: string, openDropdown: boolean) => {
   };
 
   const rightClickTagsList = useMemo(() => {
-    const multFindIndex = multiTabs.findIndex((i) => i.key === pathKey);
-    const multlength = multiTabs.length;
+    const multiFindIndex = multiTabs.findIndex((i) => i.key === pathKey);
+    const multiLength = multiTabs.length;
 
     return rightClickTags.map((item) => ({
       ...item,
-      disabled: getDisabledStatus(item.code, multFindIndex, multlength),
+      disabled: getDisabledStatus(item.code, multiFindIndex, multiLength),
     }));
   }, [openDropdown]);
 

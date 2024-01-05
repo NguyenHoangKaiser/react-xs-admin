@@ -40,11 +40,11 @@ export const KeepAlive = memo(({ maxLen = 10 }: Props) => {
         return reactNodes;
       }
 
-      // 缓存超过上限的
+      // The cache exceeds the upper limit
       if (reactNodes.length >= maxLen) {
         reactNodes.splice(0, 1);
       }
-      // 添加
+      // Add to
       const reactNode = reactNodes.find((res) => res.name === activeName);
       if (!reactNode) {
         reactNodes.push({
@@ -53,7 +53,7 @@ export const KeepAlive = memo(({ maxLen = 10 }: Props) => {
         });
       }
 
-      // 缓存路由列表和标签页列表同步
+      // Synchronization of cache routing list and tab list list
       if (include) {
         return reactNodes.filter((i) => include.includes(i.name));
       }
