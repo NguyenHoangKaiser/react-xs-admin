@@ -2,7 +2,7 @@ import type { MockMethod, Recordable } from 'vite-plugin-mock';
 // const testENV = import.meta.env.VITE_BASE_URL;
 const userInfo = {
   name: 'Little Green, who loves to drink honey green',
-  userid: '00000001',
+  userId: '00000001',
   email: '1531733886@qq.com',
   signature:
     'Sweet honey, sweet green tea, honey neutralizing the bitterness of green tea retains green tea back to sweet, wonderful',
@@ -14,7 +14,7 @@ const userInfo = {
 
 const userInfo2 = {
   name: 'test',
-  userid: '00000002',
+  userId: '00000002',
   email: '12312311223@qq.com',
   signature: 'Little ah ah wave',
   introduction: 'A small front end that can only drink honey green',

@@ -1,8 +1,8 @@
 import { isString } from 'lodash-es';
 import type { AxiosInterceptor, CreateAxiosOptions } from './axiosConfig';
-import { iAxios } from './iAxios';
 import { checkStatus } from './axiosStatus';
 import { errorData } from './errorConfig';
+import { iAxios } from './iAxios';
 import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
 
 /**
@@ -114,4 +114,4 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     ...(opt || {}),
   });
 }
-export const deffHttp = createAxios();
+export const defHttp = createAxios();

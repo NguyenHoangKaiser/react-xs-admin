@@ -5,14 +5,14 @@ import './index.less';
 
 const AppLogo = memo(() => {
   const thme = theme.useToken();
-  const testENV = import.meta.env.VITE_BASE_URL;
+
   return (
     <div className="app-logo">
       <div className="logo">
         <Image width={38} src={logo} preview={false} />
       </div>
       <div className="name" style={{ color: thme.token.colorText }}>
-        {testENV}
+        Vite
       </div>
     </div>
   );

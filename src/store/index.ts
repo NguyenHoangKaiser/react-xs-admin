@@ -11,11 +11,14 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // import thunk from 'redux-thunk';
+import { setupListeners } from '@reduxjs/toolkit/query/react';
 import appReducer from './modules/app';
 import routeReducer from './modules/route';
 import userReducer from './modules/user';
+import { apiSlice } from '@/server';
 
 const reducers = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
   app: appReducer,
   route: routeReducer,
   user: userReducer,
@@ -39,8 +42,10 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(apiSlice.middleware),
 });
+
+setupListeners(store.dispatch);
 
 // Inference from Store itself, `rootState` and` appDispatch` type
 export type RootState = ReturnType<typeof store.getState>;

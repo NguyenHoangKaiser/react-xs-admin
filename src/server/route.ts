@@ -1,13 +1,10 @@
+import { APIs } from '.';
 import type { AsyncRouteType } from '@/store/modules/route';
-import { deffHttp } from '@/utils/axios';
-
-enum Api {
-  ROUTE_LIST = '/mock_api/getRoute',
-}
+import { defHttp } from '@/utils/axios';
 
 interface Param {
   name: string;
 }
 
 export const getRouteApi = (data: Param) =>
-  deffHttp.post<AsyncRouteType[]>({ url: Api.ROUTE_LIST, data });
+  defHttp.post<AsyncRouteType[]>({ url: APIs.ROUTE_LIST, data });

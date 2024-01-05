@@ -131,16 +131,20 @@ export class iAxios {
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<T, AxiosResponse<Result<T>>>(conf)
-        .then((res: AxiosResponse<Result<T>>) => {
-          if (requestHook && isFunction(requestHook)) {
-            try {
-              resolve(requestHook(res, opt));
-            } catch (err) {
-              reject(err || new Error('request error!'));
+        .then((res: AxiosResponse<Result<T>> | Error | AxiosError) => {
+          if (res instanceof Error || axios.isAxiosError(res)) {
+            reject(res);
+          } else {
+            if (requestHook && isFunction(requestHook)) {
+              try {
+                resolve(requestHook(res, opt));
+              } catch (err) {
+                reject(err || new Error('request error!'));
+              }
+              return;
             }
-            return;
+            resolve(res as unknown as Promise<Result<T>>);
           }
-          resolve(res as unknown as Promise<Result<T>>);
         })
         .catch((e: Error | AxiosError) => {
           if (requestCatchHook && isFunction(requestCatchHook)) {

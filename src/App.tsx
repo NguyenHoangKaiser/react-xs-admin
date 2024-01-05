@@ -1,4 +1,4 @@
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, theme, App as AntApp } from 'antd';
 import 'antd/dist/reset.css';
 import enUS from 'antd/locale/en_US';
 import viVN from 'antd/locale/vi_VN';
@@ -61,17 +61,19 @@ function App() {
       }}
       locale={getLocale}
     >
-      <IntlProvider locale={locale} messages={localeConfig[locale]}>
-        {loading ? (
-          <LayoutSpin position="fixed" />
-        ) : (
-          // <BrowserRouter>
-          <Suspense fallback={<LayoutSpin />}>
-            <RouteView />
-          </Suspense>
-          // </BrowserRouter>
-        )}
-      </IntlProvider>
+      <AntApp>
+        <IntlProvider locale={locale} messages={localeConfig[locale]}>
+          {loading ? (
+            <LayoutSpin position="fixed" />
+          ) : (
+            // <BrowserRouter>
+            <Suspense fallback={<LayoutSpin />}>
+              <RouteView />
+            </Suspense>
+            // </BrowserRouter>
+          )}
+        </IntlProvider>
+      </AntApp>
     </ConfigProvider>
   );
 }
