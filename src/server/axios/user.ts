@@ -1,4 +1,3 @@
-import type { TPost } from './apiType';
 import { defHttp } from '@/utils/axios';
 
 export interface UseInfoType {
@@ -17,15 +16,6 @@ export const getUserInfo = (user: string, pwd: string) =>
     {
       url: '/mock_api/login',
       data: { username: user, password: pwd },
-    },
-    { errorMessageMode: 'modal', withToken: false },
-  );
-
-export const getPosts = () =>
-  defHttp.get<TPost[]>(
-    {
-      baseURL: 'https://jsonplaceholder.typicode.com',
-      url: '/postss',
     },
     { errorMessageMode: 'modal', withToken: false },
   );

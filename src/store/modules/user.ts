@@ -1,10 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { UseInfoType } from '@/server/useInfo';
+import type { UseInfoType } from '@/server/axios/user';
 
 interface UserSlice {
   userInfo?: UseInfoType;
   power?: UseInfoType['power'];
+  token?: string;
 }
 
 const initialState: UserSlice = {};

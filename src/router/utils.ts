@@ -4,7 +4,7 @@ import type { Key } from 'react';
 import { cloneDeep } from 'lodash-es';
 import { defaultRoute } from './modules';
 import type { MenuItem, RouteList } from '@/router/route';
-import { getRouteApi } from '@/server/route';
+import { getRouteApi } from '@/server/axios/route';
 import type { AsyncRouteType } from '@/store/modules/route';
 import { setStoreAsyncRouter } from '@/store/modules/route';
 import store from '@/store';

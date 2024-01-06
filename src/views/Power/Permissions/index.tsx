@@ -3,9 +3,10 @@ import type { ColumnsType } from 'antd/es/table';
 import { initAsyncRoute } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setPower } from '@/store/modules/user';
-import { useGetPostsQuery } from '@/server';
-import type { TPost } from '@/server/apiType';
-const columns: ColumnsType<TPost> = [
+import type { ITodo } from '@/server/postsApi';
+import { useGetTodosQuery } from '@/server/postsApi';
+import { getErrMsg } from '@/utils/operate';
+const columns: ColumnsType<ITodo> = [
   {
     title: 'id',
     dataIndex: 'id',
@@ -17,9 +18,9 @@ const columns: ColumnsType<TPost> = [
     key: 'title',
   },
   {
-    title: 'body',
-    dataIndex: 'body',
-    key: 'body',
+    title: 'userId',
+    dataIndex: 'userId',
+    key: 'userId',
   },
 ];
 const Permissions = () => {
@@ -27,7 +28,9 @@ const Permissions = () => {
 
   const power = useAppSelector((state) => state.user.power);
 
-  const { data, error, isFetching, refetch } = useGetPostsQuery(undefined);
+  const { isError, error, isFetching, refetch, data } = useGetTodosQuery(undefined, {
+    skip: power !== 'admin',
+  });
 
   const setCount = async () => {
     const newPower = power === 'admin' ? 'test' : 'admin';
@@ -50,7 +53,7 @@ const Permissions = () => {
         loading={isFetching}
         footer={() => (
           <Typography.Text type="secondary">
-            {error ? error.message : 'Powered by RTK Query'}
+            {isError ? getErrMsg(error) : 'Powered by RTK Query'}
           </Typography.Text>
         )}
         columns={columns}

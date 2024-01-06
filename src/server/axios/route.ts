@@ -1,6 +1,6 @@
-import { APIs } from '.';
 import type { AsyncRouteType } from '@/store/modules/route';
 import { defHttp } from '@/utils/axios';
+import { APIs } from '@/utils/constant';
 
 interface Param {
   name: string;

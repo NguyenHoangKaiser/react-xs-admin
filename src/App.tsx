@@ -1,4 +1,5 @@
 import { ConfigProvider, theme, App as AntApp } from 'antd';
+import { px2remTransformer, StyleProvider } from '@ant-design/cssinjs';
 import 'antd/dist/reset.css';
 import enUS from 'antd/locale/en_US';
 import viVN from 'antd/locale/vi_VN';
@@ -14,6 +15,10 @@ import { localeConfig, setIntl } from './locales';
 import RouteView from './router';
 import { initAsyncRoute } from './router/utils';
 import { useAppSelector } from './store/hooks';
+
+const px2rem = px2remTransformer({
+  rootValue: 16,
+});
 
 function App() {
   const { locale, color, themeMode } = useAppSelector(
@@ -52,29 +57,32 @@ function App() {
   }, [asyncRouter]);
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: color || '#409eff',
-        },
-        algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
-      }}
-      locale={getLocale}
-    >
-      <AntApp>
-        <IntlProvider locale={locale} messages={localeConfig[locale]}>
-          {loading ? (
-            <LayoutSpin position="fixed" />
-          ) : (
-            // <BrowserRouter>
-            <Suspense fallback={<LayoutSpin />}>
-              <RouteView />
-            </Suspense>
-            // </BrowserRouter>
-          )}
-        </IntlProvider>
-      </AntApp>
-    </ConfigProvider>
+    <StyleProvider transformers={[px2rem]}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: color || '#409eff',
+          },
+          algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          cssVar: true,
+        }}
+        locale={getLocale}
+      >
+        <AntApp>
+          <IntlProvider locale={locale} messages={localeConfig[locale]}>
+            {loading ? (
+              <LayoutSpin position="fixed" />
+            ) : (
+              // <BrowserRouter>
+              <Suspense fallback={<LayoutSpin />}>
+                <RouteView />
+              </Suspense>
+              // </BrowserRouter>
+            )}
+          </IntlProvider>
+        </AntApp>
+      </ConfigProvider>
+    </StyleProvider>
   );
 }
 

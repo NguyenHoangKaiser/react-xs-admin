@@ -1,57 +1,70 @@
-import type { BaseQueryFn } from '@reduxjs/toolkit/query';
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { type AxiosError, type AxiosRequestConfig } from 'axios';
-import type { TPost } from './apiType';
-import { defHttp } from '@/utils/axios';
-import type { RequestOptions } from '#/axios';
+import type { FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
+import type { RootState } from '@/store';
+import { getErrMsg } from '@/utils/operate';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+// const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const axiosBaseQuery =
-  (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' },
-  ): BaseQueryFn<
-    AxiosRequestConfig, // Args
-    unknown, // Result
-    {
-      status: string | undefined;
-      data: unknown;
-      message: string | undefined;
-    }, // Error
-    RequestOptions, // DefinitionExtraOptions
-    { timestamp: number } // Meta
-  > =>
-  async ({ url, baseURL: _base, ...rest }, _api, extraOptions = { errorMessageMode: 'modal' }) => {
-    try {
-      const result = await defHttp.request(
-        {
-          baseURL: baseUrl + url,
-          ...rest,
-        },
-        extraOptions,
-      );
-      return { data: result.data };
-    } catch (axiosError) {
-      const { response, code, message } = axiosError as AxiosError;
-      return {
-        error: { status: code, data: response?.data, message: message },
-      };
+// Create our baseQuery instance
+const baseQuery = fetchBaseQuery({
+  baseUrl: '/',
+  prepareHeaders: (headers, { getState }) => {
+    // By default, if we have a token in the store, let's use that for authenticated requests
+    const token = (getState() as RootState).user.token;
+    if (token) {
+      headers.set('authentication', `Bearer ${token}`);
     }
-  };
-
-export const apiSlice = createApi({
-  baseQuery: axiosBaseQuery({ baseUrl: BASE_URL }),
-  endpoints(build) {
-    return {
-      getPosts: build.query<TPost[], undefined>({
-        query: () => ({ url: '/posts', method: 'get' }),
-      }),
-    };
+    return headers;
   },
 });
 
-export const useGetPostsQuery = apiSlice.endpoints.getPosts.useQuery;
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 3 });
 
-export enum APIs {
-  ROUTE_LIST = '/mock_api/getRoute',
+/**
+ * Create a base API to inject endpoints into elsewhere.
+ * Components using this API should import from the injected site,
+ * in order to get the appropriate types,
+ * and to ensure that the file injecting the endpoints is loaded
+ */
+export const api = createApi({
+  /**
+   * `reducerPath` is optional and will not be required by most users.
+   * This is useful if you have multiple API definitions,
+   * e.g. where each has a different domain, with no interaction between endpoints.
+   * Otherwise, a single API definition should be used in order to support tag invalidation,
+   * among other features
+   */
+  reducerPath: 'splitApi',
+  /**
+   * A bare bones base query would just be `baseQuery: fetchBaseQuery({ baseUrl: '/' })`
+   */
+  baseQuery: baseQueryWithRetry,
+  /**
+   * Tag types must be defined in the original API definition
+   * for any tags that would be provided by injected endpoints
+   */
+  tagTypes: ['Todos', 'User'],
+  /**
+   * This api has endpoints injected in adjacent files,
+   * which is why no endpoints are shown below.
+   * If you want all endpoints defined in the same file, they could be included here instead
+   */
+  endpoints: () => ({}),
+});
+
+export const enhancedApi = api.enhanceEndpoints({
+  endpoints: () => ({
+    getPost: () => 'test',
+  }),
+});
+
+function transformErrorResponse(
+  baseQueryReturnValue: FetchBaseQueryError,
+  _meta: FetchBaseQueryMeta | undefined,
+  _arg: void,
+) {
+  getErrMsg(baseQueryReturnValue, true);
+  return baseQueryReturnValue;
 }
+
+export { transformErrorResponse };

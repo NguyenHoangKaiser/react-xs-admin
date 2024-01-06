@@ -15,10 +15,10 @@ import { setupListeners } from '@reduxjs/toolkit/query/react';
 import appReducer from './modules/app';
 import routeReducer from './modules/route';
 import userReducer from './modules/user';
-import { apiSlice } from '@/server';
+import { api } from '@/server';
 
 const reducers = combineReducers({
-  [apiSlice.reducerPath]: apiSlice.reducer,
+  [api.reducerPath]: api.reducer,
   app: appReducer,
   route: routeReducer,
   user: userReducer,
@@ -42,7 +42,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSlice.middleware),
+    }).concat(api.middleware),
 });
 
 setupListeners(store.dispatch);

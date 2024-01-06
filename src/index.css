@@ -8,6 +8,31 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  ::-webkit-scrollbar {
+    width: 0.4rem !important;
+    height: 0.4rem !important;
+    background-color: transparent !important;
+  }
+
+  ::-webkit-scrollbar-track-piece {
+    border-radius: 0.4rem !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-clip: padding-box !important;
+    -webkit-border-radius: 0.4rem !important;
+    background-color: var(--ant-color-primary-hover);
+    -webkit-box-shadow: inset -1px -1px 0px rgba(125, 125, 125, 0.22),
+      inset 1px 1px 0px rgba(125, 125, 125, 0.22) !important;
+  }
 }
 
 #root {

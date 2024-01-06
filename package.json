@@ -28,7 +28,11 @@
     "@ant-design/plots": "^2.1.5",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@react-three/drei": "^9.93.0",
+    "@react-three/fiber": "^8.15.13",
+    "@react-three/postprocessing": "^2.15.11",
     "@reduxjs/toolkit": "^2.0.1",
+    "@types/three": "^0.160.0",
     "ahooks": "^3.7.8",
     "antd": "^5.12.2",
     "axios": "^1.6.2",
@@ -45,7 +49,8 @@
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.20.1",
     "redux-persist": "^6.0.0",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "three": "^0.160.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",

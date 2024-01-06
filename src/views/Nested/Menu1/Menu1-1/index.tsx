@@ -1,3 +1,9 @@
+import ModelRender from '@/layout/components/ModelRender';
+
 export default () => {
-  return <div>menu1-1</div>;
+  return (
+    <div className="h-full w-full">
+      <ModelRender />
+    </div>
+  );
 };

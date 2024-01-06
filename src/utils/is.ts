@@ -1,3 +1,5 @@
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 const toString = Object.prototype.toString;
 
 export function is(val: unknown, type: string) {
@@ -96,4 +98,63 @@ export function isUrl(path: string): boolean {
   const reg =
     /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
   return reg.test(path);
+}
+
+/**
+ * Type predicate to narrow an unknown error to `FetchBaseQueryError`
+ *
+ * @example
+ *
+ * ```ts
+ * async function handleAddPost() {
+ *    try {
+ *      await addPost(name).unwrap()
+ *     setName('')
+ *    } catch (err) {
+ *      if (isFetchBaseQueryError(err)) {
+ *        // you can access all properties of `FetchBaseQueryError` here
+ *        const errMsg = 'error' in err ? err.error : JSON.stringify(err.data)
+ *        enqueueSnackbar(errMsg, { variant: 'error' })
+ *      } else if (isErrorWithMessage(err)) {
+ *       // you can access a string 'message' property here
+ *      enqueueSnackbar(err.message, { variant: 'error' })
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
+  return typeof error === 'object' && error != null && 'status' in error;
+}
+
+/**
+ * Type predicate to narrow an unknown error to an object with a string 'message' property
+ *
+ * @example
+ *
+ * ```ts
+ * async function handleAddPost() {
+ *    try {
+ *      await addPost(name).unwrap()
+ *     setName('')
+ *    } catch (err) {
+ *      if (isFetchBaseQueryError(err)) {
+ *        // you can access all properties of `FetchBaseQueryError` here
+ *        const errMsg = 'error' in err ? err.error : JSON.stringify(err.data)
+ *        enqueueSnackbar(errMsg, { variant: 'error' })
+ *      } else if (isErrorWithMessage(err)) {
+ *       // you can access a string 'message' property here
+ *      enqueueSnackbar(err.message, { variant: 'error' })
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export function isErrorWithMessage(error: unknown): error is { message: string } {
+  return (
+    typeof error === 'object' &&
+    error != null &&
+    'message' in error &&
+    typeof (error as any).message === 'string'
+  );
 }

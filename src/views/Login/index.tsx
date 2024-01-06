@@ -1,16 +1,16 @@
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
 import { memo, useEffect, useState } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
-import AppTheme from '@/components/AppTheme';
+import logo from '@/assets/logo.png';
 import AppLocale from '@/components/AppLocale';
-import { getUserInfo } from '@/server/useInfo';
+import AppTheme from '@/components/AppTheme';
+import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
+import { getUserInfo } from '@/server/axios/user';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setUserInfo } from '@/store/modules/user';
-import logo from '@/assets/logo.png';
-import { useLocale } from '@/locales';
 
 const Login = memo(() => {
   const intl = useLocale();

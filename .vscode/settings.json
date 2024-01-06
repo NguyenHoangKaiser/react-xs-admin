@@ -29,5 +29,6 @@
       "description": "React Intl template v3",
       "template": "getIntlText('{key}')"
     }
-  ]
+  ],
+  "cSpell.words": ["multisampling", "Todos"]
 }
