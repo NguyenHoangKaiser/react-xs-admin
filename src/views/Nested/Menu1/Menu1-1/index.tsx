@@ -1,4 +1,4 @@
-import ModelRender from '@/layout/components/ModelRender';
+import ModelRender from '@/components/ModelRender';
 
 export default () => {
   return (

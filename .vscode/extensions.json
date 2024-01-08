@@ -6,6 +6,9 @@
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
     "naumovs.color-highlight",
-    "donjayamanne.githistory"
+    "donjayamanne.githistory",
+    "streetsidesoftware.code-spell-checker",
+    "adam-bender.commit-message-editor",
+    "streetsidesoftware.code-spell-checker-vietnamese"
   ]
 }
