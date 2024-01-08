@@ -45,7 +45,7 @@ function App() {
 
   useEffect(() => {
     if (!asyncRouter.length && userInfo) {
-      initAsyncRoute(userInfo.power);
+      initAsyncRoute(userInfo.token);
     }
   }, []);
 
@@ -68,7 +68,7 @@ function App() {
         }}
         locale={getLocale}
       >
-        <AntApp>
+        <AntApp style={{ width: '100vw', height: '100vh' }}>
           <IntlProvider locale={locale} messages={localeConfig[locale]}>
             {loading ? (
               <LayoutSpin position="fixed" />

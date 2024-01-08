@@ -27,22 +27,23 @@ const Permissions = () => {
   const dispatch = useAppDispatch();
 
   const power = useAppSelector((state) => state.user.power);
+  const token = useAppSelector((state) => state.user.token);
 
   const { isError, error, isFetching, refetch, data } = useGetTodosQuery(undefined, {
-    skip: power !== 'admin',
+    skip: !power?.includes('admin'),
   });
 
   const setCount = async () => {
-    const newPower = power === 'admin' ? 'test' : 'admin';
+    const newPower = power?.includes('admin') ? ['test'] : ['admin'];
     dispatch(setPower(newPower));
-    initAsyncRoute(newPower);
+    initAsyncRoute(token!);
   };
 
   return (
     <>
       <Space>
         <Button type="primary" onClick={setCount}>
-          {power} Switch permissions
+          {power?.toString()} Switch permissions
         </Button>
         <Button type="primary" loading={isFetching} onClick={refetch}>
           Fetch post

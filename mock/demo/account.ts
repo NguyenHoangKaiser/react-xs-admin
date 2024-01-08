@@ -11,31 +11,21 @@ export function createFakeUserList() {
       realName: 'Super Admin',
       avatar: '',
       desc: 'manager',
-      password: '123456',
+      password: 'admin123',
       token: 'fakeToken1',
       homePath: '/home',
-      roles: [
-        {
-          roleName: 'Admin',
-          value: 'admin',
-        },
-      ],
+      power: ['admin'],
     },
     {
       userId: '2',
       username: 'test',
-      password: '123456',
+      password: 'test123',
       realName: 'Test User',
       avatar: '',
       desc: 'tester',
       token: 'fakeToken2',
       homePath: '/home',
-      roles: [
-        {
-          roleName: 'Tester',
-          value: 'test',
-        },
-      ],
+      power: ['test'],
     },
   ];
 }
@@ -48,7 +38,7 @@ const fakeCodeList: any = {
 export default [
   // mock user login
   {
-    url: '/basic-api/login',
+    url: '/mock_api/login',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -59,9 +49,9 @@ export default [
       if (!checkUser) {
         return resultError('Incorrect account or password！');
       }
-      const { userId, username: _username, token, realName, desc, roles } = checkUser;
+      const { userId, username: _username, token, realName, desc, power } = checkUser;
       return resultSuccess({
-        roles,
+        power,
         userId,
         username: _username,
         token,
@@ -71,7 +61,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/getUserInfo',
+    url: '/mock_api/getUserInfo',
     method: 'get',
     response: (request: requestParams) => {
       const token = getRequestToken(request);
@@ -84,7 +74,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/getPermCode',
+    url: '/mock_api/getPermCode',
     timeout: 200,
     method: 'get',
     response: (request: requestParams) => {
@@ -100,7 +90,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/logout',
+    url: '/mock_api/logout',
     timeout: 200,
     method: 'get',
     response: (request: requestParams) => {
@@ -114,7 +104,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/testRetry',
+    url: '/mock_api/testRetry',
     statusCode: 405,
     method: 'get',
     response: () => {

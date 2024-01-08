@@ -12,7 +12,7 @@ const baseQuery = fetchBaseQuery({
     // By default, if we have a token in the store, let's use that for authenticated requests
     const token = (getState() as RootState).user.token;
     if (token) {
-      headers.set('authentication', `Bearer ${token}`);
+      headers.set('Authorization', `${token}`);
     }
     return headers;
   },
@@ -61,7 +61,7 @@ export const enhancedApi = api.enhanceEndpoints({
 function transformErrorResponse(
   baseQueryReturnValue: FetchBaseQueryError,
   _meta: FetchBaseQueryMeta | undefined,
-  _arg: void,
+  _arg: any,
 ) {
   getErrMsg(baseQueryReturnValue, true);
   return baseQueryReturnValue;

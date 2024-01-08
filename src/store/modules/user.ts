@@ -1,10 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { UseInfoType } from '@/server/axios/user';
+import type { IUserInfo } from '@/server/authApi';
 
 interface UserSlice {
-  userInfo?: UseInfoType;
-  power?: UseInfoType['power'];
+  userInfo?: IUserInfo;
+  power?: IUserInfo['power'];
   token?: string;
 }
 
@@ -14,23 +14,24 @@ export const UserSlice = createSlice({
   name: 'userInfo',
   initialState,
   reducers: {
-    setUserInfo: (state, action: PayloadAction<UseInfoType>) => {
+    setUserInfo: (state, action: PayloadAction<IUserInfo>) => {
       state.userInfo = action.payload;
       state.power = action.payload.power;
     },
-    setPower: (state, action: PayloadAction<UseInfoType['power']>) => {
+    setPower: (state, action: PayloadAction<IUserInfo['power']>) => {
       state.power = action.payload;
-      if (state.userInfo) {
-        state.userInfo.power = action.payload;
-      }
+    },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
     },
     setSignOut: (state) => {
       delete state.userInfo;
       delete state.power;
+      delete state.token;
     },
   },
 });
 
-export const { setUserInfo, setPower, setSignOut } = UserSlice.actions;
+export const { setUserInfo, setPower, setToken, setSignOut } = UserSlice.actions;
 
 export default UserSlice.reducer;

@@ -1,6 +1,6 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
 import logo from '@/assets/logo.png';
@@ -8,9 +8,10 @@ import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
-import { getUserInfo } from '@/server/axios/user';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setUserInfo } from '@/store/modules/user';
+import { setToken, setUserInfo } from '@/store/modules/user';
+import { getUserInfo } from '@/server/axios';
+import { useLoginMutation } from '@/server/authApi';
 
 const Login = memo(() => {
   const intl = useLocale();
@@ -20,18 +21,22 @@ const Login = memo(() => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
-
-  const [loading, setLoading] = useState<boolean>(false);
+  const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: LoginForm) => {
-    setLoading(true);
-    const res = await getUserInfo(values.username, values.password);
-    if (res.code === 1) {
-      await initAsyncRoute(res.data.power);
-      dispatch(setUserInfo(res.data));
-    }
-
-    setLoading(false);
+    login({ username: values.username, password: values.password })
+      .unwrap()
+      .then(async (res) => {
+        if (res.code === 1) {
+          dispatch(setToken(res.data.token));
+          await initAsyncRoute(res.data.token);
+          const userInfo = await getUserInfo(res.data.token);
+          if (userInfo.code === 1) {
+            dispatch(setUserInfo(userInfo.data));
+            navigate('/home');
+          }
+        }
+      });
   };
 
   const userStore = useAppSelector((state) => state.user);
@@ -71,6 +76,7 @@ const Login = memo(() => {
               prefix={<UserOutlined />}
               placeholder={intl.formatMessage({ id: 'login.username' })}
               allowClear
+              autoComplete="username"
             />
           </Form.Item>
           <Form.Item<LoginForm>
@@ -81,6 +87,7 @@ const Login = memo(() => {
               prefix={<LockOutlined />}
               placeholder={intl.formatMessage({ id: 'login.password' })}
               allowClear
+              autoComplete="current-password"
             />
           </Form.Item>
           <Form.Item<LoginForm>>
@@ -96,7 +103,7 @@ const Login = memo(() => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
+            <Button type="primary" htmlType="submit" className="w-full" loading={isLoading}>
               {intl.formatMessage({ id: 'login.button' })}
             </Button>
           </Form.Item>

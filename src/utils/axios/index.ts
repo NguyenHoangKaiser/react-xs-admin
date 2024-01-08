@@ -4,6 +4,7 @@ import { checkStatus } from './axiosStatus';
 import { errorData } from './errorConfig';
 import { iAxios } from './iAxios';
 import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
+import store from '@/store';
 
 /**
  * @description: Please change all the interceptor according to your own usage scenario
@@ -64,9 +65,11 @@ const interceptor: AxiosInterceptor = {
   requestInterceptors: (config) => {
     const { requestOptions } = config;
     if (requestOptions?.withToken) {
-      (config as Recordable).headers._token = 'myToken';
+      // access redux store to get token
+      const token = store.getState().user.token;
+      (config as Recordable).headers.Authorization = token;
       if (requestOptions?.specialToken)
-        (config as Recordable).headers._token = requestOptions?.specialToken;
+        (config as Recordable).headers.Authorization = requestOptions?.specialToken;
     }
 
     return config;

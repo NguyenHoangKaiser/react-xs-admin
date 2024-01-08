@@ -6,7 +6,16 @@ import { formatFlatteningRoutes, setUpRoutePath } from '@/router/utils';
 export interface AsyncRouteType {
   path: string;
   id: string;
-  children: AsyncRouteType[];
+  children?: AsyncRouteType[];
+  meta?: {
+    hideMenu?: boolean;
+    hideBreadcrumb?: boolean;
+    title?: string;
+    currentActiveMenu?: string;
+    icon?: string;
+  };
+  component?: string;
+  redirect?: string;
 }
 
 export interface MultiTabsType {
