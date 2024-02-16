@@ -1,10 +1,10 @@
-import React from 'react';
 import { Layout, theme } from 'antd';
+import React from 'react';
 
-import './index.less';
-import SidebarInline from './components/Sidebar/SidebarInline';
-import Navbart from './components/Navbart';
 import AppMain from './components/AppMain/AppMain';
+import Navbar from './components/Navbar';
+import SidebarInline from './components/Sidebar/SidebarInline';
+import './index.less';
 
 const { Footer } = Layout;
 
@@ -15,7 +15,7 @@ const LayoutApp: React.FC = () => {
     <div className="layout flex" style={{ color: thme.token.colorText }}>
       <SidebarInline />
       <Layout>
-        <Navbart />
+        <Navbar />
         <AppMain />
         <Footer style={{ textAlign: 'center', padding: 14 }}>
           Ant Design ©2018 Created by Ant UED

@@ -1,21 +1,21 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Layout, theme } from 'antd';
-import './index.less';
-import { memo } from 'react';
 import { useResponsive } from 'ahooks';
+import { Layout, theme } from 'antd';
+import { memo } from 'react';
 import { shallowEqual } from 'react-redux';
+import AppAccount from '../AppAccount';
+import AppLogo from '../AppLogo';
 import Setting from '../Setting';
 import NavSidebar from '../Sidebar/NavSidebar';
-import AppLogo from '../AppLogo';
-import AppAccount from '../AppAccount';
-import AppLocale from '@/components/AppLocale';
-import AppTheme from '@/components/AppTheme';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppCollapsed } from '@/store/modules/app';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import AppTheme from '@/components/AppTheme';
+import AppLocale from '@/components/AppLocale';
+import './index.less';
 
 const { Header } = Layout;
 
-const Navbart = memo(() => {
+const Navbar = memo(() => {
   const dispatch = useAppDispatch();
   const { collapsed, sidebarMode } = useAppSelector(
     (state) => ({
@@ -53,7 +53,7 @@ const Navbart = memo(() => {
               {sidebarMode === 'horizontal' && responsive.sm && <AppLogo />}
             </div>
           )}
-          <div className="layout-header-conter">
+          <div className="layout-header-content">
             {sidebarMode !== 'vertical' && responsive.sm ? <NavSidebar /> : <></>}
           </div>
 
@@ -71,4 +71,4 @@ const Navbart = memo(() => {
   return render();
 });
 
-export default Navbart;
+export default Navbar;
