@@ -15,7 +15,7 @@ const LayoutSpin = memo((props: LayoutSpinProps) => {
 
   return (
     <div
-      className={`supense-loading ${position}`}
+      className={`suspense-loading ${position}`}
       css={{ backgroundColor: thme.token.colorBgContainer }}
     >
       <Spin size="large" />

@@ -1,14 +1,14 @@
 import { SettingOutlined } from '@ant-design/icons';
 import { Divider, Drawer, theme, Tooltip } from 'antd';
-import { memo, useState } from 'react';
 import classNames from 'classnames';
+import { memo, useState } from 'react';
 
-import ThemeSettings from './ThemeSettings';
 import { getSidebarMode } from './style';
+import ThemeSettings from './ThemeSettings';
 import { useLocale } from '@/locales';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { AppConfigMode } from '@/store/modules/app';
 import { setAppSidebarMode } from '@/store/modules/app';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 const Setting = memo(() => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -19,17 +19,17 @@ const Setting = memo(() => {
 
   const intl = useLocale();
 
-  const sidebarSeting: { label: string; value: AppConfigMode['sidebarMode'] }[] = [
+  const sidebarSetting: { label: string; value: AppConfigMode['sidebarMode'] }[] = [
     {
-      label: '左侧菜单模式',
+      label: 'Left menu mode',
       value: 'vertical',
     },
     {
-      label: '顶部菜单模式',
+      label: 'Top menu mode',
       value: 'horizontal',
     },
     {
-      label: '混合菜单模式',
+      label: 'Mixed menu mode',
       value: 'blend',
     },
   ];
@@ -48,8 +48,8 @@ const Setting = memo(() => {
       >
         <div className="setting" css={getSidebarMode(thme.token)}>
           <Divider>{intl.formatMessage({ id: 'layout.setting.layoutSettings' })}</Divider>
-          <div className="sidebar_seting">
-            {sidebarSeting.map((i) => {
+          <div className="sidebar_setting">
+            {sidebarSetting.map((i) => {
               return (
                 <Tooltip placement="bottom" title={i.label} key={i.value}>
                   <div

@@ -73,11 +73,9 @@ function App() {
             {loading ? (
               <LayoutSpin position="fixed" />
             ) : (
-              // <BrowserRouter>
               <Suspense fallback={<LayoutSpin />}>
                 <RouteView />
               </Suspense>
-              // </BrowserRouter>
             )}
           </IntlProvider>
         </AntApp>
