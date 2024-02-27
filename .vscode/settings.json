@@ -6,29 +6,6 @@
   "i18n-ally.namespace": false,
   "i18n-ally.sortKeys": true,
   "i18n-ally.pathMatcher": "{locale}/modules/{namespaces}.json",
-  "i18n-ally.displayLanguage": "vi-VN",
-  "i18n-ally.enabledFrameworks": ["react"],
-  "i18n-ally.sourceLanguage": "vi",
   "i18n-ally.keystyle": "flat",
-  "i18n-ally.refactor.templates": [
-    {
-      "key": "i18n-ally.refactor.templates.react-intl",
-      "name": "React Intl",
-      "description": "React Intl template v1",
-      "template": "FormattedMessage({ id: '{key}' {args}})"
-    },
-    {
-      "key": "i18n-ally.refactor.templates.react-intl-2",
-      "name": "React Intl 2",
-      "description": "React Intl template v2",
-      "template": "{intl.formatMessage({ id: '{key}' {args}})}"
-    },
-    {
-      "key": "i18n-ally.refactor.templates.react-intl-3",
-      "name": "React Intl 3",
-      "description": "React Intl template v3",
-      "template": "getIntlText('{key}')"
-    }
-  ],
   "cSpell.words": ["ahooks", "multisampling", "thme", "Todos"]
 }

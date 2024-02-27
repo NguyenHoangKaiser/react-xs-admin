@@ -1,5 +1,6 @@
 import type { FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
+import type { IRSuccess } from './apiTypes';
 import type { RootState } from '@/store';
 import { getErrMsg } from '@/utils/operate';
 
@@ -67,4 +68,15 @@ function transformErrorResponse(
   return baseQueryReturnValue;
 }
 
-export { transformErrorResponse };
+function transformResponse<T = Recordable>(response: IRSuccess<T>) {
+  return response.data;
+}
+
+const transformFactory = <T = any>() => {
+  return {
+    transformResponse: transformResponse<T>,
+    transformErrorResponse,
+  };
+};
+
+export { transformErrorResponse, transformFactory };

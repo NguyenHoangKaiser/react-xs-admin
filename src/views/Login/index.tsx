@@ -10,42 +10,48 @@ import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setToken, setUserInfo } from '@/store/modules/user';
-import { getUserInfo } from '@/server/axios';
-import { useLoginMutation } from '@/server/authApi';
+// import { getUserInfo } from '@/server/axios';
+import { useGetUserInfoQuery, useLoginMutation } from '@/server/authApi';
+// import { createErrorMsg } from '@/hooks/web/useMessage';
 
 const Login = memo(() => {
-  const intl = useLocale();
+  const { formatMessage } = useLocale();
 
   const thme = theme.useToken();
 
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
+
   const [login, { isLoading }] = useLoginMutation();
-
-  const onFinish = async (values: LoginForm) => {
-    login({ username: values.username, password: values.password })
-      .unwrap()
-      .then(async (res) => {
-        if (res.code === 1) {
-          dispatch(setToken(res.data.token));
-          await initAsyncRoute(res.data.token);
-          const userInfo = await getUserInfo(res.data.token);
-          if (userInfo.code === 1) {
-            dispatch(setUserInfo(userInfo.data));
-            navigate('/home');
-          }
-        }
-      });
-  };
-
   const userStore = useAppSelector((state) => state.user);
 
+  // skip this query if the user is not logged in (the token is not available)
+  const { data: userInfo } = useGetUserInfoQuery(undefined, {
+    skip: !userStore.token,
+  });
+
   useEffect(() => {
-    if (userStore.power) {
+    if (userInfo) {
+      dispatch(setUserInfo(userInfo));
       navigate('/home');
     }
-  }, [userStore]);
+  }, [userInfo]);
+
+  const onFinish = async (values: LoginForm) => {
+    try {
+      const res = await login({ username: values.username, password: values.password }).unwrap();
+      dispatch(setToken(res.token));
+      await initAsyncRoute(res.token);
+      // Info: we can use the following code to get user information or use the useGetUserInfoQuery hook like above
+      // const userInfo = await getUserInfo(res.token);
+      // if (userInfo.code === 1) {
+      //   dispatch(setUserInfo(userInfo.data));
+      //   navigate('/home');
+      // }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div
@@ -70,22 +76,22 @@ const Login = memo(() => {
         >
           <Form.Item<LoginForm>
             name="username"
-            rules={[{ required: true, message: intl.formatMessage({ id: 'login.userNameRules' }) }]}
+            rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder={intl.formatMessage({ id: 'login.username' })}
+              placeholder={formatMessage({ id: 'login.username' })}
               allowClear
               autoComplete="username"
             />
           </Form.Item>
           <Form.Item<LoginForm>
             name="password"
-            rules={[{ required: true, message: intl.formatMessage({ id: 'login.passwordRules' }) }]}
+            rules={[{ required: true, message: formatMessage({ id: 'login.passwordRules' }) }]}
           >
             <Input.Password
               prefix={<LockOutlined />}
-              placeholder={intl.formatMessage({ id: 'login.password' })}
+              placeholder={formatMessage({ id: 'login.password' })}
               allowClear
               autoComplete="current-password"
             />
@@ -93,18 +99,18 @@ const Login = memo(() => {
           <Form.Item<LoginForm>>
             <div className="flex flex-row justify-between items-center">
               <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>{intl.formatMessage({ id: 'login.rememberPassword' })}</Checkbox>
+                <Checkbox>{formatMessage({ id: 'login.rememberPassword' })}</Checkbox>
               </Form.Item>
 
               <Button type="link" className="p-0" style={{ color: thme.token.colorPrimary }}>
-                {intl.formatMessage({ id: 'login.forgotPassword' })}
+                {formatMessage({ id: 'login.forgotPassword' })}
               </Button>
             </div>
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" className="w-full" loading={isLoading}>
-              {intl.formatMessage({ id: 'login.button' })}
+              {formatMessage({ id: 'login.button' })}
             </Button>
           </Form.Item>
         </Form>

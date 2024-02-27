@@ -1,7 +1,5 @@
-import type { IRSuccess } from './apiTypes';
-import { api } from '@/server/index';
+import { api, transformFactory } from '@/server/index';
 import { APIs } from '@/utils/constant';
-import { transformErrorResponse } from '@/server';
 
 export interface IUserInfo {
   userId: string;
@@ -31,19 +29,19 @@ export interface ILoginResult {
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<IRSuccess<ILoginResult>, ILoginParams>({
+    login: builder.mutation<ILoginResult, ILoginParams>({
       query: (body) => ({
         url: APIs.LOGIN,
         method: 'POST',
         body,
       }),
-      transformErrorResponse,
-      invalidatesTags: (result) => [{ type: 'User', id: result?.data.userId }],
+      ...transformFactory<ILoginResult>(),
+      invalidatesTags: (result) => [{ type: 'User', id: result?.userId }],
     }),
-    getUserInfo: builder.query<IRSuccess<IUserInfo>, void>({
+    getUserInfo: builder.query<IUserInfo, void>({
       query: () => APIs.GET_USER_INFO,
-      transformErrorResponse,
-      providesTags: (result) => [{ type: 'User', id: result?.data.userId }],
+      ...transformFactory<IUserInfo>(),
+      providesTags: (result) => [{ type: 'User', id: result?.userId }], // id is the same as login because info is the same
     }),
   }),
   overrideExisting: false,

@@ -1,6 +1,5 @@
-import { api } from '@/server/index';
+import { api, transformFactory } from '@/server/index';
 import { APIs } from '@/utils/constant';
-import { transformErrorResponse } from '@/server';
 
 export interface ITodo {
   userId: number;
@@ -15,10 +14,10 @@ export const todosApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getTodos: builder.query<GetTodosResponse, void>({
       query: () => APIs.GET_TODOS,
-      transformErrorResponse,
+      ...transformFactory<GetTodosResponse>(),
       // we need to manually specify the tags type in the createApi call tagTypes: ['Todos'] to use this
       providesTags: (result = []) => [
-        ...result.map((ids) => ({ type: 'Todos', ids } as const)),
+        ...result.map(({ id }) => ({ type: 'Todos' as const, id })),
         { type: 'Todos' as const, id: 'LIST' },
       ],
     }),
