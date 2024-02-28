@@ -2,7 +2,7 @@
  * Axios data processing class
  */
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import type { RequestOptions, Result } from '#/axios';
+import type { RequestOptions, Result } from '../../../types/axios';
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
   requestOptions?: RequestOptions;

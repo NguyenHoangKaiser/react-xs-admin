@@ -1,8 +1,8 @@
+import type { MenuItem, RouteList } from '@/router/route';
+import { Typography } from 'antd';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate, redirect } from 'react-router-dom';
-import { Typography } from 'antd';
-import type { MenuItem, RouteList } from '@/router/route';
 
 const { Text } = Typography;
 

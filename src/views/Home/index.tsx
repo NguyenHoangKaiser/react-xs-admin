@@ -1,12 +1,12 @@
-import { memo } from 'react';
-import { Card, Col, Progress, Row, theme } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
+import { Card, Col, Progress, Row, theme } from 'antd';
+import { memo } from 'react';
 // import './index.less';
-import { getNumericalValue } from './style';
 import AreaChart from './components/AreaChart';
-import RoseChart from './components/RoseChart';
 import Comment from './components/Comment';
+import RoseChart from './components/RoseChart';
 import WordCloudChart from './components/WordCloudChart';
+import { getNumericalValue } from './style';
 
 const Home = memo(() => {
   const thme = theme.useToken();

@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useRef, useState } from 'react';
+import { OrbitControls } from '@react-three/drei';
 import type { MeshProps } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
+import { EffectComposer, Outline, Select, Selection } from '@react-three/postprocessing';
+import React, { useRef, useState } from 'react';
 import type { Mesh } from 'three';
 
 function Box(props: MeshProps) {

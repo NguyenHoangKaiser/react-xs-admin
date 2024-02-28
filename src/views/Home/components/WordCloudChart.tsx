@@ -1,7 +1,7 @@
+import { useChartsConfig } from '@/hooks/web/antCharts/useChartsConfig';
 import type { WordCloudConfig } from '@ant-design/charts';
 import { WordCloud } from '@ant-design/charts';
 import { memo } from 'react';
-import { useChartsConfig } from '@/hooks/web/antCharts/useChartsConfig';
 
 let data = [
   { name: 'Vue', value: 0 },

@@ -3,12 +3,12 @@ import { Divider, Drawer, theme, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { memo, useState } from 'react';
 
-import { getSidebarMode } from './style';
-import ThemeSettings from './ThemeSettings';
 import { useLocale } from '@/locales';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { AppConfigMode } from '@/store/modules/app';
 import { setAppSidebarMode } from '@/store/modules/app';
+import { getSidebarMode } from './style';
+import ThemeSettings from './ThemeSettings';
 
 const Setting = memo(() => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);

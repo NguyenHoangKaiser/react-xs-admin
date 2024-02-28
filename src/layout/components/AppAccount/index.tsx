@@ -1,12 +1,12 @@
+import avatar from '@/assets/avatar.png';
+import { FormattedMessage } from '@/locales';
+import { useAppDispatch } from '@/store/hooks';
+import { setSignOut } from '@/store/modules/user';
+import { removeStorage } from '@/utils/storage';
 import type { MenuProps } from 'antd';
 import { Dropdown, Image } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getAccountStyle } from './style';
-import avatar from '@/assets/avatar.png';
-import { removeStorage } from '@/utils/storage';
-import { setSignOut } from '@/store/modules/user';
-import { useAppDispatch } from '@/store/hooks';
-import { FormattedMessage } from '@/locales';
 
 const AppAccount = () => {
   const { AccountDiv } = getAccountStyle();

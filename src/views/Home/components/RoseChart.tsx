@@ -1,7 +1,7 @@
-import { memo } from 'react';
+import { useChartsConfig } from '@/hooks/web/antCharts/useChartsConfig';
 import type { PieConfig } from '@ant-design/charts';
 import { Pie } from '@ant-design/charts';
-import { useChartsConfig } from '@/hooks/web/antCharts/useChartsConfig';
+import { memo } from 'react';
 
 const data = [
   {

@@ -1,11 +1,11 @@
+import type { Interpolation, Theme } from '@emotion/react';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
-import { useState, useMemo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { Interpolation, Theme } from '@emotion/react';
+import { useMemo, useState } from 'react';
+import { useTabsChange } from '../hooks/useTabsChange';
 import type { RightClickTags } from '../hooks/useTabsState';
 import { useTabsState } from '../hooks/useTabsState';
-import { useTabsChange } from '../hooks/useTabsChange';
 
 interface TabsItemLabelProps {
   pathKey: string;

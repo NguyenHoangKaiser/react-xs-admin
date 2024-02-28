@@ -1,15 +1,15 @@
-import type { MenuProps, SiderProps } from 'antd';
-import { theme, Drawer, Layout, Menu } from 'antd';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useResponsive } from 'ahooks';
-import { shallowEqual } from 'react-redux';
-import AppLogo from '../../AppLogo';
-import './index.less';
-import { useMenuList } from '../hooks/useMenuList';
 import { findRouteByPath, getParentPaths } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppCollapsed } from '@/store/modules/app';
+import { useResponsive } from 'ahooks';
+import type { MenuProps, SiderProps } from 'antd';
+import { Drawer, Layout, Menu, theme } from 'antd';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { shallowEqual } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import AppLogo from '../../AppLogo';
+import { useMenuList } from '../hooks/useMenuList';
+import './index.less';
 
 const { Sider } = Layout;
 

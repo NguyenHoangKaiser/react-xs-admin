@@ -1,8 +1,8 @@
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { isString } from 'lodash';
-import { isErrorWithMessage, isFetchBaseQueryError } from '../is';
 import { checkStatus } from '../axios/axiosStatus';
+import { isErrorWithMessage, isFetchBaseQueryError } from '../is';
 
 export const hasClass = (ele: RefType<any>, cls: string): any => {
   return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));

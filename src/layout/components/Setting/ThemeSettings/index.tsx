@@ -1,10 +1,10 @@
-import { memo } from 'react';
-import { CheckOutlined } from '@ant-design/icons';
-import { Switch, theme } from 'antd';
-import { getThemeSettingsStyle } from './style';
+import { useTransformTheme } from '@/hooks/useTransformTheme';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppColor } from '@/store/modules/app';
-import { useTransformTheme } from '@/hooks/useTransformTheme';
+import { CheckOutlined } from '@ant-design/icons';
+import { Switch, theme } from 'antd';
+import { memo } from 'react';
+import { getThemeSettingsStyle } from './style';
 
 const ThemeSettings = memo(() => {
   const dispatch = useAppDispatch();

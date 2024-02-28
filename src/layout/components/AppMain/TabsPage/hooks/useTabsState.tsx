@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
 import { getIntlText } from '@/locales';
+import { useAppSelector } from '@/store/hooks';
+import { useMemo, useState } from 'react';
 
 export interface RightClickTags {
   text: string;

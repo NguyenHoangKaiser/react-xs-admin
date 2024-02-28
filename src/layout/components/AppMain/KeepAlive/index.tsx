@@ -1,9 +1,9 @@
-import type { RefObject, ReactNode } from 'react';
-import React, { Suspense, memo, useState, useRef, useEffect } from 'react';
+import LayoutSpin from '@/components/LayoutSpin';
+import { useAppSelector } from '@/store/hooks';
+import type { ReactNode, RefObject } from 'react';
+import React, { Suspense, memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useOutlet, useParams } from 'react-router-dom';
-import { useAppSelector } from '@/store/hooks';
-import LayoutSpin from '@/components/LayoutSpin';
 
 interface Props extends ComponentReactElement {
   maxLen?: number;

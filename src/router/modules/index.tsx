@@ -1,3 +1,7 @@
+import Layout from '@/layout';
+import Authority from '@/layout/Authority';
+import { FormattedMessage } from '@/locales';
+import type { RouteList } from '@/router/route';
 import {
   AppstoreOutlined,
   DatabaseOutlined,
@@ -7,10 +11,6 @@ import {
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { RouteEnum } from '../utils';
-import Layout from '@/layout';
-import Authority from '@/layout/Authority';
-import { FormattedMessage } from '@/locales';
-import type { RouteList } from '@/router/route';
 
 const Home = lazy(() => import('@/views/Home'));
 const Menu1_1 = lazy(() => import('@/views/Nested/Menu1/Menu1-1'));

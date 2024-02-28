@@ -3,15 +3,15 @@ import { Tabs, theme } from 'antd';
 import { memo, useEffect, useMemo } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 // import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
-import TabsItemLabel from './components/TabsItemLabel';
-import { useTabsChange } from './hooks/useTabsChange';
-import { getTabsStyle } from './style';
 import { defaultRoute } from '@/router/modules';
 import { findRouteByPath } from '@/router/utils';
 import { useAppSelector } from '@/store/hooks';
 // import { useRefresh } from '@/hooks/web/useRefresh';
 import { useRouteList } from '@/hooks/useRouteList';
 import { FormattedMessage } from '@/locales';
+import TabsItemLabel from './components/TabsItemLabel';
+import { useTabsChange } from './hooks/useTabsChange';
+import { getTabsStyle } from './style';
 
 interface Props {
   maxLen?: number;

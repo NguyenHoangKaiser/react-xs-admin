@@ -1,17 +1,17 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
-import { memo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { LoginForm } from './type';
 import logo from '@/assets/logo.png';
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
+import { useGetUserInfoQuery, useLoginMutation } from '@/server/authApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setToken, setUserInfo } from '@/store/modules/user';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
+import { memo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import type { LoginForm } from './type';
 // import { getUserInfo } from '@/server/axios';
-import { useGetUserInfoQuery, useLoginMutation } from '@/server/authApi';
 // import { createErrorMsg } from '@/hooks/web/useMessage';
 
 const Login = memo(() => {

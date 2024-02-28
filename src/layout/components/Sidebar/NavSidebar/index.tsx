@@ -1,10 +1,10 @@
+import { getParentPaths } from '@/router/utils';
+import { useAppSelector } from '@/store/hooks';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { memo, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMenuList } from '../hooks/useMenuList';
-import { getParentPaths } from '@/router/utils';
-import { useAppSelector } from '@/store/hooks';
 
 const NavSidebar = memo(() => {
   const [openKeys, setOpenKeys] = useState<string[]>([]);

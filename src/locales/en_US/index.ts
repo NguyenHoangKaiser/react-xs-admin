@@ -1,7 +1,7 @@
-import layout from './modules/layout.json';
 import api from './modules/api.json';
-import login from './modules/login.json';
 import common from './modules/common.json';
+import layout from './modules/layout.json';
+import login from './modules/login.json';
 
 const en_US = {
   ...layout,

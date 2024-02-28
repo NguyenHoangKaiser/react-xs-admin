@@ -1,8 +1,8 @@
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setAppThemeMode } from '@/store/modules/app';
 import { theme } from 'antd';
 import SvgIcon from '../SvgIcon';
 import './index.less';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setAppThemeMode } from '@/store/modules/app';
 
 const AppTheme = () => {
   const dispatch = useAppDispatch();

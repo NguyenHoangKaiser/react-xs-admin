@@ -1,10 +1,10 @@
+import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
+import store from '@/store';
 import { isString } from 'lodash-es';
 import type { AxiosInterceptor, CreateAxiosOptions } from './axiosConfig';
 import { checkStatus } from './axiosStatus';
 import { errorData } from './errorConfig';
 import { iAxios } from './iAxios';
-import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
-import store from '@/store';
 
 /**
  * @description: Please change all the interceptor according to your own usage scenario

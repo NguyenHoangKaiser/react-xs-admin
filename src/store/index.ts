@@ -1,21 +1,21 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  persistReducer,
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // import thunk from 'redux-thunk';
+import { api } from '@/server';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 import appReducer from './modules/app';
 import routeReducer from './modules/route';
 import userReducer from './modules/user';
-import { api } from '@/server';
 
 const reducers = combineReducers({
   [api.reducerPath]: api.reducer,

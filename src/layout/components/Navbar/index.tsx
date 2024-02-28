@@ -1,3 +1,7 @@
+import AppLocale from '@/components/AppLocale';
+import AppTheme from '@/components/AppTheme';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setAppCollapsed } from '@/store/modules/app';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useResponsive } from 'ahooks';
 import { Layout, theme } from 'antd';
@@ -7,10 +11,6 @@ import AppAccount from '../AppAccount';
 import AppLogo from '../AppLogo';
 import Setting from '../Setting';
 import NavSidebar from '../Sidebar/NavSidebar';
-import { setAppCollapsed } from '@/store/modules/app';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import AppTheme from '@/components/AppTheme';
-import AppLocale from '@/components/AppLocale';
 import './index.less';
 
 const { Header } = Layout;

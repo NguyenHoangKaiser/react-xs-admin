@@ -1,7 +1,7 @@
+import { useLocale } from '@/locales';
 import { Button, Result } from 'antd';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocale } from '@/locales';
 
 export default memo(() => {
   const init = useLocale();

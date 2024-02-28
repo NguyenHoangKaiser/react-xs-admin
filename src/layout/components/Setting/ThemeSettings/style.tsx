@@ -1,6 +1,6 @@
 import type { CSSObject } from '@emotion/react';
-import type { GlobalToken } from 'antd/es/theme/interface';
 import styled from '@emotion/styled';
+import type { GlobalToken } from 'antd/es/theme/interface';
 
 const getColorListStyle = (): CSSObject => {
   return {

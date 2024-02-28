@@ -1,8 +1,8 @@
+import { getBreadcrumbArr } from '@/router/utils';
 import { Breadcrumb, Col, Row, Typography } from 'antd';
 import { memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useMenuList } from '../Sidebar/hooks/useMenuList';
-import { getBreadcrumbArr } from '@/router/utils';
 
 function itemRender(route: any, params: any, routes: any, _paths: any) {
   const last = routes.indexOf(route) === routes.length - 1;
