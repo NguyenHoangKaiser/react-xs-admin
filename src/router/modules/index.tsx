@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
+import { RouteEnum } from '../utils';
 import Layout from '@/layout';
 import Authority from '@/layout/Authority';
 import { FormattedMessage } from '@/locales';
@@ -20,23 +21,6 @@ const TestPermissionsB = lazy(() => import('@/views/Power/test-permissions-b'));
 const DetailsPage = lazy(() => import('@/views/DetailsPage'));
 const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
-
-export enum RouteEnum {
-  Home = '/home',
-  Login = '/login',
-  Nested = '/nested',
-  Menu1 = '/nested/menu1',
-  Menu1_1 = '/nested/menu1/menu1-1',
-  Menu1_2 = '/nested/menu1/menu1-2',
-  Power = '/power',
-  Permissions = '/power/permissions',
-  TestPermissionsA = '/power/test-permissions-a',
-  TestPermissionsB = '/power/test-permissions-b',
-  DetailsPage = '/details-page',
-  DetailPageIndex = '/details-page/index',
-  DetailsInfo = '/details-page/details-info',
-  DetailsParams = '/details-page/details-params',
-}
 
 export const defaultRoute: RouteList[] = [
   {

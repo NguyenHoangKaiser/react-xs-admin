@@ -11,13 +11,13 @@ export default (configEnv: ConfigEnv): UserConfig => {
   const isBuild = command === 'build';
 
   return {
-    // 解析配置
+    // Parsing configuration
     resolve: createViteResolve(__dirname),
-    // 插件配置
+    // Plug -in configuration
     plugins: createVitePlugins(isBuild, configEnv),
-    // 打包配置
+    // Package configuration
     build: createViteBuild(),
-    // 服务配置
+    // Service configuration
     server: createViteServer(),
   };
 };
