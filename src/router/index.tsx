@@ -1,11 +1,11 @@
+import { useRouteList } from '@/hooks/useRouteList';
+import { useAppSelector } from '@/store/hooks';
+import type { AsyncRouteType } from '@/store/modules/route';
+import { memo, useEffect, useState } from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import { useState, useEffect, memo } from 'react';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { baseRouter, whiteList } from './modules';
 import { handlePowerRoute } from './utils';
-import type { AsyncRouteType } from '@/store/modules/route';
-import { useAppSelector } from '@/store/hooks';
-import { useRouteList } from '@/hooks/useRouteList';
 
 const RouteView = memo(() => {
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);

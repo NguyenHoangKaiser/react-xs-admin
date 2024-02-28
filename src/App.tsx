@@ -1,5 +1,5 @@
-import { ConfigProvider, theme, App as AntApp } from 'antd';
-import { px2remTransformer, StyleProvider } from '@ant-design/cssinjs';
+import { StyleProvider, px2remTransformer } from '@ant-design/cssinjs';
+import { App as AntApp, ConfigProvider, theme } from 'antd';
 import 'antd/dist/reset.css';
 import enUS from 'antd/locale/en_US';
 import viVN from 'antd/locale/vi_VN';
@@ -29,7 +29,7 @@ function App() {
     }),
     shallowEqual,
   );
-  const { userInfo } = useAppSelector((state) => state.user);
+  const { access_token } = useAppSelector((state) => state.user);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
 
   const getLocale = useMemo(() => {
@@ -44,13 +44,13 @@ function App() {
   }, [locale]);
 
   useEffect(() => {
-    if (!asyncRouter.length && userInfo) {
-      initAsyncRoute(userInfo.token);
+    if (!asyncRouter.length && access_token) {
+      initAsyncRoute(access_token);
     }
   }, []);
 
   const loading = useMemo(() => {
-    if (!asyncRouter.length && userInfo) {
+    if (!asyncRouter.length && access_token) {
       return true;
     }
     return false;

@@ -1,11 +1,15 @@
+import type { IUserInfo } from '@/server/apiTypes';
+import { authApi } from '@/server/authApi';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { IUserInfo } from '@/server/authApi';
 
 interface UserSlice {
   userInfo?: IUserInfo;
-  power?: IUserInfo['power'];
-  token?: string;
+  email?: string;
+  user_id?: number;
+  access_token?: string;
+  token_refresh?: string;
+  verify_code?: string;
 }
 
 const initialState: UserSlice = {};
@@ -16,22 +20,26 @@ export const UserSlice = createSlice({
   reducers: {
     setUserInfo: (state, action: PayloadAction<IUserInfo>) => {
       state.userInfo = action.payload;
-      state.power = action.payload.power;
-    },
-    setPower: (state, action: PayloadAction<IUserInfo['power']>) => {
-      state.power = action.payload;
     },
     setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
+      state.access_token = action.payload;
     },
     setSignOut: (state) => {
       delete state.userInfo;
-      delete state.power;
-      delete state.token;
+      delete state.access_token;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
+      state.access_token = payload.access_token;
+      state.token_refresh = payload.token_refresh;
+      state.email = payload.userInfo.email;
+      state.user_id = payload.userInfo.id;
+      state.userInfo = payload.userInfo;
+    });
   },
 });
 
-export const { setUserInfo, setPower, setToken, setSignOut } = UserSlice.actions;
+export const { setUserInfo, setToken, setSignOut } = UserSlice.actions;
 
 export default UserSlice.reducer;

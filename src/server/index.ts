@@ -1,19 +1,24 @@
+import type { RootState } from '@/store';
+import { getErrMsg } from '@/utils/operate';
 import type { FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
 import type { IRSuccess } from './apiTypes';
-import type { RootState } from '@/store';
-import { getErrMsg } from '@/utils/operate';
 
-// const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/',
+  baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     // By default, if we have a token in the store, let's use that for authenticated requests
-    const token = (getState() as RootState).user.token;
+    const token = (getState() as RootState).user.access_token;
+    headers.set('Accept', 'application/json');
+    headers.set('Content-Type', 'application/json');
+    headers.set('X-Luci-Language', 'vi-VN');
+    headers.set('X-Luci-Api-Key', API_KEY);
     if (token) {
-      headers.set('Authorization', `${token}`);
+      headers.set('Authorization', `Bearer ${token}`);
     }
     return headers;
   },

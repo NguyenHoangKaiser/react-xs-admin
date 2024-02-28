@@ -15,8 +15,18 @@ module.exports = {
         usePrettierrc: true,
       },
     ],
-
     // Forbidden to use unknown DOM attributes
     'react/no-unknown-property': ['error', { ignore: ['css'] }],
+    'import/order': [
+      'error',
+      {
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'external',
+          },
+        ],
+      },
+    ],
   },
 };
