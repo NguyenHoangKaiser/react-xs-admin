@@ -3,6 +3,6 @@ export enum APIs {
   LOGIN = '/site/login',
   GET_USER_INFO = '/mock_api/getUserInfo',
   GET_PERM_CODE = '/mock_api/getPermCode',
-  LOGOUT = '/mock_api/logout',
+  LOGOUT = '/site/logout',
   GET_TODOS = '/mock_api/todos',
 }

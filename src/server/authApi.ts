@@ -34,13 +34,15 @@ export const authApi = api.injectEndpoints({
       ...transformFactory<ILoginResult>(),
       invalidatesTags: (result) => [{ type: 'User', id: result?.userInfo.id }],
     }),
-    // getUserInfo: builder.query<IUserInfo, void>({
-    //   query: () => APIs.GET_USER_INFO,
-    //   ...transformFactory<IUserInfo>(),
-    //   providesTags: (result) => [{ type: 'User', id: result?.userId }], // id is the same as login because info is the same
-    // }),
+    logout: builder.mutation<boolean, void>({
+      query: () => ({
+        url: APIs.LOGOUT,
+        method: 'POST',
+      }),
+      ...transformFactory<boolean>(),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation } = authApi;

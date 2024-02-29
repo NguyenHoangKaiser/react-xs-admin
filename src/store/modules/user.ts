@@ -24,13 +24,6 @@ export const UserSlice = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.access_token = action.payload;
     },
-    setSignOut: (state) => {
-      delete state.userInfo;
-      delete state.access_token;
-      delete state.token_refresh;
-      delete state.email;
-      delete state.user_id;
-    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
@@ -40,9 +33,18 @@ export const UserSlice = createSlice({
       state.user_id = payload.userInfo.id;
       state.userInfo = payload.userInfo;
     });
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (state, { payload }) => {
+      if (payload) {
+        delete state.userInfo;
+        delete state.access_token;
+        delete state.token_refresh;
+        delete state.email;
+        delete state.user_id;
+      }
+    });
   },
 });
 
-export const { setUserInfo, setToken, setSignOut } = UserSlice.actions;
+export const { setUserInfo, setToken } = UserSlice.actions;
 
 export default UserSlice.reducer;

@@ -1,32 +1,52 @@
 import avatar from '@/assets/avatar.png';
 import { FormattedMessage } from '@/locales';
-import { useAppDispatch } from '@/store/hooks';
-import { setSignOut } from '@/store/modules/user';
+import { useLogoutMutation } from '@/server/authApi';
+import { useAppSelector } from '@/store/hooks';
 import { removeStorage } from '@/utils/storage';
 import type { MenuProps } from 'antd';
-import { Dropdown, Image } from 'antd';
+import { Dropdown, Image, message } from 'antd';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAccountStyle } from './style';
 
 const AppAccount = () => {
   const { AccountDiv } = getAccountStyle();
 
-  const dispatch = useAppDispatch();
-
+  const { userInfo } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
+  const [logout, { data }] = useLogoutMutation();
 
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: FormattedMessage({ id: 'login.signOut' }),
     },
+    {
+      key: '2',
+      label: userInfo?.name,
+    },
   ];
 
-  const menuChange: MenuProps['onClick'] = (_e) => {
-    removeStorage('userInfo');
-    dispatch(setSignOut());
+  useEffect(() => {
+    return () => {
+      if (data) {
+        removeStorage('access_token');
+        navigate('/login');
+      }
+    };
+  }, [data, navigate]);
 
-    navigate('/login');
+  const menuChange: MenuProps['onClick'] = (e) => {
+    switch (e.key) {
+      case '1':
+        logout();
+        break;
+      case '2':
+        message.info(userInfo?.name);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
