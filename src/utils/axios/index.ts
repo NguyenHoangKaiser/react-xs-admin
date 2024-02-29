@@ -66,7 +66,7 @@ const interceptor: AxiosInterceptor = {
     const { requestOptions } = config;
     if (requestOptions?.withToken) {
       // access redux store to get token
-      const token = store.getState().user.token;
+      const token = store.getState().user.access_token;
       (config as Recordable).headers.Authorization = token;
       if (requestOptions?.specialToken)
         (config as Recordable).headers.Authorization = requestOptions?.specialToken;

@@ -158,3 +158,40 @@ export function isErrorWithMessage(error: unknown): error is { message: string }
     typeof (error as any).message === 'string'
   );
 }
+
+/**
+ * Type predicate to narrow an unknown error to an expected error shape from the server
+ * @param error unknown
+ * @returns error is { status: number; data: { statusCode: number; message: string; success: boolean } }
+ *
+ * @example
+ *
+ * ```ts
+ * const error = {
+ * status: 200,
+ * data: {
+ *    statusCode: 400,
+ *    message: 'Bad Request',
+ *    success: false,
+ *  },
+ * ```
+ */
+export function isExpectedError(error: unknown): error is {
+  status: number;
+  data: {
+    statusCode: number;
+    message: string;
+    success: boolean;
+  };
+} {
+  return (
+    typeof error === 'object' &&
+    error != null &&
+    'status' in error &&
+    typeof (error as any).data === 'object' &&
+    error.status === 200 &&
+    'statusCode' in (error as any).data &&
+    'message' in (error as any).data &&
+    'success' in (error as any).data
+  );
+}

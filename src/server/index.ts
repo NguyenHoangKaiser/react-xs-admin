@@ -22,6 +22,10 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  validateStatus(response, body) {
+    // When the server always returns a 200, even for internal errors so we have to validate the response data
+    return response.status === 200 && body.success;
+  },
 });
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 3 });

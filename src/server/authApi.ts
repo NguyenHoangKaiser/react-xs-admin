@@ -5,8 +5,6 @@ import type { IHotel, IUserInfo } from './apiTypes';
 export interface ILoginParams {
   email: string;
   password: string;
-  domain: string;
-  type: number;
 }
 
 export interface ILoginResult {
@@ -18,13 +16,20 @@ export interface ILoginResult {
   userInfo: IUserInfo;
 }
 
+const DOMAIN = import.meta.env.VITE_DOMAIN;
+
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<ILoginResult, ILoginParams>({
-      query: (body) => ({
+      query: (params) => ({
         url: APIs.LOGIN,
         method: 'POST',
-        body,
+        body: {
+          email: params.email,
+          password: params.password,
+          type: 0,
+          domain: DOMAIN,
+        },
       }),
       ...transformFactory<ILoginResult>(),
       invalidatesTags: (result) => [{ type: 'User', id: result?.userInfo.id }],

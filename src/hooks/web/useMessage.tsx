@@ -1,5 +1,5 @@
 import type { ModalFuncProps } from 'antd';
-import { message, Modal } from 'antd';
+import { message, Modal, notification } from 'antd';
 
 import { getIntlText } from '@/locales';
 
@@ -15,9 +15,18 @@ export function createErrorMsg(msg: string) {
   message.error(msg);
 }
 
+export function createErrorNotification(msg: string, desc?: string) {
+  notification.error({
+    placement: 'bottomRight',
+    message: msg,
+    description: desc,
+  });
+}
+
 export function useMessage() {
   return {
     createErrorModal,
     createErrorMsg,
+    createErrorNotification,
   };
 }

@@ -2,7 +2,7 @@ import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { isString } from 'lodash';
 import { checkStatus } from '../axios/axiosStatus';
-import { isErrorWithMessage, isFetchBaseQueryError } from '../is';
+import { isErrorWithMessage, isExpectedError, isFetchBaseQueryError } from '../is';
 
 export const hasClass = (ele: RefType<any>, cls: string): any => {
   return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
@@ -67,14 +67,14 @@ export async function catchErr<T>(
       const errMsg = 'error' in err ? err.error : JSON.stringify(err.data);
 
       if (typeof err.status === 'number') {
-        checkStatus(err.status, errMsg, 'modal');
+        checkStatus(err.status, errMsg);
       } else if (typeof err.status === 'string') {
-        checkStatus(404, err.status, 'modal');
+        checkStatus(404, err.status);
       }
       return err;
     } else if (isErrorWithMessage(err)) {
       // you can access a string 'message' property here
-      checkStatus(404, err.message, 'modal');
+      checkStatus(404, err.message);
       return err;
     }
   }
@@ -90,25 +90,27 @@ export function getErrMsg(
   err: FetchBaseQueryError | { message: string } | SerializedError,
   alert: boolean = false,
 ): string {
-  if (isFetchBaseQueryError(err)) {
+  if (isExpectedError(err)) {
+    alert && checkStatus(err.data.statusCode, err.data.message);
+    return err.data.message;
+  } else if (isFetchBaseQueryError(err)) {
     // you can access all properties of `FetchBaseQueryError` here
     const errMsg = 'error' in err ? err.error : JSON.stringify(err.data);
-
     if (typeof err.status === 'number') {
-      alert && checkStatus(err.status, errMsg, 'modal');
+      alert && checkStatus(err.status, errMsg);
       return errMsg;
     } else if (typeof err.status === 'string') {
-      alert && checkStatus(404, err.status, 'modal');
+      alert && checkStatus(404, err.status);
       return errMsg;
     }
   } else if (isErrorWithMessage(err)) {
     // you can access a string 'message' property here
-    alert && checkStatus(404, err.message, 'modal');
+    alert && checkStatus(404, err.message);
     return err.message;
   } else if (isString(err)) {
-    alert && checkStatus(404, err, 'modal');
+    alert && checkStatus(404, err);
     return err;
   }
-  alert && checkStatus(404, 'Unexpected error', 'modal');
+  alert && checkStatus(404, 'Unexpected error');
   return 'Unexpected error';
 }

@@ -3,9 +3,8 @@ import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
-import { useGetUserInfoQuery, useLoginMutation } from '@/server/authApi';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setToken, setUserInfo } from '@/store/modules/user';
+import { useLoginMutation } from '@/server/authApi';
+import { useAppSelector } from '@/store/hooks';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
 import { memo, useEffect } from 'react';
@@ -13,35 +12,36 @@ import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
 // import { getUserInfo } from '@/server/axios';
 // import { createErrorMsg } from '@/hooks/web/useMessage';
-
 const Login = memo(() => {
   const { formatMessage } = useLocale();
 
   const thme = theme.useToken();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
-  const userStore = useAppSelector((state) => state.user);
+  const { access_token } = useAppSelector((state) => state.user);
 
   // skip this query if the user is not logged in (the token is not available)
-  const { data: userInfo } = useGetUserInfoQuery(undefined, {
-    skip: !userStore.token,
-  });
+  // const { data: userInfo } = useGetUserInfoQuery(undefined, {
+  //   skip: !userStore.access_token,
+  // });
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(setUserInfo(userInfo));
+    if (access_token) {
       navigate('/home');
     }
-  }, [userInfo]);
+  }, [access_token]);
 
   const onFinish = async (values: LoginForm) => {
     try {
-      const res = await login({ username: values.username, password: values.password }).unwrap();
-      dispatch(setToken(res.token));
-      await initAsyncRoute(res.token);
+      const res = await login({
+        email: values.email,
+        password: values.password,
+      }).unwrap();
+      // dispatch(setToken(res.access_token));
+      await initAsyncRoute(res.access_token);
       // Info: we can use the following code to get user information or use the useGetUserInfoQuery hook like above
       // const userInfo = await getUserInfo(res.token);
       // if (userInfo.code === 1) {
@@ -75,14 +75,14 @@ const Login = memo(() => {
           onFinish={onFinish}
         >
           <Form.Item<LoginForm>
-            name="username"
+            name="email"
             rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
           >
             <Input
               prefix={<UserOutlined />}
               placeholder={formatMessage({ id: 'login.username' })}
               allowClear
-              autoComplete="username"
+              autoComplete="email"
             />
           </Form.Item>
           <Form.Item<LoginForm>

@@ -5,6 +5,6 @@
   "login.passwordRules": "Please input your Password!",
   "login.rememberPassword": "Remember password",
   "login.signOut": "Sign out",
-  "login.userNameRules": "Please input your Username!",
-  "login.username": "UserName：admin"
+  "login.userNameRules": "Enter user email",
+  "login.username": "User email：demo@gmail.com"
 }

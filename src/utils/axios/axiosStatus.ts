@@ -1,11 +1,11 @@
 import type { ErrorMessageMode } from '#/axios';
-import { createErrorModal, createErrorMsg } from '@/hooks/web/useMessage';
+import { createErrorModal, createErrorMsg, createErrorNotification } from '@/hooks/web/useMessage';
 import { getIntlText } from '@/locales';
 
 export function checkStatus(
   status: number,
   msg: string,
-  errorMessageMode: ErrorMessageMode = 'message',
+  errorMessageMode: ErrorMessageMode = 'notification',
 ): void {
   let errMessage = '';
 
@@ -53,6 +53,8 @@ export function checkStatus(
       createErrorModal(errMessage);
     } else if (errorMessageMode === 'message') {
       createErrorMsg(errMessage);
+    } else if (errorMessageMode === 'notification') {
+      createErrorNotification(errMessage, msg);
     }
   }
 }

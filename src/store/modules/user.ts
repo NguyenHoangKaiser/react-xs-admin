@@ -27,6 +27,9 @@ export const UserSlice = createSlice({
     setSignOut: (state) => {
       delete state.userInfo;
       delete state.access_token;
+      delete state.token_refresh;
+      delete state.email;
+      delete state.user_id;
     },
   },
   extraReducers: (builder) => {

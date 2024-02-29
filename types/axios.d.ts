@@ -1,4 +1,4 @@
-export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
+export type ErrorMessageMode = 'none' | 'modal' | 'message' | 'notification' | undefined;
 export interface RequestOptions {
   // URL in front of the junior uses the default use
   urlPrefix?: string;
