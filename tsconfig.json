@@ -18,8 +18,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["src/*"],
-      "#/*": ["types/*"]
+      "@/*": ["src/*"]
+      // "#/*": ["types/*"]
     }
   },
   "include": ["src", "types"],

@@ -14,6 +14,8 @@ import LayoutSpin from './components/LayoutSpin';
 import { localeConfig, setIntl } from './locales';
 import RouteView from './router';
 import { initAsyncRoute } from './router/utils';
+// import { socket } from './socket';
+import { useGetSocketQuery } from './server/authApi';
 import { useAppSelector } from './store/hooks';
 
 const px2rem = px2remTransformer({
@@ -29,9 +31,21 @@ function App() {
     }),
     shallowEqual,
   );
-  const { access_token } = useAppSelector((state) => state.user);
+  const { access_token, user_id } = useAppSelector((state) => state.user);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
-
+  // const [isConnected, setIsConnected] = useState(socket.connected);
+  const { data } = useGetSocketQuery(
+    {
+      accessToken: access_token!,
+      userId: user_id!,
+    },
+    {
+      skip: !access_token || !user_id,
+      refetchOnFocus: false,
+      refetchOnMountOrArgChange: false,
+    },
+  );
+  console.log('data', data);
   const getLocale = useMemo(() => {
     setIntl(locale);
     if (locale === 'en-US') {

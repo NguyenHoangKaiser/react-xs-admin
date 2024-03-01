@@ -8,6 +8,8 @@ import store, { persistor } from './store';
 
 const routeDOM = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
+// export const getSocket = createSocketFactory({ store: store });
+
 const RootRender = (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
