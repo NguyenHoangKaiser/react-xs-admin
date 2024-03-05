@@ -1,4 +1,6 @@
+import { api } from '@/server';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query/react';
 import {
   FLUSH,
   PAUSE,
@@ -10,10 +12,8 @@ import {
   persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-// import thunk from 'redux-thunk';
-import { api } from '@/server';
-import { setupListeners } from '@reduxjs/toolkit/query/react';
 import appReducer from './modules/app';
+import hotelReducer from './modules/hotel';
 import routeReducer from './modules/route';
 import userReducer from './modules/user';
 
@@ -22,15 +22,23 @@ const reducers = combineReducers({
   app: appReducer,
   route: routeReducer,
   user: userReducer,
+  hotel: hotelReducer,
 });
 
 const persistConfig = {
   key: 'react-xs',
   storage,
   // whitelist
-  whitelist: ['app', 'route', 'user'],
-  // blacklist
-  blacklist: [],
+  // "initial",
+  // "language",
+  // "hotel",
+  // "login",
+  // "devices",
+  // "controlDevices",
+  // "charts",
+  whitelist: ['app', 'route', 'user', 'hotel'],
+  // blacklist Redux Toolkit Query api is recommended
+  blacklist: [api.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -2,6 +2,7 @@ import type { IUserInfo } from '@/server/apiTypes';
 import { authApi } from '@/server/authApi';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 
 interface UserSlice {
   userInfo?: IUserInfo;
@@ -26,6 +27,9 @@ export const UserSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
     builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
       state.access_token = payload.access_token;
       state.token_refresh = payload.token_refresh;
@@ -48,3 +52,5 @@ export const UserSlice = createSlice({
 export const { setUserInfo, setToken } = UserSlice.actions;
 
 export default UserSlice.reducer;
+
+export const userSelector = (state: { user: UserSlice }) => state.user;

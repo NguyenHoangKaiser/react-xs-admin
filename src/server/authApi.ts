@@ -1,5 +1,4 @@
 import { api, transformFactory } from '@/server/index';
-import { createSocketFactory } from '@/socket';
 import { APIs } from '@/utils/constant';
 import type { IHotel, IUserInfo } from './apiTypes';
 
@@ -42,43 +41,8 @@ export const authApi = api.injectEndpoints({
       }),
       ...transformFactory<boolean>(),
     }),
-    // connectSocket: builder.query<void, void>({
-    //   queryFn: async () => {
-    //     const socket = await getSocket();
-    //     return socketEmitAsPromise(socket)('connect', {});
-    //   },
-    // }),
-    getSocket: builder.query<
-      string[],
-      {
-        accessToken: string;
-        userId: number;
-      }
-    >({
-      queryFn: () => ({ data: [] }),
-      async onCacheEntryAdded({ accessToken, userId }, { cacheDataLoaded, cacheEntryRemoved }) {
-        try {
-          await cacheDataLoaded;
-
-          const socket = await createSocketFactory({ accessToken, userId })();
-          socket.on('connected', () => {
-            console.log('connect');
-          });
-          socket.on('disconnect', () => {
-            console.log('disconnect');
-          });
-          socket.on('reconnect', () => {
-            console.log('reconnect');
-          });
-
-          await cacheEntryRemoved;
-        } catch {
-          // do nothing
-        }
-      },
-    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useLogoutMutation, useGetSocketQuery } = authApi;
+export const { useLoginMutation, useLogoutMutation } = authApi;
