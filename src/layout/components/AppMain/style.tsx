@@ -8,7 +8,7 @@ export const getAppMainStyle = (token: GlobalToken): CSSObject => {
     ['.main-content']: {
       height: '100%',
       padding: '0 11px',
-      overflowY: 'auto',
+      overflowY: 'hidden',
       position: 'relative',
       ['.main-section']: {
         borderLeft: `1px solid ${token.colorBorder}`,
@@ -19,8 +19,9 @@ export const getAppMainStyle = (token: GlobalToken): CSSObject => {
         // borderTopRightRadius: token.borderRadius,
         borderBottomLeftRadius: token.borderRadius,
         borderBottomRightRadius: token.borderRadius,
-        minHeight: 'calc(100vh - 108px)',
+        height: 'calc(100vh - 108px)',
         marginBottom: '14px',
+        overflowY: 'auto',
       },
     },
   };
