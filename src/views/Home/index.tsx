@@ -39,7 +39,7 @@ const Home = memo(() => {
   };
 
   return (
-    <div className="">
+    <div className="p-3">
       <Row gutter={[12, 12]}>
         {speedList.map((i) => {
           return (

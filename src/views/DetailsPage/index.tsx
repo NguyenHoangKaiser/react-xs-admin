@@ -18,7 +18,7 @@ const DateilsPage = () => {
   };
 
   return (
-    <div>
+    <div className="p-3">
       <div>
         {[1, 2, 3, 4, 5].map((i) => {
           return (

@@ -1,6 +1,7 @@
 {
   "common.vietnamese": "Tiếng Việt",
   "common.english": "Tiếng Anh",
+  "common.profile": "Hồ sơ",
   "form.required": "không được để trống",
   "form.invalid": "không hợp lệ",
   "form.userName": "Tên đăng nhập",

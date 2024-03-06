@@ -9,7 +9,6 @@ import { memo } from 'react';
 import { shallowEqual } from 'react-redux';
 import AppAccount from '../AppAccount';
 import AppLogo from '../AppLogo';
-import Setting from '../Setting';
 import NavSidebar from '../Sidebar/NavSidebar';
 import './index.less';
 
@@ -61,7 +60,7 @@ const Navbar = memo(() => {
             <AppTheme />
             <AppLocale />
             <AppAccount />
-            <Setting />
+            {/* <Setting /> */}
           </div>
         </div>
       </Header>

@@ -4,6 +4,7 @@ import type { GlobalToken } from 'antd';
 export const getTabsStyle = (token: GlobalToken): CSSObject => {
   return {
     ['& .ant-tabs-nav::before']: {
+      marginRight: 18,
       borderBottom: `1px solid ${token.colorBorder}`,
     },
     ['& .ant-tabs-nav .ant-tabs-tab']: {

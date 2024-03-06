@@ -14,7 +14,7 @@ export interface AppConfigMode {
 }
 
 const initialState: AppConfigMode = {
-  collapsed: false,
+  collapsed: true,
   locale: 'vi-VN',
   themeMode: 'light',
   sidebarMode: 'vertical',

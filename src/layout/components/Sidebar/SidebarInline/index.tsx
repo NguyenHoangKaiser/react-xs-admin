@@ -50,13 +50,13 @@ const Sidebar = memo(() => {
 
   const menuItems = useMemo(() => {
     if (sidebarMode === 'blend') {
-      // path的父级路由组成的数组
+      // The array composed of PATH's parent routing
       const parentPathArr = getParentPaths(pathname, menuList);
-      // 当前路由的信息
-      const parenetRoute = findRouteByPath(parentPathArr[0], menuList);
-      if (parenetRoute) {
-        if (parenetRoute.children) return parenetRoute.children;
-        else return [parenetRoute];
+      // Current route information
+      const parentRoute = findRouteByPath(parentPathArr[0], menuList);
+      if (parentRoute) {
+        if (parentRoute.children) return parentRoute.children;
+        else return [parentRoute];
       }
       return [];
     } else {
@@ -74,7 +74,7 @@ const Sidebar = memo(() => {
         selectedKeys={[pathname]}
         items={menuItems as MenuProps['items']}
         onClick={(e) => navigate(e.key)}
-        style={{ border: 'none' }}
+        style={{ borderWidth: 0 }}
       />
     </>
   );

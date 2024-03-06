@@ -3,8 +3,9 @@ import { FormattedMessage } from '@/locales';
 import { useLogoutMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
 import { removeStorage } from '@/utils/storage';
+import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Dropdown, Image, message } from 'antd';
+import { Dropdown, Flex, Image, Typography, message } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAccountStyle } from './style';
@@ -18,12 +19,12 @@ const AppAccount = () => {
 
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: FormattedMessage({ id: 'login.signOut' }),
+      key: '2',
+      label: FormattedMessage({ id: 'common.profile' }),
     },
     {
-      key: '2',
-      label: userInfo?.name,
+      key: '1',
+      label: FormattedMessage({ id: 'login.signOut' }),
     },
   ];
 
@@ -57,9 +58,16 @@ const AppAccount = () => {
           onClick: menuChange,
         }}
         placement="bottom"
-        arrow
       >
-        <Image src={avatar} className="wave" preview={false} />
+        <Flex align="center" justify="space-between" gap={5}>
+          <Image src={avatar} className="wave" preview={false} />
+          <Typography.Text>{userInfo?.name}</Typography.Text>
+          <DownOutlined
+            style={{
+              fontSize: 12,
+            }}
+          />
+        </Flex>
       </Dropdown>
     </AccountDiv>
   );
