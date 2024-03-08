@@ -1,8 +1,9 @@
 {
-  "layout.error.403": "Sorry, you are not authorized to access this page.",
-  "layout.error.404": "Sorry, the page you visited does not exist.",
-  "layout.error.500": "Sorry, something went wrong.",
-  "layout.error.element.content": "The content you page has the following error:",
+  "layout.backHome": "Trở về trang chủ",
+  "layout.error.403": "Xin lỗi, bạn không được phép truy cập trang này.",
+  "layout.error.404": "Xin lỗi, trang bạn yêu cầu truy cập không tồn tại.",
+  "layout.error.500": "Xin lỗi, đã có lỗi xảy ra.",
+  "layout.error.element.content": "Trang bạn yêu cầu đã xảy ra lỗi sau:",
   "layout.menu.detailsPage": "DetailsPage",
   "layout.menu.home": "Home",
   "layout.menu.nesting": "Nesting",

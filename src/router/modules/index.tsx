@@ -118,7 +118,7 @@ export const defaultRoute: RouteList[] = [
   },
 ];
 
-const ErrorPage403 = lazy(() => import('@/views/core/error/403'));
+const ErrorPage404 = lazy(() => import('@/views/core/error/404'));
 const ErrorElement = lazy(() => import('@/views/core/error/ErrorElement'));
 const Refresh = lazy(() => import('@/views/core/Refresh'));
 
@@ -127,7 +127,7 @@ const Login = lazy(() => import('@/views/Login'));
 export const whiteList = [
   {
     path: '*',
-    element: <ErrorPage403 />,
+    element: <ErrorPage404 />,
   },
   {
     path: '/refresh/*',

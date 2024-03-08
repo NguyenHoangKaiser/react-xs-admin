@@ -4,7 +4,7 @@ import type { GlobalToken } from 'antd';
 export const getTabsStyle = (token: GlobalToken): CSSObject => {
   return {
     ['& .ant-tabs-nav::before']: {
-      marginRight: 18,
+      marginRight: 11,
       borderBottom: `1px solid ${token.colorBorder}`,
     },
     ['& .ant-tabs-nav .ant-tabs-tab']: {
@@ -15,6 +15,9 @@ export const getTabsStyle = (token: GlobalToken): CSSObject => {
         padding: `${token.paddingContentVerticalSM}px 0 ${token.paddingContentVerticalSM}px ${token.paddingContentVerticalLG}px`,
       },
     },
+    ['& .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active']: {
+      border: `1px solid ${token.colorBorder}`,
+    },
     ['&.ant-tabs-small > .ant-tabs-nav .ant-tabs-tab']: {
       padding: 0,
       paddingRight: token.padding,
@@ -24,18 +27,18 @@ export const getTabsStyle = (token: GlobalToken): CSSObject => {
         }px ${token.paddingContentVerticalLG}px`,
       },
     },
-    ['& .ant-tabs-nav .tabs-right-content']: {
-      display: 'flex',
-    },
-    ['& .ant-tabs-nav .tabs-right-content .right-down-more']: {
-      borderLeft: `1px solid ${token.colorBorder}`,
-      borderBottom: 'none',
-      borderTop: 'none',
-      cursor: 'pointer',
-      padding: `${token.paddingContentVerticalSM}px ${token.padding}px`,
-    },
-    ['&.ant-tabs-small > .ant-tabs-nav .tabs-right-content .right-down-more']: {
-      padding: `${token.paddingContentVerticalSM - 2}px ${token.paddingContentVertical}px`,
-    },
+    // ['& .ant-tabs-nav .tabs-right-content']: {
+    //   display: 'flex',
+    // },
+    // ['& .ant-tabs-nav .tabs-right-content .right-down-more']: {
+    //   borderLeft: `1px solid ${token.colorBorder}`,
+    //   borderBottom: 'none',
+    //   borderTop: 'none',
+    //   cursor: 'pointer',
+    //   padding: `${token.paddingContentVerticalSM}px ${token.padding}px`,
+    // },
+    // ['&.ant-tabs-small > .ant-tabs-nav .tabs-right-content .right-down-more']: {
+    //   padding: `${token.paddingContentVerticalSM - 2}px ${token.paddingContentVertical}px`,
+    // },
   };
 };
