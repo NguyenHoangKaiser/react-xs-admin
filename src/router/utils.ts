@@ -27,6 +27,7 @@ export enum RouteEnum {
   DetailsInfo = '/details-page/details-info',
   DetailsParams = '/details-page/details-params',
   Forgot = '/forgot',
+  ManageAccount = '/manage-account',
 }
 
 const arr = [
@@ -93,6 +94,10 @@ const arr = [
         id: 'DetailsParams',
       },
     ],
+  },
+  {
+    path: RouteEnum.ManageAccount,
+    id: 'ManageAccount',
   },
 ];
 
