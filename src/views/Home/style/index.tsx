@@ -16,3 +16,15 @@ export const getNumericalValue = (token: GlobalToken): CSSObject => {
     },
   };
 };
+
+export const getCss = (token: GlobalToken): CSSObject => {
+  return {
+    ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-header']: {
+      padding: `6px ${token.paddingContentVerticalLG}px`,
+    },
+    ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-content>.ant-collapse-content-box']:
+      {
+        padding: `0px ${token.paddingSM}px`,
+      },
+  };
+};
