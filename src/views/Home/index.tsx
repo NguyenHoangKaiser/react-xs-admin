@@ -1,59 +1,32 @@
-import PageAnchor from '@/layout/components/PageAnchor';
+import TreeAnchor from '@/layout/components/PageAnchor/TreeAnchor';
 import type { IAnchorItem } from '@/utils/constant';
-import { FAKE_DATA, generateAnchorList } from '@/utils/constant';
+import { FAKE_DATA, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
-import { Avatar, Card, Collapse, Space, theme } from 'antd';
+import { Avatar, Card, Collapse, Space } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo } from 'react';
-import { getCss } from './style';
 
 const onChange = (key: string | string[]) => {
   console.log(key);
 };
 
 const Home = memo(() => {
-  const { token } = theme.useToken();
-
   const anchorItems = generateAnchorList(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
+  const treeData = generateTreeNode(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   console.log('anchorItems', anchorItems);
 
   return (
-    <PageAnchor
-      title={
-        <div
-          style={{
-            padding: '8px',
-            borderBottom: `1px solid ${token.colorBorder}`,
-          }}
-        >
-          <h2>Home</h2>
-        </div>
-      }
-      anchorProps={{
-        items: anchorItems,
-        onChange(currentActiveLink) {
-          console.log('currentActiveLink', currentActiveLink);
-        },
-        // style: {
-        //   marginTop: 8,
-        // },
-      }}
-    >
-      <div css={getCss(token)}>
-        <Collapse
-          // style={{
-          //   marginTop: 8,
-          // }}
-          ghost
-          size="small"
-          bordered={false}
-          onChange={onChange}
-          defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
-          items={generateCollapseItems(anchorItems)}
-        />
-      </div>
-    </PageAnchor>
+    <TreeAnchor treeProps={{ treeData }}>
+      <Collapse
+        ghost
+        size="small"
+        bordered={false}
+        onChange={onChange}
+        defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
+        items={generateCollapseItems(anchorItems)}
+      />
+    </TreeAnchor>
   );
 });
 

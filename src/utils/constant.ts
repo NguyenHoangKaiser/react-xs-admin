@@ -1,3 +1,5 @@
+import type { TreeDataNode } from 'antd';
+
 export enum APIs {
   ROUTE_LIST = '/mock_api/getRoute',
   LOGIN = '/site/login',
@@ -683,6 +685,36 @@ export function generateAnchorList(
   deviceList: IDevicesListItem[],
   sectionList: ISectionListItem[],
 ): IAnchorItem[] {
+  const getChildren = (parentId: number | null, level = 0) => {
+    const children: IAnchorItem[] = [];
+    sectionList.forEach((item) => {
+      const renderDevice = deviceList.filter((device) => device?.building_area?.id === item.id);
+      if (item.parent_id === parentId) {
+        const child = getChildren(item.id, level + 1);
+        if (!renderDevice.length && !child.length) {
+          return;
+        } else {
+          children.push({
+            key: `anchor${item.id}`,
+            href: `#anchor${item.id}`,
+            title: item.name,
+            children: child,
+            renderDevice,
+            level: level + 1,
+          });
+        }
+      }
+    });
+    return children;
+  };
+  const anchorList = getChildren(null);
+  return anchorList;
+}
+
+export function generateTreeNode(
+  deviceList: IDevicesListItem[],
+  sectionList: ISectionListItem[],
+): TreeDataNode[] {
   const getChildren = (parentId: number | null, level = 0) => {
     const children: IAnchorItem[] = [];
     sectionList.forEach((item) => {
