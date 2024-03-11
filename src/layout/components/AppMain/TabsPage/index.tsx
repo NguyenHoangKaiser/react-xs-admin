@@ -21,8 +21,8 @@ const TabsPage = memo((_props: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const mark = useMatch(location.pathname);
-  const { routeListToMenu } = useRouteList();
-  const menuList = routeListToMenu(defaultRoute);
+  const { routeListToTab } = useRouteList();
+  const menuList = routeListToTab(defaultRoute);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
   const { addRouteTabs, removeTab } = useTabsChange();

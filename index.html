@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/luci_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Smart Building</title>
   </head>
 
   <body>
@@ -158,7 +158,7 @@
         }
       </style>
       <div class="loading-container">
-        <div id="html_loding" class="loading">
+        <div id="html_loading" class="loading">
           <div></div>
           <div></div>
           <div></div>
@@ -173,7 +173,7 @@
         if (app) {
           const { color } = JSON.parse(app);
           if (color) {
-            const loading = document.getElementById('html_loding');
+            const loading = document.getElementById('html_loading');
             loading.style.color = color;
           }
         }
