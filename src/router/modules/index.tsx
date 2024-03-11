@@ -123,6 +123,7 @@ const ErrorElement = lazy(() => import('@/views/core/error/ErrorElement'));
 const Refresh = lazy(() => import('@/views/core/Refresh'));
 
 const Login = lazy(() => import('@/views/Login'));
+const Forgot = lazy(() => import('@/views/ForgotPassword'));
 
 export const whiteList = [
   {
@@ -150,5 +151,9 @@ export const baseRouter: RouteObject[] = [
   {
     path: RouteEnum.Login,
     element: <Login />,
+  },
+  {
+    path: RouteEnum.Forgot,
+    element: <Forgot />,
   },
 ];

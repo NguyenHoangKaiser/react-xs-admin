@@ -15,7 +15,21 @@ export interface ILoginResult {
   role?: number;
   userInfo: IUserInfo;
 }
+export interface IForgotPasswordParams {
+  email: string;
+}
 
+export interface IForgotPasswordResult {
+  data: [];
+}
+export interface VForgotPasswordParams {
+  email: string;
+  opt: string;
+}
+
+export interface VForgotPasswordResult {
+  data: [];
+}
 const DOMAIN = import.meta.env.VITE_DOMAIN;
 
 export const authApi = api.injectEndpoints({
@@ -34,6 +48,32 @@ export const authApi = api.injectEndpoints({
       ...transformFactory<ILoginResult>(),
       invalidatesTags: (result) => [{ type: 'User', id: result?.userInfo.id }],
     }),
+    forgot: builder.mutation<IForgotPasswordResult, IForgotPasswordParams>({
+      query: (params) => ({
+        url: APIs.FORGOT_PASSWORD,
+        method: 'POST',
+        body: {
+          email: params.email,
+          type: 0,
+          domain: DOMAIN,
+        },
+      }),
+      ...transformFactory<IForgotPasswordResult>(),
+      invalidatesTags: () => [{ type: 'Forgot' }],
+    }),
+    verify: builder.mutation<VForgotPasswordResult, VForgotPasswordParams>({
+      query: (params) => ({
+        url: APIs.FORGOT_PASSWORD,
+        method: 'POST',
+        body: {
+          email: params.email,
+          type: 0,
+          domain: DOMAIN,
+        },
+      }),
+      ...transformFactory<IForgotPasswordResult>(),
+      invalidatesTags: () => [{ type: 'Forgot' }],
+    }),
     logout: builder.mutation<boolean, void>({
       query: () => ({
         url: APIs.LOGOUT,
@@ -45,4 +85,5 @@ export const authApi = api.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useForgotMutation, useVerifyMutation, useLogoutMutation } =
+  authApi;
