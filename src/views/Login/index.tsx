@@ -5,12 +5,7 @@ import { initAsyncRoute } from '@/router/utils';
 import { useLoginMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
 import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import {
-  LoginFormPage,
-  ProConfigProvider,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { LoginFormPage, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { Divider, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useEffect, useState } from 'react';
@@ -86,26 +81,8 @@ const Login = memo(() => {
           backdropFilter: 'blur(4px)',
         }}
         subTitle=" "
-        // activityConfig={{
-        //   style: {
-        //     //boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
-        //     color: '#fff',
-        //     borderRadius: 8,
-        //     // backgroundColor: 'rgba(255,255,255,0.25)',
-        //     backdropFilter: 'blur(4px)',
-        //   },
-        //   title: 'Điều khoản và sử dụng |',
-        //   subTitle: ' Chính sách bảo mật',
-        // }}
         actions={
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-            }}
-          >
+          <div className="flex justify-center items-center flex-col">
             <Divider plain>
               <span
                 style={{
@@ -119,15 +96,9 @@ const Login = memo(() => {
             </Divider>
             <Space align="center" size={24}>
               <div
+                className="flex justify-center items-center flex-col h-10 w-10 rounded-full"
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  height: 40,
-                  width: 40,
                   border: '1px solid ' + thme.token.colorPrimaryBorder,
-                  borderRadius: '50%',
                 }}
               >
                 <AlipayOutlined
@@ -135,64 +106,11 @@ const Login = memo(() => {
                   onClick={() => isAutoPlay(!autoPlay)}
                 />
               </div>
-              {/* <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  height: 40,
-                  width: 40,
-                  border: '1px solid ' + thme.token.colorPrimaryBorder,
-                  borderRadius: '50%',
-                }}
-              >
-                <TaobaoOutlined style={{ ...iconStyles, color: '#FF6A10' }} />
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  height: 40,
-                  width: 40,
-                  border: '1px solid ' + thme.token.colorPrimaryBorder,
-                  borderRadius: '50%',
-                }}
-              >
-                <WeiboOutlined style={{ ...iconStyles, color: '#1890ff' }} />
-              </div> */}
             </Space>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                height: 40,
-                width: 40,
-                position: 'absolute',
-                top: 4,
-                right: 12,
-              }}
-            >
+            <div className="flex justify-center items-center flex-col h-10 w-10 absolute top-1 right-3">
               <AppTheme />
             </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                height: 40,
-                width: 40,
-                position: 'absolute',
-                top: 4,
-                left: 12,
-              }}
-            >
+            <div className="flex justify-center items-center flex-col h-10 w-10 absolute top-1 left-3">
               <AppLocale />
             </div>
           </div>
@@ -258,12 +176,9 @@ const Login = memo(() => {
       </LoginFormPage>
 
       <div
-        className="-translate-x-1/2 absolute bottom-3 left-1/2"
+        className="-translate-x-1/2 absolute bottom-3 left-1/2 z-[666] text-white text-lg"
         style={{
-          zIndex: 999,
           display: 'ruby',
-          color: 'white',
-          fontSize: 18,
         }}
       >
         Bản quyền thuộc © 2024
@@ -280,10 +195,4 @@ const Login = memo(() => {
   );
 });
 
-export default () => {
-  return (
-    <ProConfigProvider dark>
-      <Login />
-    </ProConfigProvider>
-  );
-};
+export default Login;

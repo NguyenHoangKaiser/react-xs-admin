@@ -1,4 +1,5 @@
 import { StyleProvider, px2remTransformer } from '@ant-design/cssinjs';
+import { ProConfigProvider } from '@ant-design/pro-components';
 import { App as AntApp, ConfigProvider, theme } from 'antd';
 import 'antd/dist/reset.css';
 import enUS from 'antd/locale/en_US';
@@ -18,7 +19,6 @@ import { createSocketFactory } from './socket';
 import { useAppSelector } from './store/hooks';
 import { hotelSelector } from './store/modules/hotel';
 import { userSelector } from './store/modules/user';
-
 export interface GlobalContent {
   socket?: TSocket;
   setSocket: (socket: TSocket) => void;
@@ -148,27 +148,30 @@ function App() {
           },
           algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
           cssVar: true,
+          hashed: false,
         }}
         locale={getLocale}
       >
-        <AntApp style={{ width: '100vw', height: '100vh' }}>
-          <IntlProvider locale={locale} messages={localeConfig[locale]}>
-            <MyGlobalContext.Provider
-              value={{
-                socket,
-                setSocket,
-              }}
-            >
-              {loading ? (
-                <LayoutSpin position="fixed" />
-              ) : (
-                <Suspense fallback={<LayoutSpin />}>
-                  <RouteView />
-                </Suspense>
-              )}
-            </MyGlobalContext.Provider>
-          </IntlProvider>
-        </AntApp>
+        <ProConfigProvider>
+          <AntApp style={{ width: '100vw', height: '100vh' }}>
+            <IntlProvider locale={locale} messages={localeConfig[locale]}>
+              <MyGlobalContext.Provider
+                value={{
+                  socket,
+                  setSocket,
+                }}
+              >
+                {loading ? (
+                  <LayoutSpin position="fixed" />
+                ) : (
+                  <Suspense fallback={<LayoutSpin />}>
+                    <RouteView />
+                  </Suspense>
+                )}
+              </MyGlobalContext.Provider>
+            </IntlProvider>
+          </AntApp>
+        </ProConfigProvider>
       </ConfigProvider>
     </StyleProvider>
   );
