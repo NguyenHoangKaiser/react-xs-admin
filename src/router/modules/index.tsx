@@ -6,6 +6,7 @@ import {
   AppstoreOutlined,
   DatabaseOutlined,
   HomeOutlined,
+  UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import { lazy } from 'react';
@@ -21,6 +22,7 @@ const TestPermissionsB = lazy(() => import('@/views/Power/test-permissions-b'));
 const DetailsPage = lazy(() => import('@/views/DetailsPage'));
 const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
+const ManageAccount = lazy(() => import('@/views/ManageAccount'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -115,6 +117,12 @@ export const defaultRoute: RouteList[] = [
         meta: { label: 'Details page', hideSidebar: true },
       },
     ],
+  },
+  {
+    path: RouteEnum.ManageAccount,
+    id: 'ManageAccount',
+    element: <ManageAccount />,
+    meta: { label: FormattedMessage({ id: 'common.manageAccount' }), icon: <UserOutlined /> },
   },
 ];
 

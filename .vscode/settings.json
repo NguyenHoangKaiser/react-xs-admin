@@ -8,5 +8,64 @@
   "i18n-ally.pathMatcher": "{locale}/modules/{namespaces}.json",
   "i18n-ally.keystyle": "flat",
   "cSpell.words": ["ahooks", "multisampling", "thme", "Todos"],
-  "i18n-ally.sourceLanguage": "vi"
+  "i18n-ally.sourceLanguage": "vi",
+  "i18n-ally.refactor.templates": [
+    {
+      "key": "i18n-ally.refactor.templates.react-intl",
+      "name": "React Intl",
+      "description": "React Intl template",
+      "template": "<FormattedMessage id='{key}' />"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-0",
+      "name": "React Intl 0",
+      "description": "React Intl template v0",
+      "template": "this.props.intl.formatMessage({ id: \"{key}\" {args}})"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-1",
+      "name": "React Intl 1",
+      "description": "React Intl template v1",
+      "template": "{this.props.intl.formatMessage({ id: \"{key}\" {args}})}"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-2",
+      "name": "React Intl 2",
+      "description": "React Intl template v2",
+      "template": "intl.formatMessage({ id: '{key}' {args}})"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-3",
+      "name": "React Intl 3",
+      "description": "React Intl template v3",
+      "template": "{intl.formatMessage({ id: '{key}' {args}})}"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-4",
+      "name": "React Intl 4",
+      "description": "React Intl template v4",
+      "template": "formatMessage({ id: '{key}' {args}})"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-5",
+      "name": "React Intl 5",
+      "description": "React Intl template v5",
+      "template": "{formatMessage({ id: '{key}' {args}})}"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-6",
+      "name": "React Intl 6",
+      "description": "React Intl template v6",
+      "template": "FormattedMessage({ id: '{key}' {args}})"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-7",
+      "name": "React Intl 8",
+      "description": "React Intl template v8",
+      "template": "getIntlText('{key}')"
+    }
+  ],
+  "i18n-ally.regex.usageMatchAppend": [
+    "[^\\w\\d](?:formatPlural|formatNumber|formatDate|formatTime|formatHTMLMessage|formatMessage|formatRelativeTime)\\(\\{\\s*?['\"`]?id['\"`]?:\\s*['\"`]({key})['\"`]"
+  ]
 }

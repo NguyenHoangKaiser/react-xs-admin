@@ -11,6 +11,7 @@ export interface AppConfigMode {
   themeMode: ThemeMode;
   sidebarMode: SidebarMode;
   color: string;
+  toggleNotice: boolean;
 }
 
 const initialState: AppConfigMode = {
@@ -19,6 +20,7 @@ const initialState: AppConfigMode = {
   themeMode: 'light',
   sidebarMode: 'vertical',
   color: '#409eff',
+  toggleNotice: false,
 };
 
 export const appSlice = createSlice({
@@ -40,10 +42,19 @@ export const appSlice = createSlice({
     setAppColor: (state, action: PayloadAction<string>) => {
       state.color = action.payload;
     },
+    setToggleNotice: (state, action: PayloadAction<boolean>) => {
+      state.toggleNotice = action.payload;
+    },
   },
 });
 // Each case reducer function generates the corresponding Action Creators
-export const { setAppCollapsed, setAppColor, setAppLocale, setAppSidebarMode, setAppThemeMode } =
-  appSlice.actions;
+export const {
+  setAppCollapsed,
+  setAppColor,
+  setAppLocale,
+  setAppSidebarMode,
+  setAppThemeMode,
+  setToggleNotice,
+} = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,5 +1,6 @@
 {
   "common.english": "English",
+  "common.manageAccount": "Manage account",
   "common.profile": "Profile",
   "common.vietnamese": "Vietnamese",
   "form.forgotPassword": "Forgot password",
@@ -8,5 +9,18 @@
   "form.password": "Password",
   "form.rememberMe": "Remember login",
   "form.required": "can not be empty",
-  "form.userName": "User name"
+  "form.userName": "User name",
+  "manageAccount.authGroup": "Rights group",
+  "manageAccount.changeLanguage": "Change language",
+  "manageAccount.changePassword": "Change password",
+  "manageAccount.changeTheme": "Change theme",
+  "manageAccount.fullName": "Full name",
+  "manageAccount.info": "Information",
+  "manageAccount.newPassword": "New password",
+  "manageAccount.oldPassword": "Old password",
+  "manageAccount.phone": "Phone number",
+  "manageAccount.reNewPassword": "Enter a new password",
+  "manageAccount.save": "Save",
+  "manageAccount.setting": "Setting",
+  "manageAccount.settingNotice": "Notification settings"
 }

@@ -24,7 +24,7 @@ const AppAccount = () => {
     },
     {
       key: '1',
-      label: FormattedMessage({ id: 'login.signOut' }),
+      label: userInfo?.name,
     },
   ];
 
@@ -40,10 +40,10 @@ const AppAccount = () => {
   const menuChange: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case '1':
-        logout();
+        message.info(userInfo?.name);
         break;
       case '2':
-        message.info(userInfo?.name);
+        logout();
         break;
       default:
         break;
