@@ -4,6 +4,7 @@ import type { AnchorProps } from 'antd/lib';
 interface PageAnchorProps {
   children: React.ReactNode;
   anchorProps?: AnchorProps;
+  title?: React.ReactNode;
 }
 
 const handleClick = (
@@ -22,7 +23,7 @@ const handleClick = (
  * @param anchorProps all props of antd Anchor
  * @param children  content of page
  */
-const PageAnchor: React.FC<PageAnchorProps> = ({ children, anchorProps }) => {
+const PageAnchor: React.FC<PageAnchorProps> = ({ children, anchorProps, title }) => {
   const { token } = theme.useToken();
   const { getContainer, onClick, ...rest } = anchorProps || {};
   return (
@@ -33,6 +34,7 @@ const PageAnchor: React.FC<PageAnchorProps> = ({ children, anchorProps }) => {
           borderRight: `1px solid ${token.colorBorder}`,
         }}
       >
+        {title}
         <ConfigProvider
           theme={{
             token: {
