@@ -3,16 +3,12 @@ import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
 import { authApi } from '@/server/authApi';
 import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import {
-  LoginFormPage,
-  ProConfigProvider,
-  ProFormCaptcha,
-  ProFormText,
-} from '@ant-design/pro-components';
-import { Divider, Space, theme } from 'antd';
+import { LoginFormPage, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
+import { Button, Divider, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCss } from './style';
 import type { ForgotPasswordForm } from './type';
 type ForgotStep = 'verify' | 'reset';
 
@@ -21,11 +17,9 @@ const Forgot = memo(() => {
 
   const thme = theme.useToken();
 
-  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [forgot] = authApi.useForgotMutation();
-  // const { access_token } = useAppSelector((state) => state.user);
   const [autoPlay, isAutoPlay] = useState(true);
   const [emailT, setEmailT] = useState('1');
   const [forgotStep, setForgotStep] = useState<ForgotStep>('verify');
@@ -68,13 +62,13 @@ const Forgot = memo(() => {
     >
       <LoginFormPage
         backgroundImageUrl="https://wallpapercave.com/wp/wp4756877.jpg"
-        // logo="src/assets/luci_logo.png"
+        logo="src/assets/luci_logo.png"
         backgroundVideoUrl={
           autoPlay
             ? 'https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr'
             : ''
         }
-        title="Forgot Password"
+        title="Quên mật khẩu"
         onFinish={forgotStep == 'verify' ? onVerify : onFinish}
         containerStyle={{
           backgroundColor: thme.token.colorBgBase,
@@ -85,18 +79,21 @@ const Forgot = memo(() => {
             submitText: forgotStep == 'verify' ? 'Tiếp tục' : 'Thay đổi mật khẩu',
           },
         }}
-        // style={{ backgroundSize: 'auto' }}
         onValuesChange={(changeValues) => setEmailT(changeValues.email)}
         subTitle=" "
         actions={
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-            }}
-          >
+          <div className="flex justify-center items-center flex-col pt-4">
+            <Button
+              css={getCss()}
+              className="w-full h-10"
+              style={{ color: '#1677FF ' }}
+              type="text"
+              onClick={() => {
+                forgotStep == 'verify' ? navigate('/') : setForgotStep('verify');
+              }}
+            >
+              Quay lại Đăng nhập
+            </Button>
             <Divider plain>
               <span
                 style={{
@@ -110,15 +107,9 @@ const Forgot = memo(() => {
             </Divider>
             <Space align="center" size={24}>
               <div
+                className="flex justify-center items-center flex-col h-10 w-10 rounded-full"
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  height: 40,
-                  width: 40,
                   border: '1px solid ' + thme.token.colorPrimaryBorder,
-                  borderRadius: '50%',
                 }}
               >
                 <AlipayOutlined
@@ -127,34 +118,10 @@ const Forgot = memo(() => {
                 />
               </div>
             </Space>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                height: 40,
-                width: 40,
-                position: 'absolute',
-                top: 4,
-                right: 12,
-              }}
-            >
+            <div className="flex justify-center items-center flex-col h-10 w-10 absolute top-1 right-3">
               <AppTheme />
             </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                height: 40,
-                width: 40,
-                position: 'absolute',
-                top: 4,
-                left: 12,
-              }}
-            >
+            <div className="flex justify-center items-center flex-col h-10 w-10 absolute top-1 left-3">
               <AppLocale />
             </div>
           </div>
@@ -276,12 +243,9 @@ const Forgot = memo(() => {
         </>
       </LoginFormPage>
       <div
-        className="-translate-x-1/2 absolute bottom-3 left-1/2"
+        className="-translate-x-1/2 absolute bottom-3 left-1/2 z-[666] text-white text-base"
         style={{
-          zIndex: 999,
           display: 'ruby',
-          color: 'white',
-          fontSize: 18,
         }}
       >
         Bản quyền thuộc © 2024
@@ -297,11 +261,4 @@ const Forgot = memo(() => {
     </div>
   );
 });
-
-export default () => {
-  return (
-    <ProConfigProvider dark>
-      <Forgot />
-    </ProConfigProvider>
-  );
-};
+export default Forgot;
