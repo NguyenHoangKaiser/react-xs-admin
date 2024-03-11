@@ -122,7 +122,11 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
     element: <ManageAccount />,
-    meta: { label: FormattedMessage({ id: 'common.manageAccount' }), icon: <UserOutlined /> },
+    meta: {
+      label: FormattedMessage({ id: 'common.manageAccount' }),
+      icon: <UserOutlined />,
+      hideSidebar: true,
+    },
   },
 ];
 

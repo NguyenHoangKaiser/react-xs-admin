@@ -34,12 +34,57 @@ const OtherSetting = memo(() => {
 
   console.log(toggleNotice);
   return (
-    <div className="flex-1">
+    <>
       <span className="text-2xl font-semibold">
         {formatMessage({ id: 'manageAccount.setting' })}
       </span>
-      <Row gutter={[0, 12]} className="mt-8 flex flex-col">
-        <div className="flex flex-row items-center">
+      <Row style={{ marginTop: 32 }}>
+        <Col xs={8} xl={6} xxl={4}>
+          <Row style={{ marginBottom: 24 }}>
+            <span>{formatMessage({ id: 'manageAccount.settingNotice' })}</span>
+          </Row>
+          <Row style={{ marginBottom: 24 }}>
+            <span>{formatMessage({ id: 'manageAccount.changeTheme' })}</span>
+          </Row>
+          <Row>
+            <span>{formatMessage({ id: 'manageAccount.changeLanguage' })}</span>
+          </Row>
+        </Col>
+        <Col span={8}>
+          <Row style={{ marginBottom: 24 }}>
+            <Switch
+              size="default"
+              onChange={() => dispatch(setToggleNotice(!toggleNotice))}
+              value={toggleNotice}
+            />
+          </Row>
+          <Row style={{ marginBottom: 24 }}>
+            <div
+              className={`app-theme cursor ${themeMode === 'dark' && 'app-theme-dark'}`}
+              style={{ border: `1px solid ${thme.token.colorBorder}` }}
+              onClick={() => {
+                dispatch(setAppThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
+              }}
+            >
+              <div className="theme-inner" style={{ backgroundColor: thme.token.colorBorder }} />
+              <SvgIcon name="sun" />
+              <SvgIcon name="moon" />
+            </div>
+          </Row>
+          <Row>
+            <Dropdown menu={{ items: menuItems, onClick: menuClick }}>
+              <Button>
+                <Space>
+                  {locale === 'en-US'
+                    ? formatMessage({ id: 'common.english' })
+                    : formatMessage({ id: 'common.vietnamese' })}
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Row>
+        </Col>
+        {/* <Flex align="center">
           <Col xs={8} xl={6} xxl={4}>
             <span>{formatMessage({ id: 'manageAccount.settingNotice' })}</span>
           </Col>
@@ -50,8 +95,8 @@ const OtherSetting = memo(() => {
               value={toggleNotice}
             />
           </Col>
-        </div>
-        <div className="flex flex-row items-center">
+        </Flex>
+        <Flex align="center">
           <Col xs={8} xl={6} xxl={4}>
             <span>{formatMessage({ id: 'manageAccount.changeTheme' })}</span>
           </Col>
@@ -68,8 +113,8 @@ const OtherSetting = memo(() => {
               <SvgIcon name="moon" />
             </div>
           </Col>
-        </div>
-        <div className="flex flex-row items-center">
+        </Flex>
+        <Flex align="center">
           <Col xs={8} xl={6} xxl={4}>
             <span>{formatMessage({ id: 'manageAccount.changeLanguage' })}</span>
           </Col>
@@ -85,9 +130,9 @@ const OtherSetting = memo(() => {
               </Button>
             </Dropdown>
           </Col>
-        </div>
+        </Flex> */}
       </Row>
-    </div>
+    </>
   );
 });
 
