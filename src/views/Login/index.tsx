@@ -1,17 +1,21 @@
-import logo from '@/assets/logo.png';
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
 import { useLoginMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Image, Input, theme } from 'antd';
-import { memo, useEffect } from 'react';
+import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  LoginFormPage,
+  ProConfigProvider,
+  ProFormCheckbox,
+  ProFormText,
+} from '@ant-design/pro-components';
+import { Divider, Space, theme } from 'antd';
+import type { CSSProperties } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
-// import { getUserInfo } from '@/server/axios';
-// import { createErrorMsg } from '@/hooks/web/useMessage';
 const Login = memo(() => {
   const { formatMessage } = useLocale();
 
@@ -20,13 +24,20 @@ const Login = memo(() => {
   // const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const { access_token } = useAppSelector((state) => state.user);
+  const [autoPlay, isAutoPlay] = useState(true);
 
   // skip this query if the user is not logged in (the token is not available)
   // const { data: userInfo } = useGetUserInfoQuery(undefined, {
   //   skip: !userStore.access_token,
   // });
+  const iconStyles: CSSProperties = {
+    color: 'rgba(0, 0, 0, 0.2)',
+    fontSize: '18px',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+  };
 
   useEffect(() => {
     if (access_token) {
@@ -55,68 +66,224 @@ const Login = memo(() => {
 
   return (
     <div
-      className="w-full h-full flex flex-col items-center justify-center relative"
-      style={{ backgroundColor: thme.token.colorBgContainer, color: thme.token.colorText }}
+      style={{
+        backgroundColor: 'white',
+        height: '100vh',
+      }}
     >
-      <div className="flex flex-row justify-center items-center absolute top-3 right-3 gap-3">
-        <AppLocale />
-        <AppTheme />
-      </div>
-      <div className="p-10" style={{ boxShadow: '0 15px 25px #0009' }}>
-        <div className="mb-10 flex flex-row items-center justify-center ">
-          <Image src={logo} width={44} height={44} preview={false} />
-          <h2 className="m-0 ml-4">React Xs Admin</h2>
-        </div>
-        <Form
-          className="w-[360px]"
-          name="normal_login"
-          size="large"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item<LoginForm>
-            name="email"
-            rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
+      <LoginFormPage
+        backgroundImageUrl="https://wallpapercave.com/wp/wp4756877.jpg"
+        logo="src/assets/luci_logo.png"
+        backgroundVideoUrl={
+          autoPlay
+            ? 'https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr'
+            : ''
+        }
+        title="Login"
+        onFinish={onFinish}
+        containerStyle={{
+          backgroundColor: thme.token.colorBgBase,
+          backdropFilter: 'blur(4px)',
+        }}
+        subTitle=" "
+        // activityConfig={{
+        //   style: {
+        //     //boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
+        //     color: '#fff',
+        //     borderRadius: 8,
+        //     // backgroundColor: 'rgba(255,255,255,0.25)',
+        //     backdropFilter: 'blur(4px)',
+        //   },
+        //   title: 'Điều khoản và sử dụng |',
+        //   subTitle: ' Chính sách bảo mật',
+        // }}
+        actions={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
           >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder={formatMessage({ id: 'login.username' })}
-              allowClear
-              autoComplete="email"
-            />
-          </Form.Item>
-          <Form.Item<LoginForm>
-            name="password"
-            rules={[{ required: true, message: formatMessage({ id: 'login.passwordRules' }) }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder={formatMessage({ id: 'login.password' })}
-              allowClear
-              autoComplete="current-password"
-            />
-          </Form.Item>
-          <Form.Item<LoginForm>>
-            <div className="flex flex-row justify-between items-center">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>{formatMessage({ id: 'login.rememberPassword' })}</Checkbox>
-              </Form.Item>
+            <Divider plain>
+              <span
+                style={{
+                  color: thme.token.colorTextPlaceholder,
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}
+              >
+                Cách khác
+              </span>
+            </Divider>
+            <Space align="center" size={24}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid ' + thme.token.colorPrimaryBorder,
+                  borderRadius: '50%',
+                }}
+              >
+                <AlipayOutlined
+                  style={{ ...iconStyles, color: '#1677FF' }}
+                  onClick={() => isAutoPlay(!autoPlay)}
+                />
+              </div>
+              {/* <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid ' + thme.token.colorPrimaryBorder,
+                  borderRadius: '50%',
+                }}
+              >
+                <TaobaoOutlined style={{ ...iconStyles, color: '#FF6A10' }} />
+              </div>
 
-              <Button type="link" className="p-0" style={{ color: thme.token.colorPrimary }}>
-                {formatMessage({ id: 'login.forgotPassword' })}
-              </Button>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid ' + thme.token.colorPrimaryBorder,
+                  borderRadius: '50%',
+                }}
+              >
+                <WeiboOutlined style={{ ...iconStyles, color: '#1890ff' }} />
+              </div> */}
+            </Space>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                height: 40,
+                width: 40,
+                position: 'absolute',
+                top: 4,
+                right: 12,
+              }}
+            >
+              <AppTheme />
             </div>
-          </Form.Item>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                height: 40,
+                width: 40,
+                position: 'absolute',
+                top: 4,
+                left: 12,
+              }}
+            >
+              <AppLocale />
+            </div>
+          </div>
+        }
+      >
+        <>
+          <ProFormText
+            name="email"
+            fieldProps={{
+              size: 'large',
+              prefix: (
+                <UserOutlined
+                  style={{
+                    color: thme.token.colorText,
+                  }}
+                  className={'prefixIcon'}
+                />
+              ),
+            }}
+            placeholder={formatMessage({ id: 'login.username' })}
+            rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
+          />
+          <ProFormText.Password
+            name="password"
+            fieldProps={{
+              size: 'large',
+              prefix: (
+                <LockOutlined
+                  style={{
+                    color: thme.token.colorText,
+                  }}
+                  className={'prefixIcon'}
+                />
+              ),
+            }}
+            placeholder={formatMessage({ id: 'login.password' })}
+            rules={[
+              {
+                required: true,
+                message: '请输入密码！',
+              },
+            ]}
+          />
+        </>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full" loading={isLoading}>
-              {formatMessage({ id: 'login.button' })}
-            </Button>
-          </Form.Item>
-        </Form>
+        <div
+          style={{
+            marginBlockEnd: 24,
+          }}
+        >
+          <ProFormCheckbox noStyle name="remember" valuePropName="checked">
+            Ghi nhớ mật khẩu
+          </ProFormCheckbox>
+          <a
+            href={'/forgot'}
+            style={{
+              float: 'right',
+            }}
+          >
+            {formatMessage({ id: 'login.forgotPassword' })}
+          </a>
+        </div>
+      </LoginFormPage>
+
+      <div
+        className="-translate-x-1/2 absolute bottom-3 left-1/2"
+        style={{
+          zIndex: 999,
+          display: 'ruby',
+          color: 'white',
+          fontSize: 18,
+        }}
+      >
+        Bản quyền thuộc © 2024
+        <a
+          style={{ color: 'white', paddingLeft: 4 }}
+          href="http://luci.vn"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          LUCI .,JSC
+        </a>
       </div>
     </div>
   );
 });
 
-export default Login;
+export default () => {
+  return (
+    <ProConfigProvider dark>
+      <Login />
+    </ProConfigProvider>
+  );
+};

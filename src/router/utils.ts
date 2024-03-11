@@ -26,6 +26,7 @@ export enum RouteEnum {
   DetailPageIndex = '/details-page/index',
   DetailsInfo = '/details-page/details-info',
   DetailsParams = '/details-page/details-params',
+  Forgot = '/forgot',
 }
 
 const arr = [
