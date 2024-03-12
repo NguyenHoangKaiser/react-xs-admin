@@ -18,7 +18,6 @@ const AppMain = memo(() => {
     <Content css={getAppMainStyle(thme.token)}>
       <TabsPage maxLen={maxLen} />
       <div className="main-content">
-        {/* <Bread /> */}
         <div className="main-section" id="main-section">
           {isKeepAlive ? (
             <KeepAlive maxLen={maxLen} />

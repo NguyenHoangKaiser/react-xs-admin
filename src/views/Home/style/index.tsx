@@ -17,14 +17,20 @@ export const getNumericalValue = (token: GlobalToken): CSSObject => {
   };
 };
 
-export const getCss = (token: GlobalToken): CSSObject => {
+export const getCollapseCss = (_token: GlobalToken): CSSObject => {
   return {
     ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-header']: {
-      padding: `6px ${token.paddingContentVerticalLG}px`,
+      paddingTop: 6,
+      paddingBottom: 6,
     },
     ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-content>.ant-collapse-content-box']:
       {
-        padding: `0px ${token.paddingSM}px`,
+        paddingTop: 0,
+        paddingBottom: 0,
       },
+    ['& .ant-collapse-content.ant-collapse-content-active > .ant-collapse-content-box']: {
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
   };
 };

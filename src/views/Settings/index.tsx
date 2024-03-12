@@ -40,7 +40,7 @@ const SettingLayout = memo(() => {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={menuItems.find((item) => item?.key === pathname) ? [pathname] : []}
+          selectedKeys={menuItems.find((item) => item?.key === pathname) ? [pathname] : []}
           style={{ borderWidth: 0 }}
           onClick={(e) => navigate(e.key)}
           items={menuItems}

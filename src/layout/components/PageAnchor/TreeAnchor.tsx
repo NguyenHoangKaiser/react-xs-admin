@@ -1,7 +1,10 @@
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { TreeProps } from 'antd';
-import { Col, Row, Tree, theme } from 'antd';
-import { useEffect, useRef } from 'react';
+import { Button, Col, Layout, Tree, theme } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+const { Sider, Content } = Layout;
 
 interface TreeAnchorProps {
   children: React.ReactNode;
@@ -14,6 +17,7 @@ const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const lastHash = useRef('');
+  const [collapsed, setCollapsed] = useState(false);
 
   // listen to location change using useEffect with location as dependency
   // https://jasonwatmore.com/react-router-v6-listen-to-location-route-change-without-history-listen
@@ -38,36 +42,59 @@ const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
     navigate(`#${selectedKeys[0]}`);
   };
   return (
-    <Row>
-      <Col
-        span={3}
-        style={{
+    <Layout>
+      <Sider
+        className="sidebar"
+        breakpoint="lg"
+        collapsedWidth="55"
+        width={230}
+        theme="light"
+        collapsed={collapsed}
+        trigger={null}
+        collapsible
+        css={{
+          backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
-          position: 'sticky',
-          top: 0,
           height: 'calc(100vh - 110px)',
-          overflow: 'auto',
         }}
       >
         {title}
-        <Tree
-          style={{ marginTop: 8 }}
-          defaultSelectedKeys={[hash]}
-          defaultExpandAll
-          onSelect={onSelect || onDefaultSelect}
-          {...rest}
+        {!collapsed && (
+          <Tree
+            style={{ marginTop: 8 }}
+            defaultSelectedKeys={[hash]}
+            defaultExpandAll
+            onSelect={onSelect || onDefaultSelect}
+            {...rest}
+          />
+        )}
+        <Button
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+            borderTop: `1px solid ${token.colorBorder}`,
+          }}
+          block
+          type="text"
+          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={() => setCollapsed(!collapsed)}
         />
-      </Col>
-      <Col
-        style={{
-          height: 'calc(100vh - 110px)',
-          overflowY: 'auto',
-        }}
-        span={21}
-      >
-        {children}
-      </Col>
-    </Row>
+      </Sider>
+      <Content>
+        <Col
+          style={{
+            height: 'calc(100vh - 110px)',
+            overflowY: 'auto',
+            position: 'initial',
+          }}
+        >
+          {children}
+        </Col>
+      </Content>
+    </Layout>
   );
 };
 
