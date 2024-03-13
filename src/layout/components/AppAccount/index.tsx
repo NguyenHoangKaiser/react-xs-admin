@@ -4,7 +4,6 @@ import { RouteEnum } from '@/router/utils';
 import { useLogoutMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
 import { removeStorage } from '@/utils/storage';
-import { useManageAccountTabs } from '@/views/ManageAccount/hooks/useManageAccountTabs';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Flex, Image, Typography } from 'antd';
@@ -18,7 +17,6 @@ const AppAccount = () => {
   const { userInfo } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const [logout, { data }] = useLogoutMutation();
-  const { handleTabs } = useManageAccountTabs();
 
   const items: MenuProps['items'] = [
     {
@@ -43,7 +41,6 @@ const AppAccount = () => {
   const menuChange: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case '1':
-        handleTabs('add');
         navigate(RouteEnum.ManageAccount);
         break;
       case '2':

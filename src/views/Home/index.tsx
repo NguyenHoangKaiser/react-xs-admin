@@ -3,12 +3,12 @@ import type { IAnchorItem, IDevicesListItem, IListIconItem } from '@/utils/const
 import { FAKE_DATA, ListIconImage, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { RightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
-import { Collapse, List, Typography, theme } from 'antd';
+import { Collapse, List, Typography } from 'antd';
 import { memo, useCallback, useState } from 'react';
 import ControlDrawer from './components/ControlDrawer';
 import DeviceCard from './components/DeviceCard';
 import { getCollapseCss } from './style';
-const CollapseProp: CollapseProps = {
+export const CollapseProp: CollapseProps = {
   bordered: true,
   ghost: true,
   size: 'small',
@@ -20,7 +20,6 @@ const CollapseProp: CollapseProps = {
 const Home = memo(() => {
   const anchorItems = generateAnchorList(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const treeData = generateTreeNode(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
-  const { token } = theme.useToken();
 
   const [selectedDevice, setSelectedDevice] = useState<IDevicesListItem | null>(null);
 
@@ -102,7 +101,7 @@ const Home = memo(() => {
     <TreeAnchor treeProps={{ treeData }}>
       <Collapse
         {...CollapseProp}
-        css={getCollapseCss(token)}
+        css={getCollapseCss()}
         defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
         items={generateCollapseItems(anchorItems)}
       />
