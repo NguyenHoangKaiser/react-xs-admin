@@ -1,24 +1,14 @@
+import SvgIcon from '@/components/SvgIcon';
 import TreeAnchor from '@/layout/components/PageAnchor/TreeAnchor';
-import type { IAnchorItem, IDevicesListItem } from '@/utils/constant';
-import { FAKE_DATA, generateAnchorList, generateTreeNode } from '@/utils/constant';
+import type { IAnchorItem, IDevicesListItem, IListIconItem } from '@/utils/constant';
+import { FAKE_DATA, ListIconImage, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { RightOutlined, SettingOutlined } from '@ant-design/icons';
-import { InfoCircledIcon, LightningBoltIcon } from '@radix-ui/react-icons';
 import type { CollapseProps } from 'antd';
-import {
-  Button,
-  Card,
-  Collapse,
-  Drawer,
-  Flex,
-  List,
-  Slider,
-  Switch,
-  Typography,
-  theme,
-} from 'antd';
+import { Button, Collapse, Drawer, Flex, List, Slider, Switch, Typography, theme } from 'antd';
 import { memo, useCallback, useState } from 'react';
+import { useIntl } from 'react-intl';
+import DeviceCard from './components/DeviceCard';
 import { getCollapseCss } from './style';
-
 const CollapseProp: CollapseProps = {
   bordered: true,
   ghost: true,
@@ -29,11 +19,15 @@ const CollapseProp: CollapseProps = {
 };
 
 const Home = memo(() => {
+  const { locale } = useIntl();
   const anchorItems = generateAnchorList(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const treeData = generateTreeNode(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const { token } = theme.useToken();
 
   const [selectedDevice, setSelectedDevice] = useState<IDevicesListItem | null>(null);
+
+  const [selectedIcon, setSelectedIcon] = useState<IListIconItem>();
+
   const onClose = () => {
     setSelectedDevice(null);
   };
@@ -72,53 +66,33 @@ const Home = memo(() => {
               children: (
                 <List
                   grid={{
-                    gutter: 8,
+                    gutter: 16,
                     xs: 1,
                     sm: 2,
                     md: 4,
-                    lg: 4,
-                    xl: 6,
+                    lg: 6,
+                    xl: 8,
                     xxl: 10,
                   }}
                   dataSource={item.renderDevice}
-                  renderItem={(device) => (
-                    <List.Item>
-                      <Card
-                        hoverable
-                        onClick={() => {
-                          setSelectedDevice(device);
-                        }}
-                        styles={{
-                          body: {
-                            padding: 8,
-                          },
-                        }}
-                      >
-                        <Flex vertical justify="center" align="center">
-                          <div
-                            style={{
-                              color: device.status ? token.colorPrimary : token.colorError,
-                            }}
-                            className="flex justify-between items-center w-full"
-                          >
-                            <LightningBoltIcon width={20} height={20} />
-                            <InfoCircledIcon width={20} height={20} />
-                          </div>
-                          <div className="h-[68px]">
-                            {device.status ? (
-                              <SettingOutlined style={{ fontSize: 60, marginBottom: 8 }} />
-                            ) : (
-                              <Typography.Text ellipsis style={{ fontSize: 28, marginTop: 5 }}>
-                                {device.name || 'Name'}
-                              </Typography.Text>
-                            )}
-                          </div>
-                          <Typography.Title level={5}>{device.name || 'Name'}</Typography.Title>
-                          <Typography.Text>{device.description || 'Description'}</Typography.Text>
-                        </Flex>
-                      </Card>
-                    </List.Item>
-                  )}
+                  renderItem={(device) => {
+                    const icon =
+                      ListIconImage[device.id % ListIconImage.length] || ListIconImage[0];
+                    return (
+                      <List.Item>
+                        {/* <Badge.Ribbon placement="start" text="28 °C"> */}
+                        <DeviceCard
+                          onClick={() => {
+                            setSelectedIcon(icon);
+                            setSelectedDevice(device);
+                          }}
+                          device={device}
+                          icon={icon}
+                        />
+                        {/* </Badge.Ribbon> */}
+                      </List.Item>
+                    );
+                  }}
                 />
               ),
             });
@@ -129,9 +103,7 @@ const Home = memo(() => {
       const render = getChild(list);
       return render;
     },
-    [
-      // no dependencies
-    ],
+    [locale, token.colorError, token.colorPrimary],
   );
 
   return (
@@ -151,9 +123,29 @@ const Home = memo(() => {
         extra={<Button type="text" shape="circle" icon={<SettingOutlined />} />}
       >
         <Flex vertical justify="center" align="center">
-          <SettingOutlined style={{ fontSize: 60, marginBottom: 16 }} />
+          <div className="mb-4">
+            {selectedIcon && (
+              <span style={{ fontSize: '60px' }}>
+                <SvgIcon name={selectedIcon.type} />
+              </span>
+            )}
+            {/* {selectedDevice?.status ? (
+              <Image
+                width={60}
+                src={selectedIcon.on}
+                fallback={selectedIcon.name}
+                preview={false}
+              />
+            ) : (
+              <Typography.Text ellipsis style={{ fontSize: 28, marginTop: 5 }}>
+                {locale === 'en-US' ? selectedIcon.name_en : selectedIcon.name}
+              </Typography.Text>
+            )} */}
+          </div>
           <Typography.Title level={3}>{selectedDevice?.name}</Typography.Title>
-          <Typography.Text>{selectedDevice?.description || 'Description'}</Typography.Text>
+          <Typography.Text>
+            Description: {locale === 'en-US' ? selectedIcon?.name_en : selectedIcon?.name}
+          </Typography.Text>
           <div
             style={{
               borderBottom: `1px solid ${token.colorBorder}`,
