@@ -46,6 +46,15 @@ export const api = createApi({
    */
   reducerPath: 'splitApi',
   /**
+   * `keepUnusedDataFor` is optional and defaults to `60` if not specified
+   */
+  keepUnusedDataFor: 60,
+  /**
+   * `refetchOnFocus` is optional and defaults to `false` if not specified
+   */
+  refetchOnMountOrArgChange: 30,
+  refetchOnReconnect: true,
+  /**
    * A bare bones base query would just be `baseQuery: fetchBaseQuery({ baseUrl: '/' })`
    */
   baseQuery: baseQueryWithRetry,
@@ -53,7 +62,7 @@ export const api = createApi({
    * Tag types must be defined in the original API definition
    * for any tags that would be provided by injected endpoints
    */
-  tagTypes: ['Todos', 'User', 'Forgot'],
+  tagTypes: ['Todos', 'User', 'Forgot', 'Hotel', 'Device'],
   /**
    * This api has endpoints injected in adjacent files,
    * which is why no endpoints are shown below.
@@ -62,11 +71,11 @@ export const api = createApi({
   endpoints: () => ({}),
 });
 
-export const enhancedApi = api.enhanceEndpoints({
-  endpoints: () => ({
-    getPost: () => 'test',
-  }),
-});
+// export const enhancedApi = api.enhanceEndpoints({
+//   endpoints: () => ({
+//     getPost: () => 'test',
+//   }),
+// });
 
 function transformErrorResponse(
   baseQueryReturnValue: FetchBaseQueryError,

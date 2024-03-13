@@ -18,6 +18,12 @@ const CollapseProp: CollapseProps = {
 };
 
 const Home = memo(() => {
+  // const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
+  // const { data, isFetching } = useGetDevicesQuery({
+  //   hotel_id: hotel_id?.toString() || '',
+  //   floor_id: idx_Floor?.toString() || '',
+  // });
+  // console.log(data, isFetching);
   const anchorItems = generateAnchorList(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const treeData = generateTreeNode(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const { token } = theme.useToken();
@@ -100,13 +106,14 @@ const Home = memo(() => {
 
   return (
     <TreeAnchor treeProps={{ treeData }}>
-      <Collapse
-        {...CollapseProp}
-        css={getCollapseCss(token)}
-        defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
-        items={generateCollapseItems(anchorItems)}
-      />
-      <ControlDrawer icon={selectedIcon} device={selectedDevice} onClose={onClose} />
+      <div css={getCollapseCss(token)}>
+        <Collapse
+          {...CollapseProp}
+          defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
+          items={generateCollapseItems(anchorItems)}
+        />
+        <ControlDrawer icon={selectedIcon} device={selectedDevice} onClose={onClose} />
+      </div>
     </TreeAnchor>
   );
 });
