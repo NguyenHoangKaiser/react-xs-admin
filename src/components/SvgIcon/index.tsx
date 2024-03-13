@@ -1,10 +1,10 @@
-import { type IconVariant } from '@/utils/constant';
+import type { TIconType } from '@/utils/constant';
 import { memo } from 'react';
 import './index.less';
 
 interface SvgIconType {
   prefix?: string;
-  name: IconVariant;
+  name: TIconType;
   color?: string;
   className?: string;
 }
