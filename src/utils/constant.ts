@@ -11,6 +11,21 @@ export enum APIs {
   VERIFY = '/site/verify-password-reset',
 }
 
+export const IconTemplate = {
+  sun: 'sun',
+  moon: 'moon',
+  umbrella: 'umbrella',
+  medal: 'medal',
+  gift: 'gift',
+  rocket: 'rocket',
+  trophy: 'trophy',
+  calendar: 'calendar',
+  bulb: 'bulb',
+  star: 'star',
+};
+
+export type IconVariant = keyof typeof IconTemplate;
+
 export const FAKE_DATA: {
   devicesList: { items: IDevicesListItem[] };
   sectionList: { items: ISectionListItem[] };

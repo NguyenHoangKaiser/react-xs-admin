@@ -28,6 +28,7 @@ export enum RouteEnum {
   DetailsParams = '/details-page/details-params',
   Forgot = '/forgot',
   ManageAccount = '/manage-account',
+  GroupDevice = '/group-device',
 }
 
 const arr = [
@@ -98,6 +99,10 @@ const arr = [
   {
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
+  },
+  {
+    path: RouteEnum.GroupDevice,
+    id: 'GroupDevice',
   },
 ];
 

@@ -23,6 +23,7 @@ const DetailsPage = lazy(() => import('@/views/DetailsPage'));
 const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
 const ManageAccount = lazy(() => import('@/views/ManageAccount'));
+const GroupDevice = lazy(() => import('@/views/GroupDevice'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -126,6 +127,15 @@ export const defaultRoute: RouteList[] = [
       label: FormattedMessage({ id: 'common.manageAccount' }),
       icon: <UserOutlined />,
       hideSidebar: true,
+    },
+  },
+  {
+    path: RouteEnum.GroupDevice,
+    id: 'GroupDevice',
+    element: <GroupDevice />,
+    meta: {
+      label: FormattedMessage({ id: 'group.manageGroup' }),
+      icon: <UserOutlined />,
     },
   },
 ];

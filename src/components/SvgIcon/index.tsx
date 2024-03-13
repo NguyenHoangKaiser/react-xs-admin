@@ -1,9 +1,10 @@
+import { type IconVariant } from '@/utils/constant';
 import { memo } from 'react';
 import './index.less';
 
 interface SvgIconType {
   prefix?: string;
-  name: string;
+  name: IconVariant;
   color?: string;
   className?: string;
 }
