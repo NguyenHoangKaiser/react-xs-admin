@@ -22,6 +22,7 @@ export const getCollapseCss = (): CSSObject => {
     ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-header']: {
       paddingTop: 6,
       paddingBottom: 6,
+      alignItems: 'center',
     },
     ['& .ant-collapse-small >.ant-collapse-item >.ant-collapse-content>.ant-collapse-content-box']:
       {

@@ -9,6 +9,8 @@ export enum APIs {
   GET_TODOS = '/mock_api/todos',
   FORGOT_PASSWORD = '/site/request-password-reset',
   VERIFY = '/site/verify-password-reset',
+  GET_HOTELS = '/hotel',
+  GET_DEVICES = '/device',
 }
 export type TIconType =
   | 'air-conditioner'

@@ -19,7 +19,7 @@ export interface IRError {
 }
 
 export interface IHotel {
-  id?: number;
+  id: number;
   name?: string;
   code?: string;
   description?: string;
@@ -37,7 +37,7 @@ export interface IHotel {
 }
 
 export interface IDeviceType {
-  id?: number;
+  id: number;
   name?: string;
   icon?: null | string;
   code?: string;
@@ -46,7 +46,7 @@ export interface IDeviceType {
 }
 
 export interface IFloor {
-  _id?: string;
+  _id: string;
   name?: string;
   icon?: string;
   description?: string;
@@ -61,22 +61,22 @@ export interface IFloor {
   rooms?: IRoom[];
 }
 
-export interface IMediasClass {
+interface IMediasClass {
   configs?: { [key: string]: IConfig };
   avatar?: IAvatar;
 }
 
-export interface IAvatar {
+interface IAvatar {
   fileName?: string;
   path?: string;
 }
 
-export interface IConfig {
+interface IConfig {
   position?: number[];
 }
 
 export interface IRoom {
-  _id?: string;
+  _id: string;
   name?: string;
   description?: string;
   order?: number;
@@ -106,4 +106,97 @@ export interface IUserInfo {
   current_role?: number;
   current_role_name?: number;
   roles?: any[];
+}
+
+enum ETrait {
+  Brightness = 'Brightness',
+  ColdWarmColor = 'ColdWarmColor',
+  OnOff = 'OnOff',
+}
+
+interface ITrait {
+  name?: ETrait;
+  is_main?: boolean;
+  min?: number;
+  max?: number;
+}
+
+export interface IStates {
+  Brightness?: Brightness;
+  ColdWarmColor?: ColdWarmColor;
+  OnOff?: OnOff;
+  HCL?: HCL;
+}
+
+interface Brightness {
+  brightness?: number;
+}
+
+interface ColdWarmColor {
+  coldWarmColor?: number;
+}
+
+interface HCL {
+  active?: boolean;
+  hclid?: string;
+  mode?: number;
+}
+
+interface OnOff {
+  on?: boolean;
+}
+
+interface IDeviceStatus {
+  _id?: string;
+  devid?: string;
+  hotel_id?: number;
+  status?: number;
+  states?: IStates;
+  errors?: any[];
+  is_sync?: number;
+}
+
+interface Meta {
+  rule_key_card?: string | null;
+  rule_maintenance_group?: string | null;
+}
+
+enum Type {
+  Light = 'LIGHT',
+}
+
+export interface IDevice {
+  _id: string;
+  hotel_id?: number;
+  floor_id?: string;
+  floor_name?: string;
+  map_model_type?: string;
+  map_model_type_name?: null;
+  room_id?: string;
+  room_name?: string;
+  device_type_id?: string;
+  device_type_name?: string;
+  devid?: string;
+  device_status?: IDeviceStatus | null;
+  name?: string;
+  icon?: string;
+  description?: string;
+  medias?: any[];
+  traits?: ITrait[];
+  bridge_id?: string;
+  attr?: any[];
+  meta?: Meta;
+  security_level?: string;
+  security_level_name?: string;
+  type?: Type;
+  thing_lrn?: string;
+  created_at?: number;
+  updated_at?: number;
+}
+
+export interface IPagination {
+  totalCount?: number;
+  pageCount?: number;
+  currentPage?: number;
+  perPage?: number;
 }
