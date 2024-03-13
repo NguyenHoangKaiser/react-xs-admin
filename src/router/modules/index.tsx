@@ -7,7 +7,6 @@ import {
   DatabaseOutlined,
   HomeOutlined,
   SettingOutlined,
-  UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import { lazy } from 'react';
@@ -24,10 +23,10 @@ const DetailsPage = lazy(() => import('@/views/DetailsPage'));
 const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
 const ManageAccount = lazy(() => import('@/views/ManageAccount'));
-const GroupDevice = lazy(() => import('@/views/GroupDevice'));
 const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
+const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -127,7 +126,10 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
     element: <ManageAccount />,
-    meta: { label: FormattedMessage({ id: 'common.manageAccount' }), icon: <UserOutlined /> },
+    meta: {
+      label: FormattedMessage({ id: 'common.manageAccount' }),
+      hideSidebar: true,
+    },
   },
   {
     path: RouteEnum.Settings,
@@ -151,7 +153,7 @@ export const defaultRoute: RouteList[] = [
       {
         path: 'groups',
         id: 'SettingsGroups',
-        element: <GroupDevice />,
+        element: <SettingsGroups />,
         meta: {
           label: FormattedMessage({ id: 'group.manageGroup' }),
           hideSidebar: true,
@@ -159,15 +161,6 @@ export const defaultRoute: RouteList[] = [
       },
     ],
   },
-  // {
-  //   path: RouteEnum.GroupDevice,
-  //   id: 'GroupDevice',
-  //   element: <GroupDevice />,
-  //   meta: {
-  //     label: FormattedMessage({ id: 'group.manageGroup' }),
-  //     icon: <UserOutlined />,
-  //   },
-  // },
 ];
 
 const ErrorPage404 = lazy(() => import('@/views/core/error/404'));

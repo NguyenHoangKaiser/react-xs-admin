@@ -103,7 +103,6 @@ const arr = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
   },
-
   {
     path: RouteEnum.Settings,
     id: 'Settings',
