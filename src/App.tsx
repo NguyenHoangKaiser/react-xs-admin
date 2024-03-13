@@ -15,9 +15,7 @@ import { localeConfig, setIntl } from './locales';
 import RouteView from './router';
 import { initAsyncRoute } from './router/utils';
 import type { TSocket } from './socket';
-import { createSocketFactory } from './socket';
 import { useAppSelector } from './store/hooks';
-import { hotelSelector } from './store/modules/hotel';
 import { userSelector } from './store/modules/user';
 export interface GlobalContent {
   socket?: TSocket;
@@ -43,77 +41,77 @@ function App() {
     }),
     shallowEqual,
   );
-  const { access_token, user_id } = useAppSelector(userSelector);
-  const { hotel_id, ip_local } = useAppSelector(hotelSelector);
+  const { access_token, user_id: _id } = useAppSelector(userSelector);
+  // const { hotel_id, ip_local } = useAppSelector(hotelSelector);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
   const [socket, setSocket] = useState<TSocket | undefined>(undefined);
 
-  useEffect(() => {
-    if (socket) {
-      socket.disconnect();
-      setSocket(undefined);
-      console.log('SOCKET_CONNECTION::DISCONNECT');
-    }
-    if (access_token && user_id && hotel_id && ip_local) {
-      try {
-        console.log('::ConnectSocket::');
-        const getSocketInstance = createSocketFactory({
-          accessToken: access_token,
-          userId: user_id,
-        });
-        getSocketInstance().then((socket) => {
-          setSocket(socket);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.disconnect();
+  //     setSocket(undefined);
+  //     console.log('SOCKET_CONNECTION::DISCONNECT');
+  //   }
+  //   if (access_token && user_id && hotel_id && ip_local) {
+  //     try {
+  //       console.log('::ConnectSocket::');
+  //       const getSocketInstance = createSocketFactory({
+  //         accessToken: access_token,
+  //         userId: user_id,
+  //       });
+  //       getSocketInstance().then((socket) => {
+  //         setSocket(socket);
 
-          //TODO: need to verify if access_token is expired
-          socket.on('connect', () => {
-            if (socket.connected) {
-              console.log('SOCKET_CONNECTION::connected');
-              socket.emit('joinRoom', [`hotel_${hotel_id}`, `room_${hotel_id}_${user_id}`]);
-            }
-          });
+  //         //TODO: need to verify if access_token is expired
+  //         socket.on('connect', () => {
+  //           if (socket.connected) {
+  //             console.log('SOCKET_CONNECTION::connected');
+  //             socket.emit('joinRoom', [`hotel_${hotel_id}`, `room_${hotel_id}_${user_id}`]);
+  //           }
+  //         });
 
-          socket.on('disconnect', () => {
-            console.log('socket disconnected');
-          });
+  //         socket.on('disconnect', () => {
+  //           console.log('socket disconnected');
+  //         });
 
-          socket.on('timeout', (data: any) => {
-            console.log('SOCKET_CONNECTION::timeout:::', data);
-          });
+  //         socket.on('timeout', (data: any) => {
+  //           console.log('SOCKET_CONNECTION::timeout:::', data);
+  //         });
 
-          socket.on('connect_error', (error: any) => {
-            console.error('SOCKET_CONNECTION::connect_error:::', error);
-          });
+  //         socket.on('connect_error', (error: any) => {
+  //           console.error('SOCKET_CONNECTION::connect_error:::', error);
+  //         });
 
-          socket.on('joinRoom', (data: any) => {
-            console.log('SOCKET_CONNECTION::joinRoom::on', data);
-          });
+  //         socket.on('joinRoom', (data: any) => {
+  //           console.log('SOCKET_CONNECTION::joinRoom::on', data);
+  //         });
 
-          socket.on('status', (data: any) => {
-            console.log('SOCKET_CONNECTION::status::on', data);
-            // this.onStatus(data, isCloud);
-          });
-          socket.on('refreshToken', (data: any) => {
-            console.log('SOCKET_CONNECTION::refreshToken::on', data);
-            // this.refreshToken(data, isCloud);
-          });
-          socket.on('notifyToUser', (data: any) => {
-            console.log('SOCKET_CONNECTION::notifyToUser::on', data);
-            // this.notifyToUser(data, isCloud);
-          });
-        });
-      } catch (error) {
-        console.error('SOCKET_CONNECTION::ERROR', error);
-      }
-    }
-    return () => {
-      console.log('make socket disconnected');
-      if (socket) {
-        socket.disconnect();
-        setSocket(undefined);
-        console.log('SOCKET_CONNECTION::DISCONNECT');
-      }
-    };
-  }, [access_token, user_id, hotel_id, ip_local]);
+  //         socket.on('status', (data: any) => {
+  //           console.log('SOCKET_CONNECTION::status::on', data);
+  //           // this.onStatus(data, isCloud);
+  //         });
+  //         socket.on('refreshToken', (data: any) => {
+  //           console.log('SOCKET_CONNECTION::refreshToken::on', data);
+  //           // this.refreshToken(data, isCloud);
+  //         });
+  //         socket.on('notifyToUser', (data: any) => {
+  //           console.log('SOCKET_CONNECTION::notifyToUser::on', data);
+  //           // this.notifyToUser(data, isCloud);
+  //         });
+  //       });
+  //     } catch (error) {
+  //       console.error('SOCKET_CONNECTION::ERROR', error);
+  //     }
+  //   }
+  //   return () => {
+  //     console.log('make socket disconnected');
+  //     if (socket) {
+  //       socket.disconnect();
+  //       setSocket(undefined);
+  //       console.log('SOCKET_CONNECTION::DISCONNECT');
+  //     }
+  //   };
+  // }, [access_token, user_id, hotel_id, ip_local]);
 
   const getLocale = useMemo(() => {
     setIntl(locale);

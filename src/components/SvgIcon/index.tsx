@@ -1,9 +1,10 @@
+import type { TIconType } from '@/utils/constant';
 import { memo } from 'react';
 import './index.less';
 
 interface SvgIconType {
   prefix?: string;
-  name: string;
+  name: TIconType;
   color?: string;
   className?: string;
 }

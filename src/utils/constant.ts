@@ -10,6 +10,68 @@ export enum APIs {
   FORGOT_PASSWORD = '/site/request-password-reset',
   VERIFY = '/site/verify-password-reset',
 }
+export type TIconType =
+  | 'air-conditioner'
+  | 'light-bulb'
+  | 'fan'
+  | 'camera'
+  | 'pump'
+  | 'smart-meter'
+  | 'temperature'
+  | 'locales'
+  | 'moon'
+  | 'sun';
+export interface IListIconItem {
+  id: number;
+  name: string;
+  name_en: string;
+  type: TIconType;
+}
+
+export const ListIconImage: IListIconItem[] = [
+  {
+    id: 1,
+    name: 'Bóng đèn',
+    name_en: 'Light',
+    type: 'light-bulb',
+  },
+  {
+    id: 2,
+    name: 'Quạt',
+    name_en: 'Fan',
+    type: 'fan',
+  },
+  {
+    id: 3,
+    name: 'Điều hòa',
+    name_en: 'Air conditioner',
+    type: 'air-conditioner',
+  },
+  {
+    id: 4,
+    name: 'Camera',
+    name_en: 'Camera',
+    type: 'camera',
+  },
+  {
+    id: 5,
+    name: 'Máy bơm',
+    name_en: 'Pump',
+    type: 'pump',
+  },
+  {
+    id: 6,
+    name: 'Máy đo',
+    name_en: 'Meter',
+    type: 'smart-meter',
+  },
+  {
+    id: 7,
+    name: 'Nhiệt độ',
+    name_en: 'Temperature',
+    type: 'temperature',
+  },
+];
 
 export const FAKE_DATA: {
   devicesList: { items: IDevicesListItem[] };
