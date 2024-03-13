@@ -41,7 +41,8 @@ const Sidebar = memo(() => {
     setOpenKeys(keys);
   };
 
-  const onBreakpoint: SiderProps['onBreakpoint'] = (broken) => {
+  // auto collapse or expand the sidebar based on the screen size
+  const _onBreakpoint: SiderProps['onBreakpoint'] = (broken) => {
     let collapsedValue = collapsed;
     if (broken) collapsedValue = true;
     else collapsedValue = false;
@@ -91,7 +92,7 @@ const Sidebar = memo(() => {
               width={210}
               theme="light"
               collapsed={collapsed}
-              onBreakpoint={onBreakpoint}
+              // onBreakpoint={onBreakpoint}
               css={{
                 backgroundColor: thme.token.colorBgContainer,
                 borderRight: `1px solid ${thme.token.colorBorder}`,

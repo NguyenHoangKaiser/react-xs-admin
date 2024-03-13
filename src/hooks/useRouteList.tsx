@@ -77,5 +77,44 @@ export const useRouteList = () => {
     return menuList;
   }
 
-  return { handleRouteList, routeListToMenu };
+  function routeListToTab(rtList: RouteList[], path?: React.Key): MenuItem[] {
+    const menuList: MenuItem[] = [];
+    rtList.forEach((i: RouteList) => {
+      const item = i;
+      // if (item.meta.hideSidebar) return;
+
+      if (!item.alwaysShow && item.alwaysShow !== undefined) {
+        if (item.children && item.children[0]) {
+          menuList.push(routeListToTab([item.children[0]], item.path)[0]);
+          return;
+        }
+      }
+
+      let rtItem: MenuItem = {
+        key: item.path,
+        label: '',
+      };
+      if (path) rtItem.key = `${path}/${item.path}`;
+
+      rtItem = {
+        ...rtItem,
+        label: (
+          <Text style={{ color: 'currentcolor' }} ellipsis={{ tooltip: item.meta.label }}>
+            {item.meta.label}
+          </Text>
+        ),
+        icon: item.meta.icon,
+      };
+
+      if (item.children) {
+        rtItem.children = routeListToTab(item.children, rtItem.key);
+      }
+
+      menuList.push(rtItem);
+    });
+
+    return menuList;
+  }
+
+  return { handleRouteList, routeListToMenu, routeListToTab };
 };

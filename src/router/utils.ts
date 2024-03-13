@@ -28,7 +28,10 @@ export enum RouteEnum {
   DetailsParams = '/details-page/details-params',
   Forgot = '/forgot',
   ManageAccount = '/manage-account',
-  GroupDevice = '/group-device',
+  Settings = '/setting',
+  SettingsDevices = '/setting/devices',
+  SettingsScenes = '/setting/scenes',
+  SettingsGroups = '/setting/groups',
 }
 
 const arr = [
@@ -100,9 +103,22 @@ const arr = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
   },
+
   {
-    path: RouteEnum.GroupDevice,
-    id: 'GroupDevice',
+    path: RouteEnum.Settings,
+    id: 'Settings',
+    redirect: RouteEnum.SettingsDevices,
+    children: [
+      { path: 'devices', id: 'SettingsDevices' },
+      {
+        path: 'scenes',
+        id: 'SettingsScenes',
+      },
+      {
+        path: 'groups',
+        id: 'SettingsGroups',
+      },
+    ],
   },
 ];
 

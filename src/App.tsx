@@ -145,6 +145,7 @@ function App() {
         theme={{
           token: {
             colorPrimary: color || '#409eff',
+            // fontFamily: 'Arial, apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
           },
           algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
           cssVar: true,

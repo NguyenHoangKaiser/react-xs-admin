@@ -6,6 +6,7 @@ import {
   AppstoreOutlined,
   DatabaseOutlined,
   HomeOutlined,
+  SettingOutlined,
   UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
@@ -24,6 +25,9 @@ const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
 const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
 const ManageAccount = lazy(() => import('@/views/ManageAccount'));
 const GroupDevice = lazy(() => import('@/views/GroupDevice'));
+const SettingLayout = lazy(() => import('@/views/Settings'));
+const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
+const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -123,21 +127,47 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
     element: <ManageAccount />,
-    meta: {
-      label: FormattedMessage({ id: 'common.manageAccount' }),
-      icon: <UserOutlined />,
-      hideSidebar: true,
-    },
+    meta: { label: FormattedMessage({ id: 'common.manageAccount' }), icon: <UserOutlined /> },
   },
   {
-    path: RouteEnum.GroupDevice,
-    id: 'GroupDevice',
-    element: <GroupDevice />,
-    meta: {
-      label: FormattedMessage({ id: 'group.manageGroup' }),
-      icon: <UserOutlined />,
-    },
+    path: RouteEnum.Settings,
+    id: 'Settings',
+    redirect: RouteEnum.SettingsDevices,
+    meta: { label: 'Settings', icon: <SettingOutlined /> },
+    element: <SettingLayout />,
+    children: [
+      {
+        path: 'devices',
+        id: 'SettingsDevices',
+        element: <SettingDevices />,
+        meta: { label: 'Setting Devices', hideSidebar: true },
+      },
+      {
+        path: 'scenes',
+        id: 'SettingsScenes',
+        element: <SettingsScenes />,
+        meta: { label: 'Setting Scenes', hideSidebar: true },
+      },
+      {
+        path: 'groups',
+        id: 'SettingsGroups',
+        element: <GroupDevice />,
+        meta: {
+          label: FormattedMessage({ id: 'group.manageGroup' }),
+          hideSidebar: true,
+        },
+      },
+    ],
   },
+  // {
+  //   path: RouteEnum.GroupDevice,
+  //   id: 'GroupDevice',
+  //   element: <GroupDevice />,
+  //   meta: {
+  //     label: FormattedMessage({ id: 'group.manageGroup' }),
+  //     icon: <UserOutlined />,
+  //   },
+  // },
 ];
 
 const ErrorPage404 = lazy(() => import('@/views/core/error/404'));
