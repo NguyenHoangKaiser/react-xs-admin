@@ -14,6 +14,10 @@ const menuItems: MenuProps['items'] = [
     key: RouteEnum.SettingsScenes,
     label: 'Scenes',
   },
+  {
+    key: RouteEnum.SettingsGroups,
+    label: 'Groups',
+  },
 ];
 const SettingLayout = memo(() => {
   const { token } = theme.useToken();

@@ -1,11 +1,12 @@
 import avatar from '@/assets/avatar.png';
 import { FormattedMessage } from '@/locales';
+import { RouteEnum } from '@/router/utils';
 import { useLogoutMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
 import { removeStorage } from '@/utils/storage';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Dropdown, Flex, Image, Typography, message } from 'antd';
+import { Dropdown, Flex, Image, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAccountStyle } from './style';
@@ -19,12 +20,12 @@ const AppAccount = () => {
 
   const items: MenuProps['items'] = [
     {
-      key: '2',
+      key: '1',
       label: FormattedMessage({ id: 'common.profile' }),
     },
     {
-      key: '1',
-      label: userInfo?.name,
+      key: '2',
+      label: FormattedMessage({ id: 'login.signOut' }),
     },
   ];
 
@@ -40,7 +41,7 @@ const AppAccount = () => {
   const menuChange: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case '1':
-        message.info(userInfo?.name);
+        navigate(RouteEnum.ManageAccount);
         break;
       case '2':
         logout();

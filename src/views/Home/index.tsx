@@ -3,12 +3,12 @@ import type { IAnchorItem, IDevicesListItem, IListIconItem } from '@/utils/const
 import { FAKE_DATA, ListIconImage, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { RightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
-import { Collapse, List, Typography, theme } from 'antd';
+import { Collapse, List, Typography } from 'antd';
 import { memo, useCallback, useState } from 'react';
 import ControlDrawer from './components/ControlDrawer';
 import DeviceCard from './components/DeviceCard';
 import { getCollapseCss } from './style';
-const CollapseProp: CollapseProps = {
+export const CollapseProp: CollapseProps = {
   bordered: true,
   ghost: true,
   size: 'small',
@@ -18,9 +18,14 @@ const CollapseProp: CollapseProps = {
 };
 
 const Home = memo(() => {
+  // const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
+  // const { data, isFetching } = useGetDevicesQuery({
+  //   hotel_id: hotel_id?.toString() || '',
+  //   floor_id: idx_Floor?.toString() || '',
+  // });
+  // console.log(data, isFetching);
   const anchorItems = generateAnchorList(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const treeData = generateTreeNode(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
-  const { token } = theme.useToken();
 
   const [selectedDevice, setSelectedDevice] = useState<IDevicesListItem | null>(null);
 
@@ -100,13 +105,14 @@ const Home = memo(() => {
 
   return (
     <TreeAnchor treeProps={{ treeData }}>
-      <Collapse
-        {...CollapseProp}
-        css={getCollapseCss(token)}
-        defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
-        items={generateCollapseItems(anchorItems)}
-      />
-      <ControlDrawer icon={selectedIcon} device={selectedDevice} onClose={onClose} />
+      <div css={getCollapseCss()}>
+        <Collapse
+          {...CollapseProp}
+          defaultActiveKey={anchorItems.map((item) => `collapse${item.key}`)}
+          items={generateCollapseItems(anchorItems)}
+        />
+        <ControlDrawer icon={selectedIcon} device={selectedDevice} onClose={onClose} />
+      </div>
     </TreeAnchor>
   );
 });

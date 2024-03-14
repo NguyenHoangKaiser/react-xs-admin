@@ -7,7 +7,6 @@ import {
   DatabaseOutlined,
   HomeOutlined,
   SettingOutlined,
-  UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import { lazy } from 'react';
@@ -27,6 +26,7 @@ const ManageAccount = lazy(() => import('@/views/ManageAccount'));
 const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
+const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -126,7 +126,10 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
     element: <ManageAccount />,
-    meta: { label: FormattedMessage({ id: 'common.manageAccount' }), icon: <UserOutlined /> },
+    meta: {
+      label: FormattedMessage({ id: 'common.manageAccount' }),
+      hideSidebar: true,
+    },
   },
   {
     path: RouteEnum.Settings,
@@ -146,6 +149,15 @@ export const defaultRoute: RouteList[] = [
         id: 'SettingsScenes',
         element: <SettingsScenes />,
         meta: { label: 'Setting Scenes', hideSidebar: true },
+      },
+      {
+        path: 'groups',
+        id: 'SettingsGroups',
+        element: <SettingsGroups />,
+        meta: {
+          label: FormattedMessage({ id: 'group.manageGroup' }),
+          hideSidebar: true,
+        },
       },
     ],
   },
