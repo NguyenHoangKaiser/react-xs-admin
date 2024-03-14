@@ -1,4 +1,5 @@
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { DataType } from './constant';
 
 const toString = Object.prototype.toString;
 
@@ -194,4 +195,18 @@ export function isExpectedError(error: unknown): error is {
     'message' in (error as any).data &&
     'success' in (error as any).data
   );
+}
+export function compareByPower(a: DataType, b: DataType): number {
+  if (a.power === null && b.power === null) {
+    return 0;
+  } else if (a.power === null) {
+    return 1; // Null values go to the end
+  } else if (b.power === null) {
+    return -1; // Null values go to the end
+  } else {
+    return a.power - b.power;
+  }
+}
+export function isNumeric(value: number | null | string): value is number {
+  return typeof value === 'number' && !isNaN(value as number);
 }

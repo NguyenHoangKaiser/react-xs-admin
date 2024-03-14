@@ -5268,3 +5268,14 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     },
   ],
 };
+export interface DataType {
+  key: string;
+  name: string;
+  age: number;
+  power: number | null;
+  id: number;
+  protocol: number;
+  role: number;
+  roomId: number;
+  image: TIconType;
+}
