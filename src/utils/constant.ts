@@ -1,3 +1,4 @@
+import type { IDevice } from '@/server/apiTypes';
 import type { TreeDataNode } from 'antd';
 
 export enum APIs {
@@ -11,6 +12,7 @@ export enum APIs {
   VERIFY = '/site/verify-password-reset',
   GET_HOTELS = '/hotel',
   GET_DEVICES = '/device',
+  GET_DEVICE_INFO = '/device/info',
 }
 export type TIconType =
   | 'air-conditioner'
@@ -101,7 +103,7 @@ export const IconTemplate = {
 export type IconVariant = keyof typeof IconTemplate;
 
 export const FAKE_DATA: {
-  devicesList: { items: IDevicesListItem[] };
+  devicesList: { items: IDevicesListItem1[] };
   sectionList: { items: ISectionListItem[] };
 } = {
   devicesList: {
@@ -726,8 +728,13 @@ export interface ISectionListItem {
   created_at: number;
   updated_at: number;
 }
-
-export interface IDevicesListItem {
+export interface IDevicesListItem extends IDevice {
+  building_area: {
+    id: number;
+    name: string;
+  };
+}
+export interface IDevicesListItem1 {
   id: number;
   name: string;
   description: string | null;
@@ -835,7 +842,7 @@ export interface IGroupDevices {
   category?: string;
   section?: string;
   icon?: IconVariant;
-  devices?: IDevicesListItem[];
+  devices?: IDevicesListItem1[];
 }
 
 export interface IGroupType {

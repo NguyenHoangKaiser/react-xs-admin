@@ -1,6 +1,6 @@
 import { api, transformFactory } from '@/server/index';
 import { APIs } from '@/utils/constant';
-import type { IDevice, IDeviceType, IFloor, IPagination } from './apiTypes';
+import type { IDevice, IDeviceType, IFloor, IPagination, ISchedule } from './apiTypes';
 
 export interface IGetHotelResult {
   id?: number;
@@ -30,6 +30,17 @@ export interface IGetDevicesParams {
   hotel_id?: string;
 }
 
+export interface IGetDeviceInfoParams {
+  id: string;
+}
+
+export interface IGetDeviceInfoResult extends IDevice {
+  rule_maintenance?: string | null;
+  schedule?: ISchedule | null;
+  duration_day?: number;
+  duration?: number;
+}
+
 export const devicesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getHotels: builder.query<IGetHotelResult[], void>({
@@ -49,8 +60,17 @@ export const devicesApi = api.injectEndpoints({
       ...transformFactory<IGetDevicesResult>(),
       providesTags: [{ type: 'Device' as const, id: 'LIST' }],
     }),
+    getDeviceInfo: builder.query<IGetDeviceInfoResult, IGetDeviceInfoParams>({
+      query: (params) => ({
+        url: APIs.GET_DEVICES,
+        method: 'GET',
+        params,
+      }),
+      ...transformFactory<IGetDeviceInfoResult>(),
+      providesTags: (result) => [{ type: 'Device' as const, id: result?._id }],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetHotelsQuery, useGetDevicesQuery } = devicesApi;
+export const { useGetHotelsQuery, useGetDevicesQuery, useGetDeviceInfoQuery } = devicesApi;

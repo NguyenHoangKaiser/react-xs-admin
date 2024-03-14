@@ -200,3 +200,14 @@ export interface IPagination {
   currentPage?: number;
   perPage?: number;
 }
+
+interface INext {
+  id?: null;
+  run_time?: null;
+  name?: null;
+}
+
+export interface ISchedule {
+  next?: Next;
+  last?: any[];
+}
