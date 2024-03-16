@@ -1,31 +1,33 @@
+import LayoutSpin from '@/components/LayoutSpin';
 import SvgIcon from '@/components/SvgIcon';
-import type { IDevicesListItem, IListIconItem } from '@/utils/constant';
+import type { IGetDeviceInfoResult } from '@/server/devicesApi';
+import { useControlDeviceMutation, useGetDeviceInfoQuery } from '@/server/devicesApi';
+import type { TIconType } from '@/utils/constant';
 import { SettingOutlined } from '@ant-design/icons';
-import type { DrawerProps } from 'antd';
-import { Button, Drawer, Flex, Slider, Typography, theme } from 'antd';
+import type { DrawerProps, SliderSingleProps } from 'antd';
+import { Button, ConfigProvider, Drawer, Flex, Slider, Switch, Typography, theme } from 'antd';
 import type { ReactNode } from 'react';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 
 interface ControlDrawerProps extends DrawerProps {
-  device: IDevicesListItem | undefined | null;
-  icon: IListIconItem | undefined | null;
+  id: string | undefined;
 }
 
 const TitleRender = ({
-  icon,
   name,
   description,
+  icon,
 }: {
-  icon: IListIconItem;
   name?: string;
   description?: string;
+  icon: TIconType;
 }) => {
   return (
     <>
       <div className="mb-4">
         <span style={{ fontSize: '60px' }}>
-          <SvgIcon name={icon.type} />
+          <SvgIcon name={icon} />
         </span>
       </div>
       <Typography.Title level={3}>{name || 'Name'}</Typography.Title>
@@ -62,51 +64,169 @@ const EnergyConsumption = () => {
   );
 };
 
-const ControlDrawer = ({ device, icon, ...rest }: ControlDrawerProps) => {
+const ColorMarks: SliderSingleProps['marks'] = {
+  0: {
+    // style: {
+    //   color: '#f50',
+    // },
+    label: <strong>0°C</strong>,
+  },
+  // 100: '100°C',
+  100: {
+    label: <strong>100°C</strong>,
+  },
+};
+
+const BrightnessMarks: SliderSingleProps['marks'] = {
+  0: {
+    // style: {
+    //   color: '#f50',
+    // },
+    label: <strong>0%</strong>,
+  },
+  100: {
+    label: <strong>100%</strong>,
+  },
+};
+
+const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
   const { locale } = useIntl();
   const { token } = theme.useToken();
+  const [controlDevice] = useControlDeviceMutation();
+  const { data, isFetching } = useGetDeviceInfoQuery(
+    {
+      id: id || '',
+    },
+    {
+      skip: !id,
+      // refetchOnFocus: true,
+    },
+  );
+
+  const onControlDevice = useCallback(
+    (checked: boolean) => {
+      if (data?.devid && data?.floor_id) {
+        try {
+          controlDevice({
+            devid: data?.devid,
+            floor_id: data?.floor_id,
+            id: data?._id,
+            state: {
+              OnOff: {
+                on: checked,
+              },
+            },
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    },
+    [controlDevice, data?.devid, data?.floor_id],
+  );
 
   const getControlPanel = useCallback(
-    (pIcon: IListIconItem | undefined | null, pDevice: IDevicesListItem | undefined | null) => {
-      if (pIcon) {
-        switch (pIcon?.type) {
-          case 'light-bulb':
+    (pDevice: IGetDeviceInfoResult | undefined) => {
+      if (pDevice) {
+        const { device_status, traits } = pDevice;
+        const { states } = device_status || {};
+        const disabled = !device_status?.status;
+        // const mainTrait = traits?.find((trait) => trait.is_main);
+        switch (pDevice?.type) {
+          case 'LIGHT':
             return (
               <Flex vertical justify="center" align="center">
                 <TitleRender
-                  icon={pIcon}
+                  icon="light-bulb"
                   name={pDevice?.name}
-                  description={`Device type: ${locale === 'en-US' ? pIcon?.name_en : pIcon?.name}`}
+                  description={`Device type: LIGHT`}
                 />
-                <PropertyRender title="Power switch :">
-                  {/* <Switch checked={!!pDevice?.status} /> */}
-                </PropertyRender>
-                <div className="w-full mt-3 flex justify-between items-center">
-                  <Typography.Title level={5}>Brightness :</Typography.Title>
-                </div>
-                <Slider
-                  style={{
-                    width: '100%',
-                    borderBottom: `1px solid ${token.colorBorder}`,
-                    paddingBottom: 22,
-                  }}
-                  tooltip={{
-                    formatter(value) {
-                      return `${value}%`;
-                    },
-                  }}
-                />
+                {traits?.find((trait) => trait.name === 'OnOff') && (
+                  <PropertyRender title="Power switch :">
+                    <Switch
+                      onChange={onControlDevice}
+                      disabled={disabled}
+                      checked={states?.OnOff?.on}
+                    />
+                  </PropertyRender>
+                )}
+                {traits?.find((trait) => trait.name === 'Brightness') && (
+                  <div
+                    style={{
+                      width: '100%',
+                      borderBottom: `1px solid ${token.colorBorder}`,
+                    }}
+                  >
+                    <div className="w-full mt-3 flex justify-between items-center">
+                      <Typography.Title level={5}>Brightness :</Typography.Title>
+                    </div>
+                    <Slider
+                      disabled={disabled}
+                      style={{
+                        width: '95%',
+                      }}
+                      marks={BrightnessMarks}
+                      value={states?.Brightness?.brightness}
+                      tooltip={{
+                        formatter(value) {
+                          return `${value}%`;
+                        },
+                      }}
+                    />
+                  </div>
+                )}
+                {traits?.find((trait) => trait.name === 'ColdWarmColor') && (
+                  <div
+                    style={{
+                      width: '100%',
+                      borderBottom: `1px solid ${token.colorBorder}`,
+                    }}
+                  >
+                    <div className="w-full mt-3 flex justify-between items-center">
+                      <Typography.Title level={5}>Color :</Typography.Title>
+                    </div>
+                    <ConfigProvider
+                      theme={{
+                        components: {
+                          Slider: {
+                            handleColor: 'rgb(255,239,0)',
+                            // handleActiveColor: 'rgb(255,239,0)',
+                            // colorPrimaryBorderHover: 'rgb(255,239,0)',
+                          },
+                        },
+                      }}
+                    >
+                      <Slider
+                        disabled={disabled}
+                        styles={{
+                          rail: {
+                            backgroundImage: `linear-gradient(90deg, rgb(113,112,12) 0%, rgb(199,193,26) 20%, rgb(255,239,0) 100%)`,
+                          },
+                          track: {
+                            backgroundColor: 'transparent',
+                          },
+                        }}
+                        style={{
+                          width: '95%',
+                        }}
+                        marks={ColorMarks}
+                        value={states?.ColdWarmColor?.coldWarmColor}
+                        tooltip={{
+                          formatter(value) {
+                            return `${value}%`;
+                          },
+                        }}
+                      />
+                    </ConfigProvider>
+                  </div>
+                )}
                 <EnergyConsumption />
               </Flex>
             );
           default:
             return (
               <Flex vertical justify="center" align="center">
-                <TitleRender
-                  icon={pIcon}
-                  name={pDevice?.name}
-                  description={`Device type: ${locale === 'en-US' ? pIcon?.name_en : pIcon?.name}`}
-                />
+                <TitleRender icon="maintenance" name={pDevice?.name} description={`Device type:`} />
                 <PropertyRender title="Power switch :">
                   {/* <Switch checked={!!pDevice?.status} /> */}
                 </PropertyRender>
@@ -117,19 +237,19 @@ const ControlDrawer = ({ device, icon, ...rest }: ControlDrawerProps) => {
       }
       return null;
     },
-    [locale, token.colorBorder],
+    [locale, token.colorBorder, onControlDevice],
   );
 
   return (
     <Drawer
       title="Control Panel"
       placement="right"
-      // open={!!device}
       getContainer={false}
       extra={<Button type="text" shape="circle" icon={<SettingOutlined />} />}
+      style={{ position: 'relative' }}
       {...rest}
     >
-      {getControlPanel(icon, device)}
+      {isFetching ? <LayoutSpin position="absolute" /> : <>{getControlPanel(data)}</>}
     </Drawer>
   );
 };

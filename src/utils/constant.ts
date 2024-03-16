@@ -13,6 +13,7 @@ export enum APIs {
   GET_HOTELS = '/hotel',
   GET_DEVICES = '/device',
   GET_DEVICE_INFO = '/device/info',
+  CONTROL_DEVICE = '/device/control',
 }
 export type TIconType =
   | 'air-conditioner'
@@ -34,6 +35,7 @@ export type TIconType =
   | 'star'
   | 'sun'
   | 'trophy'
+  | 'maintenance'
   | 'umbrella';
 export interface IListIconItem {
   id: number;

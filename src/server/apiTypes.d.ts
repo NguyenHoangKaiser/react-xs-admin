@@ -1,3 +1,7 @@
+export type RequireAtLeastOne<T> = {
+  [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+}[keyof T];
+
 export interface IRSuccess<T = Recordable> {
   success: boolean;
   statusCode: number;
@@ -108,14 +112,10 @@ export interface IUserInfo {
   roles?: any[];
 }
 
-enum ETrait {
-  Brightness = 'Brightness',
-  ColdWarmColor = 'ColdWarmColor',
-  OnOff = 'OnOff',
-}
+export type TTrait = 'Brightness' | 'ColdWarmColor' | 'OnOff';
 
 interface ITrait {
-  name?: ETrait;
+  name?: TTrait;
   is_main?: boolean;
   min?: number;
   max?: number;
@@ -161,9 +161,7 @@ interface Meta {
   rule_maintenance_group?: string | null;
 }
 
-enum Type {
-  Light = 'LIGHT',
-}
+export type TDeviceType = 'LIGHT';
 
 export interface IDevice {
   _id: string;
@@ -188,7 +186,7 @@ export interface IDevice {
   meta?: Meta;
   security_level?: string;
   security_level_name?: string;
-  type?: Type;
+  type?: TDeviceType;
   thing_lrn?: string;
   created_at?: number;
   updated_at?: number;
@@ -210,4 +208,21 @@ interface INext {
 export interface ISchedule {
   next?: Next;
   last?: any[];
+}
+
+export interface IPayload {
+  cmd: 'set';
+  reqid: number;
+  objects?: IObject[];
+}
+
+interface IObject {
+  type: 'devices';
+  data: string[];
+  execution?: IExecution[];
+}
+
+interface IExecution {
+  command?: string;
+  params?: OnOff;
 }

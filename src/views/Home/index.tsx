@@ -2,8 +2,8 @@ import TreeAnchor from '@/layout/components/PageAnchor/TreeAnchor';
 import { useGetDevicesQuery } from '@/server/devicesApi';
 import { useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
-import type { IAnchorItem, IDevicesListItem, IListIconItem } from '@/utils/constant';
-import { FAKE_DATA, ListIconImage, generateAnchorList, generateTreeNode } from '@/utils/constant';
+import type { IAnchorItem, IDevicesListItem } from '@/utils/constant';
+import { FAKE_DATA, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { RightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
 import { Collapse, List, Typography } from 'antd';
@@ -33,19 +33,23 @@ export const collapseListLayout = {
 
 const Home = memo(() => {
   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
-  const { data, isFetching } = useGetDevicesQuery({
-    hotel_id: hotel_id?.toString() || '',
-    floor_id: idx_Floor?.toString() || '',
-  });
+  const { data, isFetching } = useGetDevicesQuery(
+    {
+      hotel_id: hotel_id?.toString() || '',
+      floor_id: idx_Floor?.toString() || '',
+    },
+    // {
+    //   refetchOnFocus: true,
+    // },
+  );
 
   const items = useMemo(
     () =>
-      data?.items?.map((item): IDevicesListItem => {
-        const id = Math.floor(Math.random() * 18) + 1;
+      data?.items?.map((item, index): IDevicesListItem => {
+        const id = 12 + (index % 3);
         return {
           ...item,
           building_area: {
-            // random id from 1 to 18
             id,
             name: `Building ${id}`,
           },
@@ -61,18 +65,13 @@ const Home = memo(() => {
 
   const treeData = useMemo(() => generateTreeNode(items, FAKE_DATA.sectionList.items), [items]);
 
-  console.log('anchorItems', anchorItems);
-  console.log('treeData', treeData);
-
-  const [selectedDevice, setSelectedDevice] = useState<IDevicesListItem | null>(null);
-
-  const [selectedIcon, setSelectedIcon] = useState<IListIconItem>();
+  const [selectedDevice, setSelectedDevice] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState(false);
 
   const onClose = useCallback(() => {
     setOpen(false);
     setTimeout(() => {
-      setSelectedDevice(null);
+      setSelectedDevice(undefined);
     }, 300);
   }, []);
 
@@ -119,18 +118,14 @@ const Home = memo(() => {
                   loading={isFetching}
                   dataSource={item.renderDevice}
                   renderItem={(device) => {
-                    const icon =
-                      ListIconImage[Number(device._id) % ListIconImage.length] || ListIconImage[0];
                     return (
                       <List.Item>
                         <DeviceCard
                           onClick={() => {
-                            setSelectedIcon(icon);
-                            setSelectedDevice(device);
+                            setSelectedDevice(device._id);
                             setOpen(true);
                           }}
                           device={device}
-                          icon={icon}
                         />
                       </List.Item>
                     );
@@ -149,7 +144,7 @@ const Home = memo(() => {
   );
 
   return (
-    <TreeAnchor treeProps={{ treeData }}>
+    <TreeAnchor loading={{ tree: isFetching }} treeProps={{ treeData }}>
       <div css={getCollapseCss()}>
         {defaultActiveKey.length > 0 && (
           <Collapse
@@ -158,7 +153,7 @@ const Home = memo(() => {
             items={generateCollapseItems(anchorItems)}
           />
         )}
-        <ControlDrawer open={open} icon={selectedIcon} device={selectedDevice} onClose={onClose} />
+        <ControlDrawer open={open} id={selectedDevice} onClose={onClose} />
       </div>
     </TreeAnchor>
   );
