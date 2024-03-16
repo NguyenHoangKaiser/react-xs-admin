@@ -6,7 +6,9 @@ import type { TableColumnsType, TableProps, TabsProps } from 'antd';
 import { Button, Col, Form, Input, Row, Select, Space, Table, Tabs, Tooltip, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
+import Advance from './components/Advance';
 import DeviceDetail from './components/DeviceDetail';
+import Preview from './components/Preview';
 import { getDevicesListCss } from './style';
 
 const { Option } = Select;
@@ -192,15 +194,16 @@ const SettingDevices: React.FC = () => {
         label: 'General',
         children: <DeviceDetail record={record} />,
       },
+
       {
         key: '2',
-        label: 'Tab 2',
-        children: 'Content of Tab Pane 2',
+        label: 'Advance',
+        children: <Advance record={record} />,
       },
       {
         key: '3',
-        label: 'Tab 3',
-        children: 'Content of Tab Pane 3',
+        label: 'Preview',
+        children: <Preview record={record} />,
       },
     ];
     return <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
@@ -283,7 +286,7 @@ const SettingDevices: React.FC = () => {
       render: (text) => (
         <div
           style={{ fontSize: 32, borderLeft: `3px solid ${token.colorPrimary}` }}
-          className=" w-full  flex items-center justify-center h-[35px]"
+          className=" w-full  flex items-center justify-center "
         >
           <SvgIcon name={text} />
         </div>
@@ -395,7 +398,7 @@ const SettingDevices: React.FC = () => {
       key: 'action',
       width: 100,
       render: (_text, _record, index) => (
-        <div className="flex items-center justify-center h-[35px]">
+        <div className="flex items-center justify-center ">
           <a type="text" onClick={() => expend(`${index + 1}`)}>
             {!expended.includes(`${index + 1}`) ? (
               <RightOutlined style={{ ...iconStyles }} />
@@ -424,7 +427,7 @@ const SettingDevices: React.FC = () => {
         <Table
           style={{ height: 360 }}
           className="items-start content-start "
-          css={getDevicesListCss()}
+          css={getDevicesListCss(token)}
           columns={columns}
           dataSource={data}
           onChange={handleChange}

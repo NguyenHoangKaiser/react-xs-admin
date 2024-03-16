@@ -24,10 +24,10 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
           <Title level={4}>Basic Parameters</Title>
           <Row>
             <Col span={12}>
-              <Typography style={{ color: '#00012345' }}>Name:</Typography>
-              <Typography style={{ color: '#00012345' }}>Room:</Typography>
-              <Typography style={{ color: '#00012345' }}>Role:</Typography>
-              <Typography style={{ color: '#00012345' }}>Category</Typography>
+              <Typography style={{ color: token.colorTextDescription }}>Name:</Typography>
+              <Typography style={{ color: token.colorTextDescription }}>Room:</Typography>
+              <Typography style={{ color: token.colorTextDescription }}>Role:</Typography>
+              <Typography style={{ color: token.colorTextDescription }}>Category</Typography>
             </Col>
             <Col span={12} className="text-right">
               <Typography>{record?.name ?? ''}</Typography>
@@ -45,8 +45,8 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
         </Col>
       </Row>
       <div
-        className="h-11 w-full bg-white mt-6  flex items-center justify-end pr-4"
-        style={{ borderTop: `1px solid ${token.colorBorder}` }}
+        className="h-11 w-full  mt-6  flex items-center justify-end pr-4"
+        style={{ borderTop: `1px solid ${token.colorBorder}`, backgroundColor: token.colorBgBase }}
       >
         <Button type="primary" onClick={() => setOpen(true)}>
           Save

@@ -1,6 +1,6 @@
 import SvgIcon from '@/components/SvgIcon';
 import { ListIconImage, type DataType, type FieldType } from '@/utils/constant';
-import { Button, Form, Input, Modal, Select, Space, type FormInstance } from 'antd';
+import { Button, Form, Input, Modal, Select, Space, theme, type FormInstance } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 interface DeviceEditFormProps {
@@ -10,6 +10,8 @@ interface DeviceEditFormProps {
 
 const DeviceEditForm: React.FC<DeviceEditFormProps> = ({ initialValues, onFormInstanceReady }) => {
   const [form] = Form.useForm();
+  const { token } = theme.useToken();
+  const [selectedIcon, setSelectedIcon] = useState(initialValues.image);
   useEffect(() => {
     onFormInstanceReady(form);
   }, []);
@@ -36,12 +38,13 @@ const DeviceEditForm: React.FC<DeviceEditFormProps> = ({ initialValues, onFormIn
         <Space wrap>
           {ListIconImage.map((icon) => (
             <Button
+              onClick={() => setSelectedIcon(icon.type)}
               key={icon.id}
               style={{
-                // border:
-                //   selectedIcon === icon
-                //     ? `1px solid ${thme.token.colorPrimary}`
-                //     : `1px solid transparent`,
+                border:
+                  selectedIcon === icon.type
+                    ? `1px solid ${token.colorPrimary}`
+                    : `1px solid transparent`,
                 background: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
