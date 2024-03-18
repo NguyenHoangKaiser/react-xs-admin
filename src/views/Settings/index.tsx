@@ -20,6 +20,7 @@ const menuItems: MenuProps['items'] = [
     label: '3. Groups',
   },
 ];
+
 const SettingLayout = memo(() => {
   const { token } = theme.useToken();
   const { pathname } = useLocation();
