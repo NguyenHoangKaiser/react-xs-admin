@@ -1,5 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
-import type { IDevicesListItem, IGroupDevices } from '@/utils/constant';
+import type { IDevicesListItem1, IGroupDevices } from '@/utils/constant';
 import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import type { CheckboxProps } from 'antd';
 import {
@@ -27,7 +27,7 @@ interface ModalProps {
 const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
   const [checkedList, setCheckedList] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<IDevicesListItem[]>([]);
+  const [data, setData] = useState<IDevicesListItem1[]>([]);
 
   const checkAll = FAKE_DATA.devicesList.items.length === checkedList.length;
 
@@ -38,7 +38,7 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
     setCheckedList(e.target.checked ? FAKE_DATA.devicesList.items.map((item) => item.id) : []);
   };
 
-  const onChange = (device: IDevicesListItem, checked: boolean) => {
+  const onChange = (device: IDevicesListItem1, checked: boolean) => {
     if (checked) {
       setCheckedList([...checkedList, device.id]);
     } else {

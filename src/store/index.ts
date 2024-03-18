@@ -12,6 +12,7 @@ import {
   persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { listenerMiddleware } from './listenerMiddleware';
 import appReducer from './modules/app';
 import hotelReducer from './modules/hotel';
 import routeReducer from './modules/route';
@@ -50,7 +51,9 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(api.middleware),
+    })
+      .concat(api.middleware)
+      .prepend(listenerMiddleware.middleware),
 });
 
 setupListeners(store.dispatch);

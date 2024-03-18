@@ -1,3 +1,4 @@
+import LayoutSpin from '@/components/LayoutSpin';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { TreeProps } from 'antd';
 import { Button, Col, Layout, Tree, theme } from 'antd';
@@ -10,9 +11,13 @@ interface TreeAnchorProps {
   children: React.ReactNode;
   treeProps?: TreeProps;
   title?: React.ReactNode;
+  loading?: {
+    content?: boolean;
+    tree?: boolean;
+  };
 }
 
-const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
+const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) => {
   const { token } = theme.useToken();
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +46,7 @@ const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
   const onDefaultSelect: TreeProps['onSelect'] = (selectedKeys) => {
     navigate(`#${selectedKeys[0]}`);
   };
+
   return (
     <Layout>
       <Sider
@@ -58,15 +64,23 @@ const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
           height: 'calc(100vh - 110px)',
         }}
       >
-        {title}
-        {!collapsed && (
-          <Tree
-            style={{ marginTop: 8 }}
-            defaultSelectedKeys={[hash]}
-            defaultExpandAll
-            onSelect={onSelect || onDefaultSelect}
-            {...rest}
-          />
+        {!!loading?.tree && loading.tree ? (
+          <div className="h-full w-full relative">
+            <LayoutSpin position="absolute" />
+          </div>
+        ) : (
+          <>
+            {title}
+            {!collapsed && (
+              <Tree
+                style={{ marginTop: 8 }}
+                defaultSelectedKeys={[hash]}
+                defaultExpandAll
+                onSelect={onSelect || onDefaultSelect}
+                {...rest}
+              />
+            )}
+          </>
         )}
         <Button
           style={{
@@ -91,7 +105,13 @@ const TreeAnchor = ({ children, treeProps, title }: TreeAnchorProps) => {
             position: 'initial',
           }}
         >
-          {children}
+          {!!loading?.content && loading.content ? (
+            <div className="h-full w-full relative">
+              <LayoutSpin position="absolute" />
+            </div>
+          ) : (
+            <>{children}</>
+          )}
         </Col>
       </Content>
     </Layout>

@@ -1,22 +1,23 @@
 import { RouteEnum } from '@/router/utils';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, Typography, theme } from 'antd';
 import { memo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { getSettingCss } from './style';
 const { Sider, Content } = Layout;
 const menuItems: MenuProps['items'] = [
   {
     key: RouteEnum.SettingsDevices,
-    label: 'Devices',
+    label: '1. Devices',
   },
   {
     key: RouteEnum.SettingsScenes,
-    label: 'Scenes',
+    label: '2. Scenes',
   },
   {
     key: RouteEnum.SettingsGroups,
-    label: 'Groups',
+    label: '3. Groups',
   },
 ];
 const SettingLayout = memo(() => {
@@ -24,7 +25,6 @@ const SettingLayout = memo(() => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-
   return (
     <Layout>
       <Sider
@@ -42,12 +42,19 @@ const SettingLayout = memo(() => {
           height: 'calc(100vh - 110px)',
         }}
       >
+        <Typography.Title
+          level={5}
+          style={{ marginLeft: 16, marginTop: 16, color: token.colorTextBase }}
+        >
+          Settings
+        </Typography.Title>
         <Menu
           mode="inline"
           selectedKeys={menuItems.find((item) => item?.key === pathname) ? [pathname] : []}
           style={{ borderWidth: 0 }}
           onClick={(e) => navigate(e.key)}
           items={menuItems}
+          css={getSettingCss(token)}
         />
         <Button
           style={{
