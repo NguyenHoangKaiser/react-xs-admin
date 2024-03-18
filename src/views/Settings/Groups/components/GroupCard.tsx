@@ -1,11 +1,11 @@
 import SvgIcon from '@/components/SvgIcon';
-import type { IGroupDevices, IListIconItem } from '@/utils/constant';
+import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { Card, Flex, Typography } from 'antd';
 import type { CardProps } from 'antd/es/card';
 
 interface DeviceCardProps extends CardProps {
   group: IGroupDevices;
-  icon: IListIconItem;
+  icon: IconVariant;
 }
 
 const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
@@ -23,7 +23,7 @@ const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
       <Flex vertical justify="center" align="center">
         <div className="h-[60px]">
           <span style={{ fontSize: '60px' }}>
-            <SvgIcon name={icon.type} />
+            <SvgIcon name={icon} />
           </span>
         </div>
         <Typography.Title
@@ -34,6 +34,7 @@ const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
         >
           {group.group_name || 'Name'}
         </Typography.Title>
+        <Typography.Text>{group.devices?.length} Thiết bị</Typography.Text>
       </Flex>
     </Card>
   );
