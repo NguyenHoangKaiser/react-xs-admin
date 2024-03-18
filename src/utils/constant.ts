@@ -36,7 +36,8 @@ export type TIconType =
   | 'sun'
   | 'trophy'
   | 'maintenance'
-  | 'umbrella';
+  | 'umbrella'
+  | 'battery';
 export interface IListIconItem {
   id: number;
   name: string;

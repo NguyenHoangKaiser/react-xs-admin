@@ -1,18 +1,15 @@
 import SvgIcon from '@/components/SvgIcon';
 import type { DataType } from '@/utils/constant';
-import { compareByPower, isNumeric } from '@/utils/is';
-import Icon, {
-  DeleteOutlined,
-  EyeOutlined,
-  InfoCircleOutlined,
-  RightOutlined,
-} from '@ant-design/icons';
+import { DownOutlined, InfoCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
-import type { GetProps, TableColumnsType, TableProps } from 'antd';
-import { Button, Col, Form, Input, Row, Select, Space, Table, Tooltip } from 'antd';
+import type { TableColumnsType, TableProps, TabsProps } from 'antd';
+import { Button, Col, Form, Input, Row, Select, Space, Table, Tabs, Tooltip, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Advance from './components/Advance';
+import DeviceDetail from './components/DeviceDetail';
+import Preview from './components/Preview';
+import { getDevicesListCss } from './style';
 
 const { Option } = Select;
 type OnChange = NonNullable<TableProps<DataType>['onChange']>;
@@ -70,7 +67,7 @@ const data: DataType[] = [
     protocol: 1,
     role: 2,
     roomId: 3,
-    image: 'medal',
+    image: 'temperature',
   },
   {
     key: '5',
@@ -95,7 +92,7 @@ const data: DataType[] = [
     image: 'pump',
   },
 ];
-function mapNumberToLetter(num: number): string {
+export function convertRoom(num: number): string {
   const letterMap: { [key: number]: string } = {
     1: 'Living Room',
     2: 'Bed Room',
@@ -105,31 +102,32 @@ function mapNumberToLetter(num: number): string {
 
   return letterMap[num] || ''; // Return an empty string if the number is not in the map
 }
+export function convertProtocol(num: number): string {
+  const letterMap: { [key: number]: string } = {
+    1: 'Other',
+    2: 'Z-Wave',
+    3: 'Zigbee',
+    // Add more mappings as needed
+  };
 
-type CustomIconComponentProps = GetProps<typeof Icon>;
+  return letterMap[num] || ''; // Return an empty string if the number is not in the map
+}
+export function convertRole(num: number): string {
+  const letterMap: { [key: number]: string } = {
+    1: 'Other',
+    2: 'Light',
+    3: 'Temperature sensor',
+    // Add more mappings as needed
+  };
 
-const BatterySvg = (props: any) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={800}
-    height={800}
-    fill="none"
-    viewBox="0 0 24 24"
-    color="#fff"
-    {...props}
-  >
-    <path
-      stroke={'#000'}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M21 13v-2M6.2 18h10.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C20 16.48 20 15.92 20 14.8V9.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C18.48 6 17.92 6 16.8 6H6.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C3 7.52 3 8.08 3 9.2v5.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C4.52 18 5.08 18 6.2 18Z"
-    />
-  </svg>
-);
-const BatteryIcon = (props: Partial<CustomIconComponentProps>) => (
-  <Icon component={BatterySvg} {...props} />
-);
+  return letterMap[num] || ''; // Return an empty string if the number is not in the map
+}
+// interface ExpandedDataType {
+//   key: React.Key;
+//   date: string;
+//   name: string;
+//   upgradeNum: string;
+// }
 interface Item {
   name: {
     last: string;
@@ -163,8 +161,7 @@ const getTableData = ({
 const SettingDevices: React.FC = () => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
-  // const { token } = theme.useToken();
-  const navigate = useNavigate();
+  const { token } = theme.useToken();
   const [form] = Form.useForm();
   const handleChange: OnChange = (pagination, filters, sorter) => {
     setFilteredInfo(filters);
@@ -184,7 +181,33 @@ const SettingDevices: React.FC = () => {
     setFilteredInfo({});
     setSortedInfo({});
   };
+  const [expended, setExpended] = useState('0');
 
+  const expandedRowRender = (record: DataType) => {
+    const onChange = (key: string) => {
+      console.log(key);
+    };
+
+    const items: TabsProps['items'] = [
+      {
+        key: '1',
+        label: 'General',
+        children: <DeviceDetail record={record} />,
+      },
+
+      {
+        key: '2',
+        label: 'Advance',
+        children: <Advance record={record} />,
+      },
+      {
+        key: '3',
+        label: 'Preview',
+        children: <Preview record={record} />,
+      },
+    ];
+    return <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
+  };
   const advanceSearchForm = (
     <div>
       <Form form={form}>
@@ -232,11 +255,11 @@ const SettingDevices: React.FC = () => {
   const searchForm = (
     <div>
       <Form form={form}>
-        <Form.Item name="gender" initialValue="male">
+        <Form.Item name="room" initialValue="all">
           <Select style={{ width: 120 }} onChange={submit}>
             <Option value="">all</Option>
-            <Option value="male">male</Option>
-            <Option value="female">female</Option>
+            <Option value="1">Other</Option>
+            <Option value="3">Kitchen</Option>
           </Select>
         </Form.Item>
         <Form.Item name="name">
@@ -248,43 +271,48 @@ const SettingDevices: React.FC = () => {
       </Form>
     </div>
   );
-
+  const expend = (index: any) => {
+    if (expended === index) setExpended('0');
+    else setExpended(index);
+  };
   const columns: TableColumnsType<DataType> = [
     {
-      title: 'Icon',
+      title: 'Icon'.toUpperCase(),
       dataIndex: 'image',
       key: 'image',
       align: 'center',
-      width: 100,
+      width: 120,
 
       render: (text) => (
-        <span style={{ fontSize: 32 }}>
+        <div
+          style={{ fontSize: 32, borderLeft: `3px solid ${token.colorPrimary}` }}
+          className=" w-full  flex items-center justify-center "
+        >
           <SvgIcon name={text} />
-        </span>
+        </div>
       ),
 
       ellipsis: true,
     },
     {
-      title: 'Id',
+      title: 'Id'.toUpperCase(),
       dataIndex: 'id',
       key: 'id',
-      width: 50,
+      width: 100,
       sorter: (a, b) => a.id - b.id,
       sortOrder: sortedInfo.columnKey === 'id' ? sortedInfo.order : null,
       ellipsis: true,
     },
     {
-      title: 'Name',
+      title: 'Name'.toUpperCase(),
       dataIndex: 'name',
       key: 'name',
-
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
       ellipsis: true,
     },
     {
-      title: 'Protocol',
+      title: 'Protocol'.toUpperCase(),
       dataIndex: 'protocol',
       key: 'protocol',
       filters: [
@@ -296,11 +324,11 @@ const SettingDevices: React.FC = () => {
       onFilter: (value, record) => {
         return record.protocol.toString() === value.toString();
       },
-      render: (_text, record) => <div>{record.protocol === 1 ? 'Other' : record.protocol}</div>,
+      render: (_text, record) => <div>{convertProtocol(record.protocol)}</div>,
       ellipsis: true,
     },
     {
-      title: 'Role',
+      title: 'Role'.toUpperCase(),
       dataIndex: 'role',
       key: 'role',
       filters: [
@@ -312,12 +340,11 @@ const SettingDevices: React.FC = () => {
       onFilter: (value, record) => {
         return record.role.toString() === value.toString();
       },
-      render: (_text, record) => <div>{record.role === 1 ? 'Other' : record.role}</div>,
+      render: (_text, record) => <div>{convertRole(record.role)}</div>,
       ellipsis: true,
     },
-
     {
-      title: 'Room',
+      title: 'Room'.toUpperCase(),
       dataIndex: 'roomId',
       key: 'roomId',
       filters: [
@@ -327,55 +354,59 @@ const SettingDevices: React.FC = () => {
       ],
       filteredValue: filteredInfo.roomId || null,
       onFilter: (value, record) => record.roomId.toString() === value.toString(),
-      sorter: (a, b) => mapNumberToLetter(a.roomId).localeCompare(mapNumberToLetter(b.roomId)),
+      sorter: (a, b) => convertRoom(a.roomId).localeCompare(convertRoom(b.roomId)),
       sortOrder: sortedInfo.columnKey === 'roomId' ? sortedInfo.order : null,
-      render: (_text, record) => <div>{record.roomId === 1 ? 'Living Room' : record.roomId}</div>,
+      render: (_text, record) => <div>{convertRoom(record.roomId)}</div>,
 
       ellipsis: true,
     },
-    {
-      title: 'Power',
-      dataIndex: 'power',
-      key: 'power',
-      filters: [
-        { text: 'On', value: true },
-        { text: 'Off', value: false },
-      ],
-      filteredValue: filteredInfo.power || null,
-      onFilter: (value, record) => {
-        return isNumeric(record.power) === value;
-      },
-      sorter: (a, b) => compareByPower(a, b),
-      sortOrder: sortedInfo.columnKey === 'power' ? sortedInfo.order : null,
-      render: (_text, record) => (
-        <div className="w-10 h-10 flex items-center justify-center">
-          {isNumeric(record.power) ? (
-            <BatteryIcon style={{ fontSize: 25 }} />
-          ) : (
-            <BatteryIcon style={{ fontSize: 25, visibility: 'hidden', color: 'transparent' }} />
-          )}
-        </div>
-      ),
+    // {
+    //   title: 'Power',
+    //   dataIndex: 'power',
+    //   key: 'power',
+    //   filters: [
+    //     { text: 'On', value: true },
+    //     { text: 'Off', value: false },
+    //   ],
+    //   filteredValue: filteredInfo.power || null,
+    //   onFilter: (value, record) => {
+    //     return isNumeric(record.power) === value;
+    //   },
+    //   sorter: (a, b) => compareByPower(a, b),
+    //   sortOrder: sortedInfo.columnKey === 'power' ? sortedInfo.order : null,
+    //   render: (_text, record) => (
+    //     <div className="w-10 h-10 flex items-center justify-center">
+    //       {isNumeric(record.power) ? (
+    //         <span>
+    //           <BatteryGauge
+    //             value={record.power}
+    //             size={66}
+    //             formatValue={undefined}
+    //             aspectRatio={0.4}
+    //           />
+    //         </span>
+    //       ) : (
+    //         ''
+    //       )}
+    //     </div>
+    //   ),
 
-      ellipsis: true,
-    },
+    //   ellipsis: true,
+    // },
     {
       title: '',
       key: 'action',
-      align: 'right',
-      render: () => (
-        <Space size="middle" className="justify-between   px-6">
-          <EyeOutlined
-            style={{ ...iconStyles, color: '#1677FF' }}
-            onClick={() => navigate('/home')}
-          />
-          <Space>
-            <DeleteOutlined style={{ ...iconStyles, color: 'red' }} />
-          </Space>
-          <Space>
-            <RightOutlined style={{ ...iconStyles }} />
-          </Space>
-        </Space>
+      width: 100,
+      render: (_text, _record, index) => (
+        <div className="flex items-center justify-center ">
+          <a type="text" onClick={() => expend(`${index + 1}`)}>
+            {!expended.includes(`${index + 1}`) ? (
+              <RightOutlined style={{ ...iconStyles }} />
+            ) : (
+              <DownOutlined style={{ ...iconStyles }} />
+            )}
+          </a>
+        </div>
       ),
     },
   ];
@@ -395,13 +426,19 @@ const SettingDevices: React.FC = () => {
 
         <Table
           style={{ height: 360 }}
-          className="mx-4 items-start content-start "
-          //css={getDevicesListCss(token)}
+          className="items-start content-start "
+          css={getDevicesListCss(token)}
           columns={columns}
           dataSource={data}
           onChange={handleChange}
-          bordered={true}
+          bordered={false}
           pagination={{ position: ['none', 'bottomCenter'] }}
+          expandable={{
+            expandedRowRender,
+            expandIcon: () => undefined,
+            expandedRowKeys: [expended],
+            expandIconColumnIndex: -1,
+          }}
         />
       </Col>
     </Row>
