@@ -145,6 +145,11 @@ function App() {
             colorPrimary: color || '#409eff',
             // fontFamily: 'Arial, apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
           },
+          components: {
+            Table: {
+              headerBorderRadius: 0,
+            },
+          },
           algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
           cssVar: true,
           hashed: false,

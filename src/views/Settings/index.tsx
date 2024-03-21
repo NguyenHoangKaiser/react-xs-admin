@@ -24,6 +24,8 @@ const menuItems: MenuProps['items'] = [
 const SettingLayout = memo(() => {
   const { token } = theme.useToken();
   const { pathname } = useLocation();
+  // take only 2 parts of the pathname
+  const path = pathname.split('/').slice(0, 3).join('/');
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   return (
@@ -51,7 +53,7 @@ const SettingLayout = memo(() => {
         </Typography.Title>
         <Menu
           mode="inline"
-          selectedKeys={menuItems.find((item) => item?.key === pathname) ? [pathname] : []}
+          selectedKeys={menuItems.find((item) => item?.key === path) ? [path] : []}
           style={{ borderWidth: 0 }}
           onClick={(e) => navigate(e.key)}
           items={menuItems}

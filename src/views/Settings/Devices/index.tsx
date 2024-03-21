@@ -446,3 +446,136 @@ const SettingDevices: React.FC = () => {
 };
 
 export default SettingDevices;
+
+// const columns: TableColumnsType<IDevice> = [
+//   {
+//     title: 'Name',
+//     dataIndex: 'name',
+//     key: 'name',
+//   },
+//   {
+//     title: 'Status',
+//     dataIndex: ['device_status', 'status'],
+//     key: 'status',
+//     align: 'center',
+//     width: 100,
+//     render: (status) => (
+//       <Switch checkedChildren={'Active'} unCheckedChildren={'Inactive'} checked={!!status} />
+//     ),
+//   },
+//   {
+//     title: 'Run',
+//     key: 'run',
+//     align: 'center',
+//     width: 100,
+//     render: () => (
+//       <div className="flex items-center justify-center">
+//         <Button
+//           type="primary"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <PlayIcon height={20} width={20} />
+//         </Button>
+//       </div>
+//     ),
+//   },
+//   {
+//     title: 'Action',
+//     key: 'action',
+//     align: 'center',
+//     render: () => (
+//       <Space size={'large'}>
+//         <Button
+//           type="default"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <CopyIcon height={20} width={20} />
+//         </Button>
+//         <Button
+//           type="default"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <Pencil1Icon height={20} width={20} />
+//         </Button>
+//         <Button
+//           type="dashed"
+//           danger
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <TrashIcon height={20} width={20} />
+//         </Button>
+//       </Space>
+//     ),
+//   },
+//   Table.EXPAND_COLUMN,
+// ];
+
+// export default () => {
+//   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
+//   const [pagination, setPagination] = useState<IPagination>({ perPage: 3, currentPage: 1 });
+//   const { data, isFetching } = useGetDevicesQuery(
+//     {
+//       hotel_id: hotel_id?.toString() || '',
+//       floor_id: idx_Floor?.toString() || '',
+//       ...pagination,
+//     },
+//     // {
+//     //   refetchOnFocus: true,
+//     // },
+//   );
+
+//   return (
+//     <ConfigProvider
+//       theme={{
+//         components: {
+//           Table: {
+//             headerBorderRadius: 0,
+//           },
+//         },
+//       }}
+//     >
+//       <Row>
+//         <Col
+//           style={{
+//             padding: '8px 16px',
+//           }}
+//           span={24}
+//         >
+//           <Button type="primary">Add Scene</Button>
+//           <Input.Search style={{ width: 200, float: 'right' }} />
+//         </Col>
+//       </Row>
+//       <div>
+//         <Table
+//           expandable={{
+//             expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.name}</p>,
+//             // rowExpandable: (record) => record.name !== 'Not Expandable',
+//           }}
+//           columns={columns}
+//           loading={isFetching}
+//           rowKey="id"
+//           dataSource={data ? data.items : []}
+//           pagination={{
+//             defaultPageSize: pagination.perPage,
+//             showSizeChanger: true,
+//             defaultCurrent: pagination.currentPage,
+//             current: pagination.currentPage,
+//             pageSizeOptions: ['3', '5', '10', '20'],
+//             position: ['topCenter'],
+//             showTotal(total, range) {
+//               return `${range[0]}-${range[1]} of ${total} items`;
+//             },
+//             total: data?.pagination?.totalCount,
+//             onShowSizeChange(_current, size) {
+//               setPagination((prev) => ({ ...prev, perPage: size }));
+//             },
+//             onChange(page, pageSize) {
+//               setPagination((prev) => ({ ...prev, currentPage: page, perPage: pageSize }));
+//             },
+//           }}
+//           scroll={{ y: 642 }}
+//         />
+//       </div>
+//     </ConfigProvider>
+//   );
+// };

@@ -27,6 +27,7 @@ const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
+const SettingsScenesAdd = lazy(() => import('@/views/Settings/Scenes/AddScene'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -147,7 +148,22 @@ export const defaultRoute: RouteList[] = [
       {
         path: 'scenes',
         id: 'SettingsScenes',
-        element: <SettingsScenes />,
+        redirect: '/setting/scenes/list',
+        // element: <SettingsScenes />,
+        children: [
+          {
+            path: 'list',
+            id: 'SettingsScenesList',
+            element: <SettingsScenes />,
+            meta: { label: 'Setting Scenes', hideSidebar: true },
+          },
+          {
+            path: 'add',
+            id: 'SettingsScenesAdd',
+            element: <SettingsScenesAdd />,
+            meta: { label: 'Add Scene ', hideSidebar: true },
+          },
+        ],
         meta: { label: 'Setting Scenes', hideSidebar: true },
       },
       {
