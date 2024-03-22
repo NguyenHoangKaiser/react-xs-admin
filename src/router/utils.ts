@@ -32,6 +32,7 @@ export enum RouteEnum {
   SettingsDevices = '/setting/devices',
   SettingsScenes = '/setting/scenes',
   SettingsGroups = '/setting/groups',
+  SettingsArea = '/setting/area',
 }
 
 const arr = [
@@ -116,6 +117,10 @@ const arr = [
       {
         path: 'groups',
         id: 'SettingsGroups',
+      },
+      {
+        path: 'area',
+        id: 'SettingsArea',
       },
     ],
   },

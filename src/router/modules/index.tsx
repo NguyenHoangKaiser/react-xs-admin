@@ -27,6 +27,7 @@ const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
+const SettingsArea = lazy(() => import('@/views/Settings/Area'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -156,6 +157,15 @@ export const defaultRoute: RouteList[] = [
         element: <SettingsGroups />,
         meta: {
           label: FormattedMessage({ id: 'group.manageGroup' }),
+          hideSidebar: true,
+        },
+      },
+      {
+        path: 'area',
+        id: 'SettingsArea',
+        element: <SettingsArea />,
+        meta: {
+          label: 'Setting Area',
           hideSidebar: true,
         },
       },
