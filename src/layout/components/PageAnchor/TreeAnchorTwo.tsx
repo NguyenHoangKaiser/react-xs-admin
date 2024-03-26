@@ -58,6 +58,7 @@ const TreeAnchorTwo = ({ children, treeProps, title, loading, inputProps }: Tree
                 style={{ marginBottom: 8, paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
                 placeholder="Search"
                 onChange={onChange}
+                allowClear
               />
             )}
             {title}

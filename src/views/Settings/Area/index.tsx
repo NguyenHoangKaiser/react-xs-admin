@@ -35,12 +35,14 @@ const SettingArea = memo(() => {
     return (
       <Row
         gutter={24}
-        className="flex rowItem place-content-between"
+        className="flex  align-middle justify-between"
         style={{
           margin: 4,
         }}
       >
-        <span>
+        <div
+          style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', display: 'ruby' }}
+        >
           {index > -1 ? (
             <span>
               {beforeStr}
@@ -58,7 +60,7 @@ const SettingArea = memo(() => {
               }}
             />
           </span>
-        </span>
+        </div>
       </Row>
     );
   };
@@ -150,7 +152,7 @@ const SettingArea = memo(() => {
       treeProps={{ treeData, onExpand, expandedKeys, autoExpandParent, onSelect }}
       inputProps={{ onChange }}
     >
-      {add ? (
+      {add || treeData.length === 0 ? (
         <Row className="px-4 pt-4">
           <Col span={24}>
             <Typography.Title level={4}>Khu vực mới</Typography.Title>

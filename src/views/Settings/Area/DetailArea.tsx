@@ -156,14 +156,13 @@ const DetailArea = ({
           okText="Yes"
           cancelText="No"
         >
-          <Button danger className="absolute top-4 right-4">
+          <Button danger className="absolute top-2 right-4">
             Xóa
           </Button>
         </Popconfirm>
-        <Button type="primary" className="absolute top-4 right-24" onClick={() => setOpen(true)}>
+        <Button type="primary" className="absolute top-2 right-20" onClick={() => setOpen(true)}>
           Chỉnh sửa
         </Button>
-
         <EditAreaFormModal
           open={open}
           onCreate={onCreate}
