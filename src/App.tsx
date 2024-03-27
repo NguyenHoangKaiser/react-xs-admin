@@ -7,6 +7,7 @@ import viVN from 'antd/locale/vi_VN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/vi';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Suspense, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { shallowEqual } from 'react-redux';
@@ -17,6 +18,7 @@ import { initAsyncRoute } from './router/utils';
 import type { TSocket } from './socket';
 import { useAppSelector } from './store/hooks';
 import { userSelector } from './store/modules/user';
+
 export interface GlobalContent {
   socket?: TSocket;
   setSocket: (socket: TSocket) => void;
@@ -32,11 +34,12 @@ const px2rem = px2remTransformer({
   rootValue: 16,
 });
 
+dayjs.extend(customParseFormat);
+
 function App() {
-  const { locale, color, themeMode } = useAppSelector(
+  const { locale, themeMode } = useAppSelector(
     (state) => ({
       locale: state.app.locale,
-      color: state.app.color,
       themeMode: state.app.themeMode,
     }),
     shallowEqual,
@@ -137,12 +140,15 @@ function App() {
     return false;
   }, [asyncRouter]);
 
+  const { token } = theme.useToken();
+
   return (
     <StyleProvider transformers={[px2rem]}>
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: color || '#409eff',
+            colorPrimary: token.blue,
+            // colorSuccess: color || COLORS.PrimaryColor,
             // fontFamily: 'Arial, apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
           },
           components: {

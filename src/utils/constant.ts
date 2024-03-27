@@ -1,5 +1,7 @@
 import type { IDevice } from '@/server/apiTypes';
-import type { TreeDataNode } from 'antd';
+import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'antd';
+import dayjs from 'dayjs';
+import _ from 'lodash';
 
 export enum APIs {
   LOGIN = '/site/login',
@@ -12,6 +14,39 @@ export enum APIs {
   GET_DEVICE_INFO = '/device/info',
   CONTROL_DEVICE = '/device/control',
 }
+
+export enum ETimeType {
+  TimeExact = 'time.exact',
+  TimeOnce = 'time.once',
+  TimeDayOfWeek = 'time.dayOfWeek',
+  TimeDayOfMonth = 'time.dayOfMonth',
+  TimeRange = 'time.range',
+  DateRange = 'date.range',
+  TimeSet = 'time.set',
+  // TimeBefore = 'time.before',
+  // TimeAfter = 'time.after',
+  TimeSchedule = 'time.schedule',
+  TimeRepeat = 'time.repeat',
+  TimeDelay = 'time.delay',
+}
+
+export enum ESceneOperator {
+  Equal = 1,
+  NotEqual = 2,
+  GreaterThan = 3,
+  LessThan = 4,
+  GreaterThanOrEqual = 5,
+  LessThanOrEqual = 6,
+}
+
+export enum EConditionsTypeName {
+  All = 1,
+  Any = 2,
+}
+
+export const COLORS = {
+  PrimaryColor: '#409eff',
+};
 
 export type TIconType =
   | 'air-conditioner'
@@ -101,7 +136,55 @@ export const IconTemplate = {
   star: 'star',
 };
 
+const timeFormat = 'HH:mm';
+const dateFormat = 'YYYY-MM-DD HH:mm';
+
 export type IconVariant = keyof typeof IconTemplate;
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
+/**
+ *  Disable date before today and add 12 hours for Antd RangePicker
+ * @param current
+ * @returns
+ */
+const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+  return current && current < dayjs().add(12, 'h').startOf('day');
+};
+
+/**
+ * Range preset for Antd TimeRangePicker with Next 7 days and Next 30 days
+ */
+const timeRangePickerRangePresets: TimeRangePickerProps['presets'] = [
+  { label: 'Next 7 Days', value: [dayjs().add(12, 'h').add(7, 'd'), dayjs().add(12, 'h')] },
+  {
+    label: 'Next 30 Days',
+    value: [dayjs().add(12, 'h').add(30, 'd'), dayjs().add(12, 'h')],
+  },
+];
+
+const disabledDateTime = (current: dayjs.Dayjs) => {
+  if (!current) return {};
+  const now = dayjs();
+  if (current > now.add(12, 'h')) {
+    return {};
+  }
+  return {
+    disabledHours: () => _.range(0, now.add(12, 'h').hour()),
+    // disabledMinutes:
+    //   current.hour() === now.hour() ? () => _.range(0, now.minute()) : () => [],
+    // disabledSeconds:
+    //   current.hour() === now.hour() && current.minute() === now.minute()
+    //     ? () => _.range(0, now.second())
+    //     : () => [],
+  };
+};
+
+export const DATE_UTILS = {
+  disabledDate,
+  disabledDateTime,
+  timeFormat,
+  dateFormat,
+  timeRangePickerRangePresets,
+};
 
 export const FAKE_DATA: {
   devicesList: { items: IDevicesListItem1[] };
