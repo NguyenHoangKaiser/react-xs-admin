@@ -1,6 +1,8 @@
 import type { LocaleId } from '@/locales';
+import { authApi } from '@/server/authApi';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 // import { formatFlatteningRoutes, setUpRoutePath } from '@/router/utils';
 
 export interface AsyncRouteType {
@@ -64,6 +66,16 @@ export const routeSlice = createSlice({
           break;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (_state, { payload }) => {
+      if (payload) {
+        return initialState;
+      }
+    });
   },
 });
 // Each case reducer function generates the corresponding Action Creators

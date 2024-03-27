@@ -176,24 +176,9 @@ export const sceneSlice = createSlice({
     builder.addCase(PURGE, () => {
       return initialState;
     });
-    // builder.addCase(setStoreMultiTabs, (state, { payload }) => {
-    //   if (payload.type === 'delete' && payload.tabs.key === RouteEnum.SettingsScenesAdd) {
-    //     if (state.addingScene) {
-    //       Modal.confirm({
-    //         title: 'Are you sure you want to leave?',
-    //         content: 'You have unsaved changes that will be lost.',
-    //         onOk: () => {
-    //           state.addScene = initialState.addScene;
-    //           state.addingScene = false;
-    //         },
-    //         onCancel: () => {},
-    //       });
-    //     }
-    //   }
-    // });
-    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (_state, { payload }) => {
       if (payload) {
-        state = initialState;
+        return initialState;
       }
     });
   },
