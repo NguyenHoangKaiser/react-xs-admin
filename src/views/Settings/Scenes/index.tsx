@@ -2,17 +2,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { RouteEnum } from '@/router/utils';
 import type { TIconType } from '@/utils/constant';
 import { CopyIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
-import {
-  Button,
-  Col,
-  ConfigProvider,
-  Input,
-  Row,
-  Space,
-  Switch,
-  Table,
-  type TableColumnsType,
-} from 'antd';
+import { Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 interface DataType {
@@ -229,25 +219,9 @@ const data: DataType[] = [
 
 export default () => {
   const navigate = useNavigate();
-  // const [open, setOpen] = useState<boolean>(false);
 
-  // const onCreate = (values: AddSceneFormType) => {
-  //   console.log('Received values of form: ', values);
-  //   setOpen(false);
-  //   navigate(RouteEnum.SettingsScenesAdd, {
-  //     state: { ...values },
-  //   });
-  // };
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Table: {
-            headerBorderRadius: 0,
-          },
-        },
-      }}
-    >
+    <>
       <Row>
         <Col
           style={{
@@ -285,16 +259,7 @@ export default () => {
           }}
         />
       </div>
-      {/* <AddSceneFormModal
-        open={open}
-        onCreate={onCreate}
-        onCancel={() => {}}
-        initialValues={{
-          run_scene: 'auto',
-          allow_restart: true,
-        }}
-      /> */}
-    </ConfigProvider>
+    </>
   );
 };
 

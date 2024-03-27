@@ -16,6 +16,7 @@ import { listenerMiddleware } from './listenerMiddleware';
 import appReducer from './modules/app';
 import hotelReducer from './modules/hotel';
 import routeReducer from './modules/route';
+import sceneReducer from './modules/scene';
 import userReducer from './modules/user';
 
 const reducers = combineReducers({
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   route: routeReducer,
   user: userReducer,
   hotel: hotelReducer,
+  scene: sceneReducer,
 });
 
 const persistConfig = {
@@ -37,7 +39,7 @@ const persistConfig = {
   // "devices",
   // "controlDevices",
   // "charts",
-  whitelist: ['app', 'route', 'user', 'hotel'],
+  whitelist: ['app', 'route', 'user', 'hotel', 'scene'],
   // blacklist Redux Toolkit Query api is recommended
   blacklist: [api.reducerPath],
 };

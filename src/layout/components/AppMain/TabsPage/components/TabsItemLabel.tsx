@@ -1,3 +1,6 @@
+import { RouteEnum } from '@/router/utils';
+import { useAppSelector } from '@/store/hooks';
+import { sceneSelector } from '@/store/modules/scene';
 import type { Interpolation, Theme } from '@emotion/react';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
@@ -20,10 +23,15 @@ const TabsItemLabel = (props: TabsItemLabelProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const { menuItems } = useTabsState(props.pathKey, open);
   const { onTabsDropdownChange } = useTabsChange();
+  const { addingScene } = useAppSelector(sceneSelector);
 
   const menuClick: MenuProps['onClick'] = (e) => {
     e.domEvent.stopPropagation();
-    onTabsDropdownChange(e.key as RightClickTags['code'], props.pathKey);
+    onTabsDropdownChange(e.key as RightClickTags['code'], props.pathKey, {
+      route: [RouteEnum.SettingsScenesAdd],
+      title: 'Are you sure you want to leave? Any unsaved changes will be lost.',
+      trigger: addingScene,
+    });
   };
 
   const contentProps: React.DOMAttributes<HTMLDivElement> = useMemo(() => {

@@ -3,16 +3,18 @@ import type { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { MultiTabsType } from '@/store/modules/route';
 import { setStoreMultiTabs } from '@/store/modules/route';
-import { Modal } from 'antd';
+
+import { App } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { RightClickTags } from './useTabsState';
 interface IConfirmRemoveTab {
   callback?: () => void;
   title: string;
-  route: RouteEnum;
+  route: RouteEnum[];
   trigger: boolean;
 }
 export const useTabsChange = () => {
+  const { modal } = App.useApp();
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,9 +46,9 @@ export const useTabsChange = () => {
     const item = multiTabs.findIndex((i) => i.key === pathKey);
     const tabsLength = multiTabs.length;
 
-    if (confirm && confirm.route === pathKey && confirm.trigger) {
+    if (confirm && confirm.trigger && confirm.route.includes(pathKey as RouteEnum)) {
       const { callback, title } = confirm;
-      Modal.confirm({
+      modal.confirm({
         title,
         onOk() {
           let value: MultiTabsType;
@@ -97,8 +99,12 @@ export const useTabsChange = () => {
       const { key } = multiTabs[selectItemIndex];
       navigate(key);
     }
-    if (confirm && mapList.find((i) => i.key === confirm.route)) {
-      Modal.confirm({
+    if (
+      confirm &&
+      confirm.trigger &&
+      mapList.find((i) => confirm.route.includes(i.key as RouteEnum))
+    ) {
+      modal.confirm({
         title: confirm.title,
         onOk() {
           mapList.forEach((i) => {

@@ -5,11 +5,11 @@ import { theme, Typography } from 'antd';
 const ChainLink = ({
   style,
   active = true,
-  text = 0,
+  text = 1,
 }: {
   style?: React.CSSProperties;
   active?: boolean;
-  text?: 0 | 1;
+  text?: 1 | 2;
 }) => {
   const { token } = theme.useToken();
   return (
@@ -18,11 +18,11 @@ const ChainLink = ({
       <span className="bottom-chain" />
       <Typography.Text
         style={{
-          fontSize: 12,
+          color: active ? token.blue : token.colorText,
         }}
-        type={active ? 'success' : 'secondary'}
+        // type={active ? 'success' : 'secondary'}
       >
-        {text ? 'OR' : 'AND'}
+        {text === 2 ? 'OR' : 'AND'}
       </Typography.Text>
     </div>
   );
@@ -35,8 +35,8 @@ const getDivCss = (token: GlobalToken, active: boolean): CSSObject => {
     '&': {
       position: 'relative',
       width: 45,
-      height: 17,
-      border: `1px solid ${active ? token.colorSuccess : token.colorBorder}`,
+      height: 20,
+      border: `1px solid ${active ? token.blue : token.colorBorder}`,
       backgroundColor: token.colorBgLayout,
       zIndex: 999,
       display: 'flex',
@@ -49,7 +49,7 @@ const getDivCss = (token: GlobalToken, active: boolean): CSSObject => {
       width: 25,
       height: 8,
       right: 9,
-      border: `1px solid ${active ? token.colorSuccess : token.colorBorder}`,
+      border: `1px solid ${active ? token.blue : token.colorBorder}`,
       borderBottom: `1px solid transparent`,
       backgroundColor: token.colorBgLayout,
       zIndex: 1000,
@@ -60,7 +60,7 @@ const getDivCss = (token: GlobalToken, active: boolean): CSSObject => {
       width: 25,
       height: 8,
       right: 9,
-      border: `1px solid ${active ? token.colorSuccess : token.colorBorder}`,
+      border: `1px solid ${active ? token.blue : token.colorBorder}`,
       borderTop: `1px solid transparent`,
       backgroundColor: token.colorBgLayout,
       zIndex: 1000,

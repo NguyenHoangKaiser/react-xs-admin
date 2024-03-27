@@ -1,3 +1,5 @@
+import { EConditionsTypeName, ESceneOperator, ETimeType } from '@/utils/constant';
+
 interface IStates {
   Brightness?: Brightness;
   ColdWarmColor?: ColdWarmColor;
@@ -5,17 +7,18 @@ interface IStates {
   HCL?: HCL;
 }
 
-// type Conditions = '=' | '!=' | '>' | '<' | '>=' | '<=';
-type Conditions = 0 | 1 | 2 | 3 | 4 | 5;
+export type ILightTrait = keyof IStates;
+
+// type Conditions = '==' | '!=' | '>' | '<' | '>=' | '<=';
 
 interface Brightness {
-  brightness?: number;
-  condition?: Conditions;
+  brightness: number;
+  operator: ESceneOperator;
 }
 
 interface ColdWarmColor {
-  coldWarmColor?: number;
-  condition?: Conditions;
+  coldWarmColor: number;
+  operator: ESceneOperator;
 }
 
 interface HCL {
@@ -25,81 +28,134 @@ interface HCL {
 }
 
 interface OnOff {
-  on?: boolean;
+  on: boolean;
+  operator: 1;
 }
 
 interface All {
-  name: 'ALL';
+  name: EConditionsTypeName.All;
 }
 
 interface Any {
-  name: 'ANY';
-  trigger: Array<DeviceCondition | TimeCondition>;
+  name: EConditionsTypeName.Any;
+  trigger: Array<ISceneCondition>;
 }
 
+export type ISceneConditionType = All | Any;
+
+export type ISceneCondition = ISceneDeviceCondition | ISceneTimeCondition;
+export type ISceneAction = ISceneDeviceAction | ISceneTimeAction;
 export interface ISceneRule {
   metadata: {
     name: string;
     description: string;
+    created?: number;
   };
   conditions: {
-    type: All | Any;
-    data: Array<DeviceCondition | TimeCondition>;
+    type: ISceneConditionType;
+    data: Array<ISceneCondition>;
   };
-  actions: Array<Array<DeviceAction | TimeAction>>;
+  actions: {
+    data: Array<ISceneAction>;
+  };
 }
 
-interface DeviceCondition {
+interface ISceneDevice {
+  editing?: boolean;
+  created: number;
+  category: 'device' | 'device-action';
+  type: string | null;
+  deviceId: string | null;
+  states: IStates | null;
+}
+
+export interface ISceneDeviceCondition extends ISceneDevice {
+  editing?: boolean;
+  created: number;
   category: 'device';
-  type: string;
-  deviceId: string;
-  states: IStates | Record<string, Record<string, boolean | number | string>>;
+  type: string | null;
+  deviceId: string | null;
+  states: IStates | null;
+  // states: IStates | Record<string, Record<string, boolean | number | string>> | null;
 }
 
-interface Time1 {
-  category: 'time';
-  type: 'time.before' | 'time.after';
-  value: string;
+interface Time {
+  editing?: boolean;
+  created: number;
+  category: 'time' | 'time-action';
+  type: ETimeType | null;
+  operator?: ESceneOperator | null;
+  value?: number;
+  startDate?: number;
+  endDate?: number;
+  startTime?: string;
+  endTime?: string;
 }
 
-interface Time2 {
+interface TimeExact extends Time {
   category: 'time';
-  type: 'time.range';
-  start: string;
-  end?: string;
-  duration?: string;
+  type: ETimeType.TimeExact;
+  operator: ESceneOperator;
+  value: number;
 }
 
-interface Time3 {
+interface DateRange extends Time {
   category: 'time';
-  type: 'time.set';
+  type: ETimeType.DateRange;
+  startDate: number;
+  endDate: number;
+}
+
+interface TimeRange extends Time {
+  category: 'time';
+  type: ETimeType.TimeRange;
+  startTime: string;
+  endTime: string;
+}
+
+interface Time3 extends Time {
+  category: 'time';
+  type: ETimeType.TimeSet;
   time: 'sunrise' | 'sunset';
   offset: string;
 }
 
-interface Time4 {
+interface Time4 extends Time {
   category: 'time';
-  type: 'time.schedule';
+  type: ETimeType.TimeSchedule;
   weekdays?: Number[];
   months?: Number[];
   days?: Number[];
 }
 
-type TimeCondition = Time1 | Time2 | Time3 | Time4;
+interface Time5 extends Time {
+  category: 'time';
+  type: ETimeType.TimeOnce;
+  value: number;
+}
 
-interface Time5 {
+export type ISceneTimeCondition = Time | TimeExact | DateRange | Time3 | Time4 | Time5;
+
+interface Time15 extends Time {
   category: 'time-action';
-  type: 'time.repeat';
+  type: ETimeType.TimeRepeat;
   repeat: number;
   duration: string;
 }
 
-interface Time6 {
+interface Time16 extends Time {
   category: 'time-action';
-  type: 'time.delay';
+  type: ETimeType.TimeDelay;
   duration: string;
 }
 
-type TimeAction = Time5 | Time6;
+export type ISceneTimeAction = Time | Time15 | Time16;
 
-interface DeviceAction extends DeviceCondition {}
+export interface ISceneDeviceAction extends ISceneDevice {
+  editing?: boolean;
+  created: number;
+  category: 'device-action';
+  type: string | null;
+  deviceId: string | null;
+  states: IStates | null;
+}

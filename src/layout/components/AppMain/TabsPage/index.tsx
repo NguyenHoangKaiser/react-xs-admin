@@ -4,11 +4,12 @@ import { memo, useEffect, useMemo } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 // import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
 import { defaultRoute } from '@/router/modules';
-import { findRouteByPath } from '@/router/utils';
+import { findRouteByPath, RouteEnum } from '@/router/utils';
 import { useAppSelector } from '@/store/hooks';
 // import { useRefresh } from '@/hooks/web/useRefresh';
 import { useRouteList } from '@/hooks/useRouteList';
 import { FormattedMessage } from '@/locales';
+import { sceneSelector } from '@/store/modules/scene';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
 import { getTabsStyle } from './style';
@@ -25,6 +26,7 @@ const TabsPage = memo((_props: Props) => {
   const menuList = routeListToTab(defaultRoute);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
+  const { addingScene } = useAppSelector(sceneSelector);
   const { addRouteTabs, removeTab } = useTabsChange();
   // const { refresh } = useRefresh();
 
@@ -50,7 +52,11 @@ const TabsPage = memo((_props: Props) => {
 
   const onEdit: TabsProps['onEdit'] = (targetKey, action) => {
     if (action === 'remove') {
-      removeTab(targetKey as string);
+      removeTab(targetKey as string, {
+        route: [RouteEnum.SettingsScenesAdd],
+        title: 'Are you sure you want to leave? Any unsaved changes will be lost.',
+        trigger: addingScene,
+      });
     }
   };
 
