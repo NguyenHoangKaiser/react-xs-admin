@@ -32,6 +32,10 @@ export enum RouteEnum {
   SettingsDevices = '/setting/devices',
   SettingsScenes = '/setting/scenes',
   SettingsGroups = '/setting/groups',
+  Statistical = '/statistical',
+  Notification = '/notification',
+  Calendar = '/calendar',
+  CalendarAdd = '/calendar/add',
 }
 
 const arr = [
@@ -118,6 +122,22 @@ const arr = [
         id: 'SettingsGroups',
       },
     ],
+  },
+  {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+  },
+  {
+    path: RouteEnum.Notification,
+    id: 'Notification',
+  },
+  {
+    path: RouteEnum.Calendar,
+    id: 'Calendar',
+  },
+  {
+    path: RouteEnum.CalendarAdd,
+    id: 'CalendarAdd',
   },
 ];
 
