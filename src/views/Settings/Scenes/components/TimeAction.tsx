@@ -205,7 +205,7 @@ const TimeAction = ({
         </Form.Item>
         <div className="mt-4 flex flex-col gap-3">
           {watchTimeType === ETimeType.TimeExact && (
-            <Flex justify="space-between" align="center">
+            <Flex justify="space-between" align="center" gap={12}>
               <Form.Item<TimeFormType> name="formOperator" style={{ width: 100, marginBottom: 0 }}>
                 <OperatorSelect />
               </Form.Item>

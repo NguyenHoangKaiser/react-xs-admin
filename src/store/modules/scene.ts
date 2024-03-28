@@ -242,6 +242,19 @@ export const sceneSlice = createSlice({
       state.editScene = initialState.editScene;
       state.editingScene = false;
     },
+    deleteScene: (
+      state,
+      action: PayloadAction<{
+        created: number;
+      }>,
+    ) => {
+      const find = state.listScene.data.findIndex(
+        (item) => item.metadata.created === action.payload.created,
+      );
+      if (find !== -1) {
+        state.listScene.data.splice(find, 1);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => {
@@ -269,6 +282,7 @@ export const {
   finishEditScene,
   resetAddScene,
   resetEditScene,
+  deleteScene,
 } = sceneSlice.actions;
 
 export const sceneSelector = (state: { scene: SceneSlice }) => state.scene;

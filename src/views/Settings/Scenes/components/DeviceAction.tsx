@@ -216,7 +216,7 @@ const DeviceAction = ({
               <Tag className="tag-title" color="blue">
                 On-Off Switch
               </Tag>
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
                   name={['states', 'OnOff', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
@@ -251,12 +251,12 @@ const DeviceAction = ({
               <Tag className="tag-title" color="blue">
                 Brightness
               </Tag>
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
                   name={['states', 'Brightness', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
                 >
-                  <OperatorSelect />
+                  <OperatorSelect disabled />
                 </Form.Item>
                 <Form.Item<DeviceFormType>
                   name={['states', 'Brightness', 'brightness']}
@@ -280,12 +280,12 @@ const DeviceAction = ({
               <Tag className="tag-title" color="blue">
                 Cold-Warm Color
               </Tag>
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
                   name={['states', 'ColdWarmColor', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
                 >
-                  <OperatorSelect />
+                  <OperatorSelect disabled />
                 </Form.Item>
                 <Form.Item<DeviceFormType>
                   name={['states', 'ColdWarmColor', 'coldWarmColor']}

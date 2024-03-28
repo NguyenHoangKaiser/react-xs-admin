@@ -3,6 +3,7 @@ import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setStoreMultiTabs } from '@/store/modules/route';
 import {
+  deleteScene,
   listSceneSelector,
   resetAddScene,
   sceneSelector,
@@ -128,6 +129,17 @@ export default () => {
             type="dashed"
             danger
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+            onClick={() => {
+              modal.confirm({
+                title: 'Are you sure you want to delete this scene?',
+                content: 'This action cannot be undone.',
+                okText: 'Delete',
+                cancelText: 'Cancel',
+                onOk: () => {
+                  dispatch(deleteScene({ created: record.metadata.created! }));
+                },
+              });
+            }}
           >
             <TrashIcon height={20} width={20} />
           </Button>

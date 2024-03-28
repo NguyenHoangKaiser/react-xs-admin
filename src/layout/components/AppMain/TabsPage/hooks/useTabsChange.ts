@@ -108,7 +108,12 @@ export const useTabsChange = () => {
     if (
       confirm &&
       confirm.trigger &&
-      mapList.find((i) => confirm.route.includes(i.key as RouteEnum))
+      mapList.find((i) => {
+        const pathRoute = confirm?.slice
+          ? i.key.split('/').slice(confirm.slice[0], confirm.slice[1]).join('/')
+          : i.key.split('/').slice(0, 4).join('/');
+        return confirm.route.includes(pathRoute as RouteEnum);
+      })
     ) {
       modal.confirm({
         title: confirm.title,
