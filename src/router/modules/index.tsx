@@ -4,6 +4,7 @@ import { FormattedMessage } from '@/locales';
 import type { RouteList } from '@/router/route';
 import {
   AppstoreOutlined,
+  BarChartOutlined,
   DatabaseOutlined,
   HomeOutlined,
   SettingOutlined,
@@ -27,6 +28,7 @@ const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
+const Statistical = lazy(() => import('@/views/Statistical'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -160,6 +162,12 @@ export const defaultRoute: RouteList[] = [
         },
       },
     ],
+  },
+  {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+    element: <Statistical />,
+    meta: { label: 'Statistical', icon: <BarChartOutlined /> },
   },
 ];
 
