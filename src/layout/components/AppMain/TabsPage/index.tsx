@@ -26,7 +26,7 @@ const TabsPage = memo((_props: Props) => {
   const menuList = routeListToTab(defaultRoute);
   const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
-  const { addingScene } = useAppSelector(sceneSelector);
+  const { addingScene, editingScene } = useAppSelector(sceneSelector);
   const { addRouteTabs, removeTab } = useTabsChange();
   // const { refresh } = useRefresh();
 
@@ -53,9 +53,10 @@ const TabsPage = memo((_props: Props) => {
   const onEdit: TabsProps['onEdit'] = (targetKey, action) => {
     if (action === 'remove') {
       removeTab(targetKey as string, {
-        route: [RouteEnum.SettingsScenesAdd],
-        title: 'Are you sure you want to leave? Any unsaved changes will be lost.',
-        trigger: addingScene,
+        route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
+        title: 'Are you sure you want to leave this page?',
+        content: 'Any unsaved changes will be lost.',
+        trigger: addingScene || editingScene,
       });
     }
   };

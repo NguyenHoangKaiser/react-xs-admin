@@ -1,21 +1,28 @@
 import { authApi } from '@/server/authApi';
-import { EConditionsTypeName } from '@/utils/constant';
+import { EConditionsTypeName, EStatus } from '@/utils/constant';
 import type {
   ISceneAction,
   ISceneCondition,
   ISceneConditionType,
   ISceneRule,
-  IStates,
 } from '@/views/Settings/Scenes/scene';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 import { PURGE } from 'redux-persist';
 interface SceneSlice {
   addScene: ISceneRule;
+  editScene: ISceneRule;
   addingScene: boolean;
+  editingScene: boolean;
+  listScene: {
+    data: ISceneRule[];
+    loading: boolean;
+  };
 }
 const initialState: SceneSlice = {
   addingScene: false,
+  editingScene: false,
   addScene: {
     metadata: {
       name: '',
@@ -29,30 +36,65 @@ const initialState: SceneSlice = {
       data: [],
     },
   },
+  editScene: {
+    metadata: {
+      name: '',
+      description: '',
+    },
+    conditions: {
+      type: { name: 1 },
+      data: [],
+    },
+    actions: {
+      data: [],
+    },
+  },
+  listScene: {
+    data: [],
+    loading: false,
+  },
 };
 
 export const sceneSlice = createSlice({
   name: 'scene',
   initialState,
   reducers: {
-    setAddingSceneState: (state, action: PayloadAction<boolean>) => {
-      state.addingScene = action.payload;
+    setEditScene: (state, action: PayloadAction<ISceneRule>) => {
+      state.editingScene = true;
+      state.editScene = action.payload;
     },
-    setSceneMetadata: (state, action: PayloadAction<ISceneRule['metadata']>) => {
-      state.addScene.metadata = {
-        ...state.addScene.metadata,
-        ...action.payload,
+    setSceneMetadata: (
+      state,
+      action: PayloadAction<{
+        data: ISceneRule['metadata'];
+        for: 'add' | 'edit';
+      }>,
+    ) => {
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].metadata = {
+        ...state[name].metadata,
+        ...action.payload.data,
       };
+      if (name === 'addScene') {
+        state.addingScene = true;
+      } else {
+        state.editingScene = true;
+      }
     },
-    setSceneConditions: (state, action: PayloadAction<ISceneRule['conditions']>) => {
-      state.addScene.conditions = {
-        ...state.addScene.conditions,
-        ...action.payload,
-      };
-    },
-    addSceneCondition: (state, action: PayloadAction<ISceneCondition>) => {
-      state.addScene.conditions.data.push(action.payload);
-      state.addingScene = true;
+    addSceneCondition: (
+      state,
+      action: PayloadAction<{
+        data: ISceneCondition;
+        for: 'add' | 'edit';
+      }>,
+    ) => {
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].conditions.data.push(action.payload.data);
+      if (name === 'addScene') {
+        state.addingScene = true;
+      } else {
+        state.editingScene = true;
+      }
     },
     editSceneConditionData: (
       state,
@@ -60,28 +102,30 @@ export const sceneSlice = createSlice({
         index: number;
         condition: ISceneCondition;
         trigger?: boolean;
+        for: 'add' | 'edit';
       }>,
     ) => {
-      const find = state.addScene.conditions.data.findIndex(
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      const find = state[name].conditions.data.findIndex(
         (item) => item.created === action.payload.condition.created,
       );
       if (find !== -1 && find === action.payload.index) {
-        state.addScene.conditions.data[find] = action.payload.condition;
+        state[name].conditions.data[find] = action.payload.condition;
         if (
           action.payload.trigger !== undefined &&
-          state.addScene.conditions.type.name === EConditionsTypeName.Any
+          state[name].conditions.type.name === EConditionsTypeName.Any
         ) {
-          const find = state.addScene.conditions.type.trigger.findIndex(
+          const find = state[name].conditions.type.trigger.findIndex(
             (item) => item.created === action.payload.condition.created,
           );
           if (find !== -1) {
             if (action.payload.trigger) {
-              state.addScene.conditions.type.trigger[find] = action.payload.condition;
+              state[name].conditions.type.trigger[find] = action.payload.condition;
             } else {
-              state.addScene.conditions.type.trigger.splice(find, 1);
+              state[name].conditions.type.trigger.splice(find, 1);
             }
           } else {
-            state.addScene.conditions.type.trigger.push(action.payload.condition);
+            state[name].conditions.type.trigger.push(action.payload.condition);
           }
         }
       }
@@ -91,85 +135,112 @@ export const sceneSlice = createSlice({
       action: PayloadAction<{
         index: number;
         condition: ISceneAction;
+        for: 'add' | 'edit';
       }>,
     ) => {
-      const find = state.addScene.actions.data.findIndex(
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      const find = state[name].actions.data.findIndex(
         (item) => item.created === action.payload.condition.created,
       );
       if (find !== -1 && find === action.payload.index) {
-        state.addScene.actions.data[find] = action.payload.condition;
+        state[name].actions.data[find] = action.payload.condition;
       }
     },
-    addSceneConditionDataState: (
+    editSceneConditionType: (
       state,
       action: PayloadAction<{
-        index: number;
-        state: IStates;
+        data: ISceneConditionType;
+        for: 'add' | 'edit';
       }>,
     ) => {
-      const oldData = state.addScene.conditions.data[action.payload.index];
-      if (oldData && 'states' in oldData) {
-        state.addScene.conditions.data[action.payload.index] = {
-          ...oldData,
-          states: {
-            ...oldData.states,
-            ...action.payload.state,
-          },
-        };
-      }
-    },
-    editSceneConditionType: (state, action: PayloadAction<ISceneConditionType>) => {
-      state.addScene.conditions.type = action.payload;
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].conditions.type = action.payload.data;
     },
     deleteSceneCondition: (
       state,
       action: PayloadAction<{
         index: number;
         created: number;
+        for: 'add' | 'edit';
       }>,
     ) => {
-      const find = state.addScene.conditions.data.findIndex(
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      const find = state[name].conditions.data.findIndex(
         (item) => item.created === action.payload.created,
       );
       if (find !== -1 && find === action.payload.index) {
-        state.addScene.conditions.data.splice(find, 1);
+        state[name].conditions.data.splice(find, 1);
       }
-      if (state.addScene.conditions.type.name === EConditionsTypeName.Any) {
-        const find = state.addScene.conditions.type.trigger.findIndex(
+      if (state[name].conditions.type.name === EConditionsTypeName.Any) {
+        const find = state[name].conditions.type.trigger.findIndex(
           (item) => item.created === action.payload.created,
         );
         if (find !== -1) {
-          state.addScene.conditions.type.trigger.splice(find, 1);
+          state[name].conditions.type.trigger.splice(find, 1);
         }
       }
     },
-    setSceneActions: (state, action: PayloadAction<ISceneRule['actions']>) => {
-      state.addScene.actions = action.payload;
-    },
-    addSceneAction: (state, action: PayloadAction<ISceneAction>) => {
-      state.addScene.actions.data.push(action.payload);
-      state.addingScene = true;
+    addSceneAction: (
+      state,
+      action: PayloadAction<{
+        data: ISceneAction;
+        for: 'add' | 'edit';
+      }>,
+    ) => {
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].actions.data.push(action.payload.data);
+      if (name === 'addScene') {
+        state.addingScene = true;
+      } else {
+        state.editingScene = true;
+      }
     },
     deleteSceneAction: (
       state,
       action: PayloadAction<{
         index: number;
         created: number;
+        for: 'add' | 'edit';
       }>,
     ) => {
-      const find = state.addScene.actions.data.findIndex(
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      const find = state[name].actions.data.findIndex(
         (item) => item.created === action.payload.created,
       );
       if (find !== -1 && find === action.payload.index) {
-        state.addScene.actions.data.splice(find, 1);
+        state[name].actions.data.splice(find, 1);
       }
     },
-    setAddScene: (state, action: PayloadAction<ISceneRule>) => {
-      state.addScene = action.payload;
-    },
     finishAddScene: (state) => {
+      const { metadata } = state.addScene;
+      state.listScene.data.push({
+        ...state.addScene,
+        metadata: { ...metadata, savedAt: dayjs().unix(), status: EStatus.Active },
+      });
       state.addingScene = false;
       state.addScene = initialState.addScene;
+    },
+    finishEditScene: (state) => {
+      const { metadata } = state.editScene;
+      const find = state.listScene.data.findIndex(
+        (item) => item.metadata.savedAt === metadata.savedAt,
+      );
+      if (find !== -1) {
+        state.listScene.data[find] = {
+          ...state.editScene,
+          metadata: { ...metadata, savedAt: dayjs().unix(), status: EStatus.Active },
+        };
+      }
+      state.editingScene = false;
+      state.editScene = initialState.editScene;
+    },
+    resetAddScene: (state) => {
+      state.addScene = initialState.addScene;
+      state.addingScene = false;
+    },
+    resetEditScene: (state) => {
+      state.editScene = initialState.editScene;
+      state.editingScene = false;
     },
   },
   extraReducers: (builder) => {
@@ -185,25 +256,28 @@ export const sceneSlice = createSlice({
 });
 
 export const {
-  setAddingSceneState,
+  setEditScene,
   setSceneMetadata,
-  setSceneConditions,
-  setSceneActions,
-  setAddScene,
   addSceneAction,
   addSceneCondition,
   deleteSceneAction,
   deleteSceneCondition,
   editSceneConditionData,
   editSceneActionData,
-  addSceneConditionDataState,
   editSceneConditionType,
   finishAddScene,
+  finishEditScene,
+  resetAddScene,
+  resetEditScene,
 } = sceneSlice.actions;
 
 export const sceneSelector = (state: { scene: SceneSlice }) => state.scene;
 export const addSceneSelector = (state: { scene: SceneSlice }) => state.scene.addScene;
+export const editSceneSelector = (state: { scene: SceneSlice }) => state.scene.editScene;
 export const addSceneConditionsSelector = (state: { scene: SceneSlice }) =>
   state.scene.addScene.conditions;
+export const editSceneConditionsSelector = (state: { scene: SceneSlice }) =>
+  state.scene.editScene.conditions;
+export const listSceneSelector = (state: { scene: SceneSlice }) => state.scene.listScene;
 
 export default sceneSlice.reducer;

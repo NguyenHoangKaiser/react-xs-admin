@@ -1,4 +1,10 @@
-import { EConditionsTypeName, ESceneOperator, ETimeType } from '@/utils/constant';
+import {
+  EConditionsTypeName,
+  ESceneOperator,
+  EStatus,
+  ETimeType,
+  TIconType,
+} from '@/utils/constant';
 
 interface IStates {
   Brightness?: Brightness;
@@ -49,7 +55,10 @@ export interface ISceneRule {
   metadata: {
     name: string;
     description: string;
+    icon?: TIconType;
     created?: number;
+    savedAt?: number;
+    status?: EStatus;
   };
   conditions: {
     type: ISceneConditionType;

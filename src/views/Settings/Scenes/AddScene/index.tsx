@@ -6,193 +6,144 @@ import {
   addSceneCondition,
   addSceneSelector,
   editSceneConditionType,
+  editSceneSelector,
   finishAddScene,
+  finishEditScene,
   setSceneMetadata,
 } from '@/store/modules/scene';
-import { EConditionsTypeName } from '@/utils/constant';
-import { DownOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import type { CSSObject } from '@emotion/react';
-import type { FormProps, GlobalToken, MenuProps } from 'antd';
-import {
-  App,
-  Button,
-  Card,
-  Col,
-  Drawer,
-  Dropdown,
-  Flex,
-  Form,
-  Input,
-  Row,
-  Space,
-  Typography,
-  notification,
-  theme,
-} from 'antd';
+import { SaveOutlined, SettingOutlined } from '@ant-design/icons';
+import { App, Button, Col, Drawer, Flex, Form, Input, Row, Space, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
-import { useState, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
-import ActionCard from '../components/ActionCard';
-import ChainLink from '../components/ChainLink';
-import ConditionCard from '../components/ConditionCard';
-const gridStyle: React.CSSProperties = {
-  width: '100%',
-  padding: 0,
-  minHeight: 100,
-};
-
-const typeDrop: MenuProps['items'] = [
-  {
-    label: 'Device',
-    key: 'device',
-  },
-  {
-    label: 'Time',
-    key: 'time',
-  },
-];
-
-const dropItems: MenuProps['items'] = [
-  {
-    label: 'ALL OF THESE ARE TRUE',
-    key: '1',
-  },
-  {
-    label: 'ANY OF THESE ARE TRUE',
-    key: '2',
-  },
-];
+import { useCallback, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import SceneRender from '../components/SceneRender';
+import { getSceneContainerCss } from '../style';
 
 interface FormFieldType {
   name: string;
   description: string;
 }
 
-const CardContent = ({
-  children,
-  type = 1,
-  hideChain,
-}: {
-  children: ReactNode;
-  type?: 1 | 2;
-  hideChain?: boolean;
-}) => {
-  return (
-    <>
-      <Card
-        styles={{
-          body: {
-            padding: '12px 24px',
-            position: 'relative',
-            // width: '100%',
-            // height: '100%',
-          },
-        }}
-        style={gridStyle}
-      >
-        {children}
-      </Card>
-      {!hideChain && (
-        <div className="pl-[100px]">
-          <ChainLink text={type} />
-        </div>
-      )}
-    </>
-  );
-};
-
-export default () => {
+export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const { token } = theme.useToken();
-  const { message } = App.useApp();
-  const { conditions, metadata, actions } = useAppSelector(addSceneSelector);
+  const { message, notification } = App.useApp();
+  const sceneAdd = useAppSelector(addSceneSelector);
+  const sceneEdit = useAppSelector(editSceneSelector);
+  const scene = useMemo(() => (mode === 'add' ? sceneAdd : sceneEdit), [mode, sceneAdd, sceneEdit]);
+  console.log('scene', {
+    scene,
+    mode,
+    sceneAdd,
+    sceneEdit,
+  });
+  const { metadata, conditions, actions } = scene;
   const dispatch = useAppDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { removeTab } = useTabsChange();
-  const getCurrentPathname = (): string => {
-    return location.pathname + location.search;
-  };
-  const onFinish: FormProps<FormFieldType>['onFinish'] = (values) => {
+
+  const onFinish = (values: FormFieldType) => {
     dispatch(
       setSceneMetadata({
-        name: values.name,
-        description: values.description,
-        created: dayjs().unix(),
+        data: {
+          name: values.name,
+          description: values.description,
+          created: dayjs().unix(),
+        },
+        for: mode,
       }),
     );
     setOpenDrawer(false);
     message.success('Scene info updated');
   };
 
-  const onFinishFailed: FormProps<FormFieldType>['onFinishFailed'] = (errorInfo) => {
-    message.error(errorInfo.errorFields[0].errors[0]);
-  };
+  const onClick = useCallback(
+    ({ key }: { key: string }) => {
+      if (Number(key) === 1) {
+        dispatch(editSceneConditionType({ data: { name: 1 }, for: mode }));
+      } else {
+        dispatch(editSceneConditionType({ data: { name: 2, trigger: [] }, for: mode }));
+      }
+    },
+    [dispatch, mode],
+  );
 
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    if (Number(key) === 1) {
-      dispatch(editSceneConditionType({ name: 1 }));
-    } else {
-      dispatch(editSceneConditionType({ name: 2, trigger: [] }));
-    }
-  };
+  const onClickConditionTypeDrop = useCallback(
+    ({ key }: { key: string }) => {
+      switch (key) {
+        case 'device':
+          dispatch(
+            addSceneCondition({
+              data: {
+                editing: true,
+                category: 'device',
+                created: dayjs().unix(),
+                deviceId: null,
+                states: null,
+                type: null,
+              },
+              for: mode,
+            }),
+          );
+          break;
+        case 'time':
+          dispatch(
+            addSceneCondition({
+              data: {
+                editing: true,
+                category: 'time',
+                created: dayjs().unix(),
+                type: null,
+              },
+              for: mode,
+            }),
+          );
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, mode],
+  );
 
-  const onClickConditionTypeDrop: MenuProps['onClick'] = ({ key }) => {
-    switch (key) {
-      case 'device':
-        dispatch(
-          addSceneCondition({
-            editing: true,
-            category: 'device',
-            created: dayjs().unix(),
-            deviceId: null,
-            states: null,
-            type: null,
-          }),
-        );
-        break;
-      case 'time':
-        dispatch(
-          addSceneCondition({
-            editing: true,
-            category: 'time',
-            created: dayjs().unix(),
-            type: null,
-          }),
-        );
-        break;
-      default:
-        break;
-    }
-  };
-
-  const onClickActionTypeDrop: MenuProps['onClick'] = ({ key }) => {
-    switch (key) {
-      case 'device':
-        dispatch(
-          addSceneAction({
-            editing: true,
-            category: 'device-action',
-            created: dayjs().unix(),
-            deviceId: null,
-            states: null,
-            type: null,
-          }),
-        );
-        break;
-      case 'time':
-        dispatch(
-          addSceneAction({
-            editing: true,
-            category: 'time-action',
-            created: dayjs().unix(),
-            type: null,
-          }),
-        );
-        break;
-      default:
-        break;
-    }
-  };
+  const onClickActionTypeDrop = useCallback(
+    ({ key }: { key: string }) => {
+      switch (key) {
+        case 'device':
+          dispatch(
+            addSceneAction({
+              data: {
+                editing: true,
+                category: 'device-action',
+                created: dayjs().unix(),
+                deviceId: null,
+                states: null,
+                type: null,
+              },
+              for: mode,
+            }),
+          );
+          break;
+        case 'time':
+          dispatch(
+            addSceneAction({
+              data: {
+                editing: true,
+                category: 'time-action',
+                created: dayjs().unix(),
+                type: null,
+              },
+              for: mode,
+            }),
+          );
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, mode],
+  );
 
   const onClose = () => {
     setOpenDrawer(false);
@@ -201,32 +152,42 @@ export default () => {
   const showDrawer = () => {
     setOpenDrawer(true);
   };
+  const pathKey = location.pathname + location.search;
 
-  const finishScene = () => {
+  const finishScene = useCallback(() => {
     if (metadata.name === '') {
       message.error('Please enter scene name');
       return;
     }
-    removeTab(getCurrentPathname(), {
-      route: [RouteEnum.SettingsScenesAdd],
-      title: 'Save and Finish Scene? Any unsaved changes will be lost.',
+    removeTab(pathKey, {
+      route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
+      title: mode === 'add' ? 'Finish adding scene?' : 'Finish editing scene?',
+      content: 'Any unsaved changes will be lost.',
       trigger: actions.data.length > 0 || conditions.data.length > 0,
       callback: () => {
-        dispatch(finishAddScene());
+        dispatch(mode === 'add' ? finishAddScene() : finishEditScene());
+        navigate(RouteEnum.SettingsScenes);
         notification.success({
-          message: 'Scene added successfully',
+          message: mode === 'add' ? 'Scene added successfully' : 'Scene updated successfully',
           placement: 'bottomRight',
         });
       },
     });
-  };
-
-  // const location = useLocation();
-  // const state = location.state as AddSceneFormType | null;
-  // const navigate = useNavigate();
+  }, [
+    actions.data.length,
+    conditions.data.length,
+    dispatch,
+    pathKey,
+    metadata.name,
+    message,
+    navigate,
+    notification,
+    removeTab,
+    mode,
+  ]);
 
   return (
-    <div css={getDivCss(token)}>
+    <div css={getSceneContainerCss(token)}>
       <Row className="my-4">
         <Col span={22} offset={1}>
           <Flex justify="space-between" align="center">
@@ -253,85 +214,13 @@ export default () => {
           </Flex>
         </Col>
       </Row>
-      <Row style={{ height: '100%', paddingBottom: 24 }}>
-        <Col span={7} offset={1}>
-          <div className="condition-container">
-            <div className="condition-dropdown">
-              <Dropdown
-                trigger={['click']}
-                menu={{
-                  items: dropItems,
-                  onClick,
-                  selectedKeys: [conditions.type.name.toString()],
-                }}
-              >
-                <Typography.Text style={{ cursor: 'pointer', color: token.blue }}>
-                  <Space>
-                    {conditions.type.name === EConditionsTypeName.All
-                      ? 'ALL OF THESE ARE TRUE'
-                      : 'ANY OF THESE ARE TRUE'}
-                    <DownOutlined />
-                  </Space>
-                </Typography.Text>
-              </Dropdown>
-            </div>
-            {conditions.data.map((condition, index) => {
-              return (
-                <CardContent type={conditions.type.name} key={`condition-${condition.created}`}>
-                  <ConditionCard condition={condition} index={index} />
-                </CardContent>
-              );
-            })}
-            <CardContent hideChain={conditions.data.length > 0} type={conditions.type.name}>
-              <Dropdown
-                menu={{ items: typeDrop, onClick: onClickConditionTypeDrop }}
-                trigger={['click']}
-              >
-                <div
-                  style={{
-                    color: token.colorTextTertiary,
-                    border: `2px dashed ${token.colorBorder}`,
-                    height: 80,
-                    textAlign: 'center',
-                    lineHeight: '80px',
-                  }}
-                >
-                  Click to add Condition
-                </div>
-              </Dropdown>
-            </CardContent>
-          </div>
-        </Col>
-        <Col span={7} offset={1}>
-          <div className="action-container">
-            {actions.data.map((action, index) => {
-              return (
-                <CardContent type={conditions.type.name} key={`action-${action.created}`}>
-                  <ActionCard action={action} index={index} />
-                </CardContent>
-              );
-            })}
-            <CardContent>
-              <Dropdown
-                menu={{ items: typeDrop, onClick: onClickActionTypeDrop }}
-                trigger={['click']}
-              >
-                <div
-                  style={{
-                    color: token.colorTextTertiary,
-                    border: `2px dashed ${token.colorBorder}`,
-                    height: 80,
-                    textAlign: 'center',
-                    lineHeight: '80px',
-                  }}
-                >
-                  Click to add Action
-                </div>
-              </Dropdown>
-            </CardContent>
-          </div>
-        </Col>
-      </Row>
+      <SceneRender
+        mode={mode}
+        scene={scene}
+        onClick={onClick}
+        onClickActionTypeDrop={onClickActionTypeDrop}
+        onClickConditionTypeDrop={onClickConditionTypeDrop}
+      />
       <Drawer
         title="Edit Scene Info"
         getContainer={false}
@@ -350,7 +239,7 @@ export default () => {
           layout="vertical"
           initialValues={metadata}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          // onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FormFieldType>
@@ -360,16 +249,7 @@ export default () => {
           >
             <Input placeholder="Please enter scene name" />
           </Form.Item>
-          <Form.Item<FormFieldType>
-            name="description"
-            label="Description"
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: 'Please enter scene description',
-            //   },
-            // ]}
-          >
+          <Form.Item<FormFieldType> name="description" label="Description">
             <Input.TextArea rows={4} placeholder="Please enter scene description" />
           </Form.Item>
           <Button
@@ -383,42 +263,4 @@ export default () => {
       </Drawer>
     </div>
   );
-};
-
-const getDivCss = (token: GlobalToken): CSSObject => {
-  return {
-    '& .condition-container': {
-      position: 'relative',
-      border: `2px solid ${token.colorBorder}`,
-      padding: token.padding,
-      paddingTop: 49,
-      borderTopLeftRadius: token.borderRadiusLG,
-      borderBottomLeftRadius: token.borderRadiusLG,
-      ['&:hover']: {
-        border: `2px solid ${token.colorPrimaryBorder}`,
-      },
-    },
-    '& .condition-dropdown': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      padding: '4px 10px',
-      borderRight: `2px solid ${token.colorBorder}`,
-      borderBottom: `2px solid ${token.colorBorder}`,
-      borderBottomRightRadius: token.borderRadiusLG,
-      ['&:hover']: {
-        borderRight: `2px solid ${token.colorPrimaryBorder}`,
-        borderBottom: `2px solid ${token.colorPrimaryBorder}`,
-      },
-    },
-    '& .action-container': {
-      border: `2px solid ${token.colorBorder}`,
-      padding: token.padding,
-      borderTopRightRadius: token.borderRadiusLG,
-      borderBottomRightRadius: token.borderRadiusLG,
-      ['&:hover']: {
-        border: `2px solid ${token.colorPrimaryBorder}`,
-      },
-    },
-  };
 };

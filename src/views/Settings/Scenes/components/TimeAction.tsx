@@ -50,7 +50,15 @@ interface TimeFormType {
   formTimeRange?: [dayjs.Dayjs | null, dayjs.Dayjs | null];
 }
 
-const TimeAction = ({ action, index }: { action: ISceneTimeAction; index: number }) => {
+const TimeAction = ({
+  action,
+  index,
+  mode,
+}: {
+  action: ISceneTimeAction;
+  index: number;
+  mode: 'add' | 'edit';
+}) => {
   const { created, category, editing } = action;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
@@ -100,6 +108,7 @@ const TimeAction = ({ action, index }: { action: ISceneTimeAction; index: number
                 operator: formOperator,
                 value: formValue?.unix(),
               },
+              for: mode,
             }),
           );
           message.success('Time action saved');
@@ -120,6 +129,7 @@ const TimeAction = ({ action, index }: { action: ISceneTimeAction; index: number
                 startDate: formDateRange[0]?.unix(),
                 endDate: formDateRange[1]?.unix(),
               },
+              for: mode,
             }),
           );
           message.success('Time action saved');
@@ -140,6 +150,7 @@ const TimeAction = ({ action, index }: { action: ISceneTimeAction; index: number
                 startTime: formTimeRange[0]?.format(DATE_UTILS.timeFormat),
                 endTime: formTimeRange[1]?.format(DATE_UTILS.timeFormat),
               },
+              for: mode,
             }),
           );
           message.success('Time action saved');
@@ -274,6 +285,7 @@ const TimeAction = ({ action, index }: { action: ISceneTimeAction; index: number
                   ...action,
                   editing: true,
                 },
+                for: mode,
               }),
             );
           }}

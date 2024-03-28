@@ -23,14 +23,15 @@ const TabsItemLabel = (props: TabsItemLabelProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const { menuItems } = useTabsState(props.pathKey, open);
   const { onTabsDropdownChange } = useTabsChange();
-  const { addingScene } = useAppSelector(sceneSelector);
+  const { addingScene, editingScene } = useAppSelector(sceneSelector);
 
   const menuClick: MenuProps['onClick'] = (e) => {
     e.domEvent.stopPropagation();
     onTabsDropdownChange(e.key as RightClickTags['code'], props.pathKey, {
-      route: [RouteEnum.SettingsScenesAdd],
-      title: 'Are you sure you want to leave? Any unsaved changes will be lost.',
-      trigger: addingScene,
+      route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
+      title: 'Are you sure you want to close these tabs?',
+      content: 'Any unsaved changes will be lost.',
+      trigger: addingScene || editingScene,
     });
   };
 

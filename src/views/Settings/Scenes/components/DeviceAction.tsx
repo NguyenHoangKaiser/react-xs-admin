@@ -14,7 +14,15 @@ interface DeviceFormType {
   states: IStates;
 }
 
-const DeviceAction = ({ action, index }: { action: ISceneDeviceAction; index: number }) => {
+const DeviceAction = ({
+  action,
+  index,
+  mode,
+}: {
+  action: ISceneDeviceAction;
+  index: number;
+  mode: 'add' | 'edit';
+}) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<DeviceFormType>();
   const watchDeviceId = Form.useWatch('deviceId', form);
@@ -54,6 +62,7 @@ const DeviceAction = ({ action, index }: { action: ISceneDeviceAction; index: nu
           deviceId,
           states,
         },
+        for: mode,
       }),
     );
     message.success('Device action saved');
@@ -317,6 +326,7 @@ const DeviceAction = ({ action, index }: { action: ISceneDeviceAction; index: nu
                   ...action,
                   editing: true,
                 },
+                for: mode,
               }),
             );
           }}

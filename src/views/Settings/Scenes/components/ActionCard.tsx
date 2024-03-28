@@ -9,16 +9,17 @@ import TimeAction from './TimeAction';
 interface Props {
   action: ISceneAction;
   index: number;
+  mode: 'add' | 'edit';
 }
 
 const ActionCard = (props: Props) => {
-  const { action, index } = props;
+  const { action, index, mode } = props;
   const dispatch = useAppDispatch();
   return (
     <>
       <Space style={{ position: 'absolute', top: 2, right: 8 }}>
         <Button
-          onClick={() => dispatch(deleteSceneAction({ index, created: action.created }))}
+          onClick={() => dispatch(deleteSceneAction({ index, created: action.created, for: mode }))}
           style={{ fontSize: 12, padding: 2 }}
           shape="round"
           type="text"
@@ -39,9 +40,9 @@ const ActionCard = (props: Props) => {
         {action.category.toUpperCase()}
       </Typography.Text>
       {action.category === 'device-action' ? (
-        <DeviceAction action={action} index={index} />
+        <DeviceAction mode={mode} action={action} index={index} />
       ) : action.category === 'time-action' ? (
-        <TimeAction action={action} index={index} />
+        <TimeAction mode={mode} action={action} index={index} />
       ) : null}
     </>
   );

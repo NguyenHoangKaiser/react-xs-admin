@@ -160,8 +160,14 @@ export const defaultRoute: RouteList[] = [
           {
             path: 'add',
             id: 'SettingsScenesAdd',
-            element: <SettingsScenesAdd />,
+            element: <SettingsScenesAdd mode="add" />,
             meta: { label: 'Add Scene ', hideSidebar: true },
+          },
+          {
+            path: 'edit/:id',
+            id: 'SettingsScenesEdit',
+            element: <SettingsScenesAdd mode="edit" />,
+            meta: { label: 'Edit Scene ', hideSidebar: true },
           },
         ],
         meta: { label: 'Setting Scenes', hideSidebar: true },

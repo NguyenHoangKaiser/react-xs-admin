@@ -1,7 +1,11 @@
 import { useGetDevicesQuery } from '@/server/devicesApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
-import { addSceneConditionsSelector, editSceneConditionData } from '@/store/modules/scene';
+import {
+  addSceneConditionsSelector,
+  editSceneConditionData,
+  editSceneConditionsSelector,
+} from '@/store/modules/scene';
 import { EConditionsTypeName } from '@/utils/constant';
 import type { CSSObject } from '@emotion/react';
 import { App, Button, Checkbox, Flex, Form, InputNumber, Select, Switch, Tag } from 'antd';
@@ -19,17 +23,22 @@ interface DeviceFormType {
 const DeviceCondition = ({
   condition,
   index,
+  mode,
 }: {
   condition: ISceneDeviceCondition;
   index: number;
+  mode: 'add' | 'edit';
 }) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<DeviceFormType>();
   const watchDeviceId = Form.useWatch('deviceId', form);
   const watchTraitSelect = Form.useWatch('traitSelect', form);
   const { states, deviceId, editing } = condition;
+  const dispatch = useAppDispatch();
   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
-  const { type: conditionsType } = useAppSelector(addSceneConditionsSelector);
+  const { type: addType } = useAppSelector(addSceneConditionsSelector);
+  const { type: editType } = useAppSelector(editSceneConditionsSelector);
+  const conditionsType = mode === 'add' ? addType : editType;
   const { data, isFetching } = useGetDevicesQuery(
     {
       hotel_id: hotel_id?.toString() || '',
@@ -62,12 +71,11 @@ const DeviceCondition = ({
           states,
         },
         trigger,
+        for: mode,
       }),
     );
     message.success('Device condition saved');
   };
-
-  const dispatch = useAppDispatch();
 
   // useEffect to watch watchTraitSelect and update value of OnOff, Brightness, ColdWarmColor
   useEffect(() => {
@@ -267,12 +275,24 @@ const DeviceCondition = ({
                 <Form.Item<DeviceFormType>
                   name={['states', 'Brightness', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select an operator',
+                    },
+                  ]}
                 >
                   <OperatorSelect />
                 </Form.Item>
                 <Form.Item<DeviceFormType>
                   name={['states', 'Brightness', 'brightness']}
                   style={{ marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter a brightness value',
+                    },
+                  ]}
                 >
                   <InputNumber
                     min={0}
@@ -296,12 +316,24 @@ const DeviceCondition = ({
                 <Form.Item<DeviceFormType>
                   name={['states', 'ColdWarmColor', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select an operator',
+                    },
+                  ]}
                 >
                   <OperatorSelect />
                 </Form.Item>
                 <Form.Item<DeviceFormType>
                   name={['states', 'ColdWarmColor', 'coldWarmColor']}
                   style={{ marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter a cold-warm color value',
+                    },
+                  ]}
                 >
                   <InputNumber
                     min={0}
@@ -348,6 +380,7 @@ const DeviceCondition = ({
                   ...condition,
                   editing: true,
                 },
+                for: mode,
               }),
             );
           }}

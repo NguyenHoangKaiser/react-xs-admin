@@ -44,6 +44,12 @@ export enum EConditionsTypeName {
   Any = 2,
 }
 
+export enum EStatus {
+  Inactive = 0,
+  Active = 1,
+  Paused = 2,
+}
+
 export const COLORS = {
   PrimaryColor: '#409eff',
 };

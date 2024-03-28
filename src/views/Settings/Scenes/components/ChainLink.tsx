@@ -1,6 +1,7 @@
 import type { CSSObject } from '@emotion/react';
 import type { GlobalToken } from 'antd';
-import { theme, Typography } from 'antd';
+import { Card, theme, Typography } from 'antd';
+import type { ReactNode } from 'react';
 
 const ChainLink = ({
   style,
@@ -29,6 +30,39 @@ const ChainLink = ({
 };
 
 export default ChainLink;
+
+export const CardContent = ({
+  children,
+  type = 1,
+  hideChain,
+}: {
+  children: ReactNode;
+  type?: 1 | 2;
+  hideChain?: boolean;
+}) => {
+  return (
+    <>
+      <Card
+        styles={{
+          body: {
+            padding: '12px 24px',
+            position: 'relative',
+            // width: '100%',
+            // height: '100%',
+          },
+        }}
+        style={{ width: '100%', minHeight: 100, padding: 0 }}
+      >
+        {children}
+      </Card>
+      {!hideChain && (
+        <div className="pl-[100px]">
+          <ChainLink text={type} />
+        </div>
+      )}
+    </>
+  );
+};
 
 const getDivCss = (token: GlobalToken, active: boolean): CSSObject => {
   return {

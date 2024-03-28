@@ -5,13 +5,16 @@ import type { MultiTabsType } from '@/store/modules/route';
 import { setStoreMultiTabs } from '@/store/modules/route';
 
 import { App } from 'antd';
+import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { RightClickTags } from './useTabsState';
 interface IConfirmRemoveTab {
   callback?: () => void;
-  title: string;
-  route: RouteEnum[];
+  title: ReactNode;
+  content: ReactNode;
+  route: string[];
   trigger: boolean;
+  slice?: [number, number];
 }
 export const useTabsChange = () => {
   const { modal } = App.useApp();
@@ -45,11 +48,14 @@ export const useTabsChange = () => {
   const removeTab = (pathKey: string, confirm?: IConfirmRemoveTab) => {
     const item = multiTabs.findIndex((i) => i.key === pathKey);
     const tabsLength = multiTabs.length;
-
-    if (confirm && confirm.trigger && confirm.route.includes(pathKey as RouteEnum)) {
-      const { callback, title } = confirm;
+    const pathRoute = confirm?.slice
+      ? pathKey.split('/').slice(confirm.slice[0], confirm.slice[1]).join('/')
+      : pathKey.split('/').slice(0, 4).join('/');
+    if (confirm && confirm.trigger && confirm.route.includes(pathRoute as RouteEnum)) {
+      const { callback, title, content } = confirm;
       modal.confirm({
         title,
+        content,
         onOk() {
           let value: MultiTabsType;
           if (multiTabs[item].key === getCurrentPathname()) {
@@ -106,6 +112,7 @@ export const useTabsChange = () => {
     ) {
       modal.confirm({
         title: confirm.title,
+        content: confirm.content,
         onOk() {
           mapList.forEach((i) => {
             handleTabsList(i.key, 'delete');

@@ -41,16 +41,19 @@ export const operatorSelect: {
 interface Props {
   condition: ISceneCondition;
   index: number;
+  mode: 'add' | 'edit';
 }
 
 const ConditionCard = (props: Props) => {
-  const { condition, index } = props;
+  const { condition, index, mode } = props;
   const dispatch = useAppDispatch();
   return (
     <>
       <Space style={{ position: 'absolute', top: 2, right: 8 }}>
         <Button
-          onClick={() => dispatch(deleteSceneCondition({ index, created: condition.created }))}
+          onClick={() =>
+            dispatch(deleteSceneCondition({ index, created: condition.created, for: mode }))
+          }
           style={{ fontSize: 12, padding: 2 }}
           shape="round"
           type="text"
@@ -71,9 +74,9 @@ const ConditionCard = (props: Props) => {
         {condition.category.toUpperCase()}
       </Typography.Text>
       {condition.category === 'device' ? (
-        <DeviceCondition condition={condition} index={index} />
+        <DeviceCondition mode={mode} condition={condition} index={index} />
       ) : condition.category === 'time' ? (
-        <TimeCondition condition={condition} index={index} />
+        <TimeCondition mode={mode} condition={condition} index={index} />
       ) : null}
     </>
   );

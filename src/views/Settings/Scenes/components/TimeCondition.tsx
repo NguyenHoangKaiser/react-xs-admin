@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addSceneConditionsSelector, editSceneConditionData } from '@/store/modules/scene';
+import {
+  addSceneConditionsSelector,
+  editSceneConditionData,
+  editSceneConditionsSelector,
+} from '@/store/modules/scene';
 import { DATE_UTILS, EConditionsTypeName, ESceneOperator, ETimeType } from '@/utils/constant';
 import { App, Button, Checkbox, DatePicker, Flex, Form, Select, TimePicker } from 'antd';
 import dayjs from 'dayjs';
@@ -56,13 +60,23 @@ interface TimeFormType {
   trigger?: boolean;
 }
 
-const TimeCondition = ({ condition, index }: { condition: ISceneTimeCondition; index: number }) => {
+const TimeCondition = ({
+  condition,
+  index,
+  mode,
+}: {
+  condition: ISceneTimeCondition;
+  index: number;
+  mode: 'add' | 'edit';
+}) => {
   const { created, category, editing } = condition;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
   const watchTimeType = Form.useWatch('formType', form);
   const dispatch = useAppDispatch();
-  const { type: conditionsType } = useAppSelector(addSceneConditionsSelector);
+  const { type: addType } = useAppSelector(addSceneConditionsSelector);
+  const { type: editType } = useAppSelector(editSceneConditionsSelector);
+  const conditionsType = mode === 'add' ? addType : editType;
   const handleSelectTimeType = (value: ETimeType) => {
     switch (value) {
       case ETimeType.TimeExact:
@@ -107,6 +121,7 @@ const TimeCondition = ({ condition, index }: { condition: ISceneTimeCondition; i
                 value: formValue?.unix(),
               },
               trigger,
+              for: mode,
             }),
           );
           message.success('Time condition saved');
@@ -128,6 +143,7 @@ const TimeCondition = ({ condition, index }: { condition: ISceneTimeCondition; i
                 endDate: formDateRange[1]?.unix(),
               },
               trigger,
+              for: mode,
             }),
           );
           message.success('Time condition saved');
@@ -149,6 +165,7 @@ const TimeCondition = ({ condition, index }: { condition: ISceneTimeCondition; i
                 endTime: formTimeRange[1]?.format(DATE_UTILS.timeFormat),
               },
               trigger,
+              for: mode,
             }),
           );
           message.success('Time condition saved');
@@ -306,6 +323,7 @@ const TimeCondition = ({ condition, index }: { condition: ISceneTimeCondition; i
                   ...condition,
                   editing: true,
                 },
+                for: mode,
               }),
             );
           }}
