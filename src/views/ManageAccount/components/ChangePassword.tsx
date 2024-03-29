@@ -1,6 +1,7 @@
-import { FormattedMessage, useLocale } from '@/locales';
+import { useLocale } from '@/locales';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { memo } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 interface FieldType {
   oldPassword: string;
