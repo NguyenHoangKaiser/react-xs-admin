@@ -50,6 +50,11 @@ export enum EStatus {
   Paused = 2,
 }
 
+export enum ELocale {
+  en = 'en-US',
+  vi = 'vi-VN',
+}
+
 export const COLORS = {
   PrimaryColor: '#409eff',
 };

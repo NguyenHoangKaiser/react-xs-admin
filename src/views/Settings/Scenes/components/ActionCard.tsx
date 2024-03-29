@@ -1,3 +1,4 @@
+import { getIntlText } from '@/locales';
 import { useAppDispatch } from '@/store/hooks';
 import { deleteSceneAction } from '@/store/modules/scene';
 import { CloseOutlined } from '@ant-design/icons';
@@ -42,7 +43,8 @@ const ActionCard = (props: Props) => {
           lineHeight: '24px',
         }}
       >
-        {action.category.toUpperCase()}
+        {action.category === 'device-action' && getIntlText({ id: 'common.device' })}
+        {action.category === 'time-action' && getIntlText({ id: 'common.time' })}
       </Typography.Text>
       {action.category === 'device-action' ? (
         <DeviceAction viewOnly={viewOnly} mode={mode} action={action} index={index} />

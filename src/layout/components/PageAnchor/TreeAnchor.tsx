@@ -56,9 +56,13 @@ const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) =>
         width={230}
         theme="light"
         collapsed={collapsed}
+        onBreakpoint={(broken) => {
+          if (broken) setCollapsed(true);
+          else setCollapsed(false);
+        }}
         trigger={null}
         collapsible
-        css={{
+        style={{
           backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
           height: 'calc(100vh - 110px)',
@@ -71,15 +75,16 @@ const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) =>
         ) : (
           <>
             {title}
-            {!collapsed && (
-              <Tree
-                style={{ marginTop: 8 }}
-                defaultSelectedKeys={[hash]}
-                defaultExpandAll
-                onSelect={onSelect || onDefaultSelect}
-                {...rest}
-              />
-            )}
+            {/* {!collapsed && ( */}
+            <Tree
+              style={{ marginTop: 8 }}
+              defaultSelectedKeys={[hash]}
+              defaultExpandAll
+              rootStyle={{ display: collapsed ? 'none' : 'block' }}
+              onSelect={onSelect || onDefaultSelect}
+              {...rest}
+            />
+            {/* )} */}
           </>
         )}
         <Button

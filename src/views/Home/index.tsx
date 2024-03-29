@@ -26,9 +26,9 @@ export const collapseListLayout = {
   xs: 1,
   sm: 2,
   md: 4,
-  lg: 6,
-  xl: 8,
-  xxl: 10,
+  lg: 4,
+  xl: 6,
+  xxl: 8,
 };
 
 const Home = memo(() => {

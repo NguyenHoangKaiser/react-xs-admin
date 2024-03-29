@@ -55,7 +55,7 @@ const DeviceCondition = ({
     value: item.devid,
     label: item.name,
   }));
-  const selectedDevice = data?.items?.find((item) => item.devid === (deviceId || watchDeviceId));
+  const selectedDevice = data?.items?.find((item) => item.devid === (watchDeviceId || deviceId));
   const traitsSelect = selectedDevice?.traits?.map((item) => ({
     value: item.name,
     label: item.name,
@@ -188,6 +188,11 @@ const DeviceCondition = ({
             }}
             placeholder="Select a device"
             options={deviceSelect}
+            onChange={(_deviceId) => {
+              form.setFieldsValue({
+                traitSelect: undefined,
+              });
+            }}
           />
         </Form.Item>
         {watchDeviceId && (

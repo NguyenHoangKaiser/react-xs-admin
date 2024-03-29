@@ -47,17 +47,17 @@ const DetailScene = () => {
           const oldPath = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
           dispatch(setStoreMultiTabs({ type: 'delete', tabs: { key: oldPath } }));
           const path = `${RouteEnum.SettingsScenesEdit}/${scene.metadata.created}`;
-          navigateTabs(path, 'Edit Scene');
+          navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
         },
         onCancel: () => {
           const path = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
-          navigateTabs(path, 'Edit Scene');
+          navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
         },
       });
     } else {
       dispatch(setEditScene(scene));
       const path = `${RouteEnum.SettingsScenesEdit}/${scene.metadata.created}`;
-      navigateTabs(path, 'Edit Scene');
+      navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
     }
   };
 

@@ -7,8 +7,18 @@
   "i18n-ally.sortKeys": true,
   "i18n-ally.pathMatcher": "{locale}/modules/{namespaces}.json",
   "i18n-ally.keystyle": "flat",
-  "cSpell.words": ["ahooks", "devid", "hclid", "multisampling", "reqid", "thme", "Todos"],
-  "i18n-ally.sourceLanguage": "vi",
+  "i18n-ally.extract.autoDetect": true,
+  "cSpell.words": [
+    "ahooks",
+    "Appstore",
+    "devid",
+    "hclid",
+    "multisampling",
+    "reqid",
+    "thme",
+    "Todos"
+  ],
+  "i18n-ally.sourceLanguage": "en",
   "i18n-ally.refactor.templates": [
     {
       "key": "i18n-ally.refactor.templates.react-intl",
@@ -56,16 +66,16 @@
       "key": "i18n-ally.refactor.templates.react-intl-6",
       "name": "React Intl 6",
       "description": "React Intl template v6",
-      "template": "FormattedMessage({ id: '{key}' {args}})"
+      "template": "FormatMessage({ id: '{key}' {args}})"
     },
     {
       "key": "i18n-ally.refactor.templates.react-intl-7",
       "name": "React Intl 8",
       "description": "React Intl template v8",
-      "template": "getIntlText('{key}')"
+      "template": "getIntlText({ id: '{key}' {args}})"
     }
   ],
   "i18n-ally.regex.usageMatchAppend": [
-    "[^\\w\\d](?:formatPlural|formatNumber|formatDate|formatTime|formatHTMLMessage|formatMessage|formatRelativeTime)\\(\\{\\s*?['\"`]?id['\"`]?:\\s*['\"`]({key})['\"`]"
+    "[^\\w\\d](?:formatPlural|formatNumber|formatDate|formatTime|formatHTMLMessage|formatMessage|formatRelativeTime|getIntlText|FormatMessage)\\(\\{\\s*?['\"`]?id['\"`]?:\\s*['\"`]({key})['\"`]"
   ]
 }

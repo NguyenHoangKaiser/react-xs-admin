@@ -1,6 +1,6 @@
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
-import { FormattedMessage, useLocale } from '@/locales';
+import { useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
 import { useLoginMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
@@ -9,6 +9,7 @@ import { LoginFormPage, ProFormCheckbox, ProFormText } from '@ant-design/pro-com
 import { Divider, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
 const Login = memo(() => {

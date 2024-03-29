@@ -1,3 +1,4 @@
+import { getIntlText } from '@/locales';
 import { useGetDevicesQuery } from '@/server/devicesApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
@@ -5,6 +6,7 @@ import { editSceneActionData } from '@/store/modules/scene';
 import type { CSSObject } from '@emotion/react';
 import { App, Button, Flex, Form, InputNumber, Select, Switch, Tag } from 'antd';
 import { useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
 import type { ILightTrait, ISceneDeviceAction, IStates } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
@@ -47,7 +49,7 @@ const DeviceAction = ({
     value: item.devid,
     label: item.name,
   }));
-  const selectedDevice = data?.items?.find((item) => item.devid === (deviceId || watchDeviceId));
+  const selectedDevice = data?.items?.find((item) => item.devid === (watchDeviceId || deviceId));
   const traitsSelect = selectedDevice?.traits?.map((item) => ({
     value: item.name,
     label: item.name,
@@ -67,7 +69,7 @@ const DeviceAction = ({
         for: mode,
       }),
     );
-    message.success('Device action saved');
+    message.success(getIntlText({ id: 'common.scene.deviceActionSave' }));
   };
 
   // useEffect to watch watchTraitSelect and update value of OnOff, Brightness, ColdWarmColor
@@ -156,7 +158,7 @@ const DeviceAction = ({
           rules={[
             {
               required: true,
-              message: 'Please select a device',
+              message: getIntlText({ id: 'common.requireDevice' }),
             },
           ]}
           style={{ marginBottom: 4, marginTop: 8 }}
@@ -166,19 +168,19 @@ const DeviceAction = ({
             style={{
               width: '100%',
             }}
-            placeholder="Select a device"
+            placeholder={getIntlText({ id: 'common.selectDevice' })}
             options={deviceSelect}
+            onChange={(_deviceId) => {
+              form.setFieldsValue({
+                traitSelect: undefined,
+              });
+            }}
           />
         </Form.Item>
         {watchDeviceId && (
           <Form.Item<DeviceFormType>
             name="traitSelect"
             rules={[
-              // {
-              //   required: true,
-              //   message: 'Please select a trait',
-              //   type: 'array',
-              // },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   const traits = getFieldValue('traitSelect');
@@ -186,9 +188,9 @@ const DeviceAction = ({
                     if (traits.includes('OnOff')) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('Please select OnOFf trait'));
+                    return Promise.reject(new Error(getIntlText({ id: 'common.requireOnOff' })));
                   }
-                  return Promise.reject(new Error('Please select a trait'));
+                  return Promise.reject(new Error(getIntlText({ id: 'common.requireTraits' })));
                 },
               }),
             ]}
@@ -203,7 +205,7 @@ const DeviceAction = ({
               allowClear
               // mode={canSelectMultiple ? 'multiple' : undefined}
               // allowClear={canSelectMultiple}
-              placeholder="Select a trait"
+              placeholder={getIntlText({ id: 'common.selectTrait' })}
               options={traitsSelect}
               // dropdownRender={(menu) => (
               //   <>
@@ -223,7 +225,7 @@ const DeviceAction = ({
           {watchTraitSelect?.includes('OnOff') && (
             <>
               <Tag className="tag-title" color="blue">
-                On-Off Switch
+                <FormattedMessage id="common.switchOnOff" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -242,7 +244,9 @@ const DeviceAction = ({
                         if (!value) {
                           const traits = getFieldValue('traitSelect');
                           if (traits.includes('ColdWarmColor') || traits.includes('Brightness')) {
-                            return Promise.reject(new Error('Please switch OnOff on'));
+                            return Promise.reject(
+                              new Error(getIntlText({ id: 'common.requireOnOff' })),
+                            );
                           }
                           return Promise.resolve();
                         }
@@ -259,7 +263,7 @@ const DeviceAction = ({
           {watchTraitSelect?.includes('Brightness') && (
             <>
               <Tag className="tag-title" color="blue">
-                Brightness
+                <FormattedMessage id="common.brightness" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -289,7 +293,7 @@ const DeviceAction = ({
           {watchTraitSelect?.includes('ColdWarmColor') && (
             <>
               <Tag className="tag-title" color="blue">
-                Cold-Warm Color
+                <FormattedMessage id="common.colorTemp" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -328,7 +332,7 @@ const DeviceAction = ({
               type="primary"
               onClick={() => form.submit()}
             >
-              Save
+              {getIntlText({ id: 'manageAccount.save' })}
             </Button>
           ) : (
             <Button
@@ -348,7 +352,7 @@ const DeviceAction = ({
               block
               type="default"
             >
-              Edit
+              <FormattedMessage id="common.edit" />
             </Button>
           )}
         </>

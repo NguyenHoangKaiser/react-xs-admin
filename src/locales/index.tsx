@@ -16,7 +16,12 @@ interface Props extends MessageDescriptor {
   id: LocaleId;
 }
 
-export const FormattedMessage: React.FC<Props> = (props) => {
+/**
+ * Function to format the message, used in the component
+ * @param props id: LocaleId - The key of the message
+ * @returns \<FormattedMessage id={props.id} /> of react-intl
+ */
+export const FormatMessage: React.FC<Props> = (props) => {
   return <IntFormattedMessage {...props} id={props.id} />;
 };
 
@@ -66,8 +71,13 @@ export const getIntl = (locale?: LocaleType, changeIntl?: boolean) => {
   });
 };
 
-export const getIntlText = (id: LocaleId) => {
-  return getIntl().formatMessage({ id });
+/**
+ * Get Intl Text function for static use outside of React
+ * @param id LocaleId
+ * @returns string
+ */
+export const getIntlText = (props: { id: LocaleId }) => {
+  return getIntl().formatMessage(props);
 };
 
 /**

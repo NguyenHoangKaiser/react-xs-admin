@@ -1,5 +1,5 @@
 import avatar from '@/assets/avatar.png';
-import { FormattedMessage } from '@/locales';
+import { FormatMessage } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { useLogoutMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
@@ -21,11 +21,11 @@ const AppAccount = () => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: FormattedMessage({ id: 'common.profile' }),
+      label: FormatMessage({ id: 'common.profile' }),
     },
     {
       key: '2',
-      label: FormattedMessage({ id: 'login.signOut' }),
+      label: FormatMessage({ id: 'login.signOut' }),
     },
   ];
 
