@@ -89,6 +89,19 @@ export interface IListIconItem {
   type: TIconType;
 }
 
+export const ListIconVariant: IconVariant[] = [
+  'bulb',
+  'calendar',
+  'rocket',
+  'star',
+  'sun',
+  'moon',
+  'trophy',
+  'umbrella',
+  'medal',
+  'gift',
+];
+
 export const ListIconImage: IListIconItem[] = [
   {
     id: 1,
@@ -203,6 +216,174 @@ export const FAKE_DATA: {
 } = {
   devicesList: {
     items: [
+      {
+        id: 24,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 23,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 22,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 21,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 20,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 19,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 18,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
       {
         id: 17,
         name: 'A20.01',
@@ -932,7 +1113,7 @@ export function generateTreeNode(
   return anchorList;
 }
 export interface IGroupDevices {
-  id: number;
+  id?: number;
   group_name?: string;
   category?: string;
   section?: string;
@@ -3175,6 +3356,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 1,
       group_name: 'group 1',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -3541,6 +3725,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 2,
       group_name: 'group 2',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -3907,6 +4094,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 3,
       group_name: 'group 3',
+      category: 'Dimmer',
+      icon: 'gift',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -4273,6 +4463,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 4,
       group_name: 'group 4',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -4639,6 +4832,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 5,
       group_name: 'group 5',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -5005,6 +5201,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 6,
       group_name: 'group 6',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,

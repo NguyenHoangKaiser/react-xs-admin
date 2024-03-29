@@ -1,6 +1,6 @@
 import { useLocale } from '@/locales';
 import { RouteEnum } from '@/router/utils';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, Typography, theme } from 'antd';
 import { memo, useState } from 'react';
@@ -23,6 +23,10 @@ const SettingLayout = memo(() => {
     {
       key: RouteEnum.SettingsGroups,
       label: `3. ${formatMessage({ id: 'common.groups' })}`,
+    },
+    {
+      key: RouteEnum.SettingsArea,
+      label: `4. ${formatMessage({ id: 'common.area' })}`,
     },
   ];
   const { token } = theme.useToken();
@@ -52,19 +56,25 @@ const SettingLayout = memo(() => {
           height: 'calc(100vh - 110px)',
         }}
       >
-        <Typography.Title
-          level={5}
-          style={{ marginLeft: 16, marginTop: 16, color: token.colorTextBase }}
-        >
-          {formatMessage({ id: 'common.settings' })}
-        </Typography.Title>
+        {collapsed ? (
+          <div className="flex m-auto justify-center items-center pt-6 pb-4">
+            <SettingOutlined />
+          </div>
+        ) : (
+          <Typography.Title
+            level={5}
+            style={{ marginLeft: 16, marginTop: 16, color: token.colorTextBase }}
+          >
+            {formatMessage({ id: 'common.settings' })}
+          </Typography.Title>
+        )}
         <Menu
           mode="inline"
           selectedKeys={menuItems.find((item) => item?.key === path) ? [path] : []}
           style={{ borderWidth: 0 }}
           onClick={(e) => navigate(e.key)}
           items={menuItems}
-          css={getSettingCss(token)}
+          css={getSettingCss(token, collapsed)}
         />
         <Button
           style={{

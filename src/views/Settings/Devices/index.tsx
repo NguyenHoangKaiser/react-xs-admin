@@ -370,9 +370,9 @@ const SettingDevices: React.FC = () => {
         <div className="flex items-center justify-center ">
           <a type="text" onClick={() => expend(`${index + 1}`)}>
             {!expended.includes(`${index + 1}`) ? (
-              <RightOutlined style={{ ...iconStyles }} />
+              <RightOutlined style={{ ...iconStyles, color: token.colorText }} />
             ) : (
-              <DownOutlined style={{ ...iconStyles }} />
+              <DownOutlined style={{ ...iconStyles, color: token.colorText }} />
             )}
           </a>
         </div>
