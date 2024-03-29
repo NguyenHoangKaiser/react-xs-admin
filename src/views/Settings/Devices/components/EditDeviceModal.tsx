@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import { ListIconImage, type DataType, type FieldType } from '@/utils/constant';
 import { Button, Form, Input, Modal, Select, Space, theme, type FormInstance } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -75,12 +76,14 @@ const DeviceEditFormModal: React.FC<DeviceEditFormModalProps> = ({
   initialValues,
 }) => {
   const [formInstance, setFormInstance] = useState<FormInstance>();
+  const { formatMessage } = useLocale();
+
   return (
     <Modal
       open={open}
-      title="Chỉnh sửa thiết bị"
-      okText="Đồng ý"
-      cancelText="Hủy"
+      title={formatMessage({ id: 'common.editDevice' })}
+      okText={formatMessage({ id: 'common.agree' })}
+      cancelText={formatMessage({ id: 'common.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose

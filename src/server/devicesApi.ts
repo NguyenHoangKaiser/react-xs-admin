@@ -33,7 +33,7 @@ export interface IGetDevicesResult {
   pagination?: IPagination;
 }
 
-export interface IGetDevicesParams {
+export interface IGetDevicesParams extends IPagination {
   floor_id?: string;
   hotel_id?: string;
 }

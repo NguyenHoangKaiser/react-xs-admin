@@ -2,6 +2,7 @@ import type { IDeviceType, IFloor } from '@/server/apiTypes';
 import { authApi } from '@/server/authApi';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 
 interface HotelSlice {
   hotel_id?: number;
@@ -41,6 +42,9 @@ export const HotelSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
     builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
       const hotel = payload.hotels?.[0];
       const floors = hotel?.floors?.filter((floor) => floor._id !== '640a0aaa93d12cc790014a64');
@@ -49,6 +53,11 @@ export const HotelSlice = createSlice({
       state.floors = floors;
       state.idx_Floor = floors?.[0]._id;
       state.ip_local = hotel?.ip_local;
+    });
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (_state, { payload }) => {
+      if (payload) {
+        return initialState;
+      }
     });
   },
 });

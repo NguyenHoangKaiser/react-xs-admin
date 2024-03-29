@@ -1,20 +1,18 @@
 import { useLocale } from '@/locales';
 import { Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { useInfoPageTabs } from './hooks/useInfoPageTabs';
 
-const DateilsPage = () => {
-  const navigate = useNavigate();
+const DetailsPage = () => {
   const intl = useLocale();
 
-  const { handleTabs } = useInfoPageTabs();
+  const { navigateTabs } = useInfoPageTabs();
   const queryChange = (pateType: 'query' | 'params', i: number) => {
     let path = `/details-page/details-info?id=${i}`;
     if (pateType === 'params') {
       path = `/details-page/details-params/${i}`;
     }
-    handleTabs(pateType, 'add', i);
-    navigate(path);
+    // handleTabs(pateType, 'add', i);
+    navigateTabs(path);
   };
 
   return (
@@ -41,4 +39,4 @@ const DateilsPage = () => {
   );
 };
 
-export default DateilsPage;
+export default DetailsPage;

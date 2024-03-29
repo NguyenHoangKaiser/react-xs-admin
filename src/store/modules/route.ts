@@ -1,6 +1,9 @@
 import type { LocaleId } from '@/locales';
+import type { RouteEnum } from '@/router/utils';
+import { authApi } from '@/server/authApi';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 // import { formatFlatteningRoutes, setUpRoutePath } from '@/router/utils';
 
 export interface AsyncRouteType {
@@ -21,7 +24,7 @@ export interface AsyncRouteType {
 export interface MultiTabsType {
   label?: string;
   localeLabel?: LocaleId;
-  key: string;
+  key: string | RouteEnum;
 }
 
 interface RouteState {
@@ -65,8 +68,22 @@ export const routeSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (_state, { payload }) => {
+      if (payload) {
+        return initialState;
+      }
+    });
+  },
 });
 // Each case reducer function generates the corresponding Action Creators
 export const { setStoreAsyncRouter, setStoreMultiTabs } = routeSlice.actions;
+
+export const routeSelector = (state: { route: RouteState }) => state.route;
+export const asyncRouterSelector = (state: { route: RouteState }) => state.route.asyncRouter;
+export const multiTabsSelector = (state: { route: RouteState }) => state.route.multiTabs;
 
 export default routeSlice.reducer;

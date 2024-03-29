@@ -32,6 +32,11 @@ export enum RouteEnum {
   SettingsDevices = '/setting/devices',
   SettingsScenes = '/setting/scenes',
   SettingsGroups = '/setting/groups',
+  SettingsArea = '/setting/area',
+  SettingsScenesList = '/setting/scenes/list',
+  SettingsScenesAdd = '/setting/scenes/add',
+  SettingsScenesEdit = '/setting/scenes/edit',
+  SettingsScenesDetail = '/setting/scenes/detail',
 }
 
 const arr = [
@@ -112,10 +117,21 @@ const arr = [
       {
         path: 'scenes',
         id: 'SettingsScenes',
+        redirect: RouteEnum.SettingsScenesList,
+        children: [
+          { path: 'list', id: 'SettingsScenesList' },
+          { path: 'add', id: 'SettingsScenesAdd' },
+          { path: 'edit/:id', id: 'SettingsScenesEdit' },
+          { path: 'detail/:id', id: 'SettingsScenesDetail' },
+        ],
       },
       {
         path: 'groups',
         id: 'SettingsGroups',
+      },
+      {
+        path: 'area',
+        id: 'SettingsArea',
       },
     ],
   },
