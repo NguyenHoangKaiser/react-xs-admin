@@ -1,4 +1,5 @@
 import type { LocaleType } from '@/locales';
+import { COLORS } from '@/utils/constant';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -17,9 +18,9 @@ export interface AppConfigMode {
 const initialState: AppConfigMode = {
   collapsed: true,
   locale: 'vi-VN',
-  themeMode: 'light',
+  themeMode: 'dark',
   sidebarMode: 'vertical',
-  color: '#409eff',
+  color: COLORS.PrimaryColor,
   toggleNotice: false,
 };
 

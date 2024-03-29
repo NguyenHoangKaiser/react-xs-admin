@@ -13,7 +13,7 @@ type GetTodosResponse = ITodo[];
 export const todosApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getTodos: builder.query<GetTodosResponse, void>({
-      query: () => APIs.GET_TODOS,
+      query: () => APIs.MOCK_GET_TODOS,
       ...transformFactory<GetTodosResponse>(),
       // we need to manually specify the tags type in the createApi call tagTypes: ['Todos'] to use this
       providesTags: (result = []) => [

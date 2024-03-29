@@ -19,6 +19,7 @@ const LayoutApp: React.FC = () => {
         <Navbar />
         <AppMain />
       </Layout>
+      {/* <PageBlockerPrompt when={false} useWindowPrompt tabs={[RouteEnum.SettingsScenesAdd]} /> */}
     </div>
   );
 };

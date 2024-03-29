@@ -1,12 +1,11 @@
 // Interface data format used to return a unified format
 import { ResultEnum } from './enum';
 
-export function resultSuccess<T = Recordable>(result: T, { message = 'ok' } = {}) {
+export function resultSuccess<T = Recordable>(result: T) {
   return {
-    code: ResultEnum.SUCCESS,
+    statusCode: ResultEnum.SUCCESS,
     data: result,
-    message,
-    type: 'success',
+    success: true,
   };
 }
 
