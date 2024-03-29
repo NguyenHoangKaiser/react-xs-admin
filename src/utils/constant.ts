@@ -142,8 +142,8 @@ export const IconTemplate = {
   star: 'star',
 };
 
-const timeFormat = 'HH:mm';
-const dateFormat = 'YYYY-MM-DD HH:mm';
+const timeFormat = 'HH:mm:ss';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 export type IconVariant = keyof typeof IconTemplate;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;

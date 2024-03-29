@@ -99,6 +99,7 @@ interface Time {
   endDate?: number;
   startTime?: string;
   endTime?: string;
+  duration?: number;
 }
 
 interface TimeExact extends Time {
@@ -149,16 +150,16 @@ interface Time15 extends Time {
   category: 'time-action';
   type: ETimeType.TimeRepeat;
   repeat: number;
-  duration: string;
+  duration: number;
 }
 
-interface Time16 extends Time {
+interface TimeDelay extends Time {
   category: 'time-action';
   type: ETimeType.TimeDelay;
-  duration: string;
+  duration: number;
 }
 
-export type ISceneTimeAction = Time | Time15 | Time16;
+export type ISceneTimeAction = Time | Time15 | TimeDelay;
 
 export interface ISceneDeviceAction extends ISceneDevice {
   editing?: boolean;

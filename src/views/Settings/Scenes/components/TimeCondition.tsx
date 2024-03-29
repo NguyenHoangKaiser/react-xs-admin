@@ -64,10 +64,12 @@ const TimeCondition = ({
   condition,
   index,
   mode,
+  viewOnly,
 }: {
   condition: ISceneTimeCondition;
   index: number;
   mode: 'add' | 'edit';
+  viewOnly?: boolean;
 }) => {
   const { created, category, editing } = condition;
   const { message } = App.useApp();
@@ -189,7 +191,7 @@ const TimeCondition = ({
     <div className="mx-6">
       <Form
         // layout="vertical"
-        disabled={!editing}
+        disabled={!editing || viewOnly}
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
@@ -302,37 +304,40 @@ const TimeCondition = ({
           )}
         </div>
       </Form>
-
-      {editing ? (
-        <Button
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          // disabled={isFetching || !watchDeviceId || !watchTraitSelect}
-          type="primary"
-          onClick={() => form.submit()}
-        >
-          Save
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            dispatch(
-              editSceneConditionData({
-                index,
-                condition: {
-                  ...condition,
-                  editing: true,
-                },
-                for: mode,
-              }),
-            );
-          }}
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          type="default"
-        >
-          Edit
-        </Button>
+      {!viewOnly && (
+        <>
+          {editing ? (
+            <Button
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              // disabled={isFetching || !watchDeviceId || !watchTraitSelect}
+              type="primary"
+              onClick={() => form.submit()}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                dispatch(
+                  editSceneConditionData({
+                    index,
+                    condition: {
+                      ...condition,
+                      editing: true,
+                    },
+                    for: mode,
+                  }),
+                );
+              }}
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              type="default"
+            >
+              Edit
+            </Button>
+          )}
+        </>
       )}
     </div>
   );

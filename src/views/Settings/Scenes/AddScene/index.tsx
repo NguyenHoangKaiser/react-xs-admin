@@ -12,7 +12,7 @@ import {
   setSceneMetadata,
 } from '@/store/modules/scene';
 import { SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { App, Button, Col, Drawer, Flex, Form, Input, Row, Space, Typography, theme } from 'antd';
+import { App, Button, Col, Drawer, Flex, Form, Input, Row, Space, theme } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -49,7 +49,6 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         data: {
           name: values.name,
           description: values.description,
-          created: dayjs().unix(),
         },
         for: mode,
       }),
@@ -166,38 +165,39 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
       trigger: actions.data.length > 0 || conditions.data.length > 0,
       callback: () => {
         dispatch(mode === 'add' ? finishAddScene() : finishEditScene());
-        navigate(RouteEnum.SettingsScenes);
         notification.success({
           message: mode === 'add' ? 'Scene added successfully' : 'Scene updated successfully',
           placement: 'bottomRight',
         });
+        // navigate(RouteEnum.SettingsScenes, { replace: true });
       },
     });
-  }, [
-    actions.data.length,
-    conditions.data.length,
-    dispatch,
-    pathKey,
-    metadata.name,
-    message,
-    navigate,
-    notification,
-    removeTab,
-    mode,
-  ]);
+  }, [actions.data.length, conditions.data.length, pathKey, metadata.name, navigate, mode]);
 
   return (
     <div css={getSceneContainerCss(token)}>
       <Row className="my-4">
         <Col span={22} offset={1}>
           <Flex justify="space-between" align="center">
-            {metadata.name ? (
-              <Typography.Title level={3}>{metadata.name}</Typography.Title>
-            ) : (
-              <Typography.Title level={3} type="secondary">
-                Enter name in Edit Scene Info
-              </Typography.Title>
-            )}
+            <Button type="text" onClick={showDrawer} className="title-scene">
+              {metadata.name ? (
+                <span
+                  style={{
+                    color: token.colorText,
+                  }}
+                >
+                  {metadata.name}
+                </span>
+              ) : (
+                <span
+                  style={{
+                    color: token.colorTextSecondary,
+                  }}
+                >
+                  Enter name in Edit Scene Info
+                </span>
+              )}
+            </Button>
             <Space>
               <Button type="default" icon={<SettingOutlined />} onClick={showDrawer}>
                 Edit Scene Info

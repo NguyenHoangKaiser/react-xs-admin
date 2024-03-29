@@ -35,6 +35,7 @@ export enum RouteEnum {
   SettingsScenesList = '/setting/scenes/list',
   SettingsScenesAdd = '/setting/scenes/add',
   SettingsScenesEdit = '/setting/scenes/edit',
+  SettingsScenesDetail = '/setting/scenes/detail',
 }
 
 const arr = [
@@ -120,6 +121,7 @@ const arr = [
           { path: 'list', id: 'SettingsScenesList' },
           { path: 'add', id: 'SettingsScenesAdd' },
           { path: 'edit/:id', id: 'SettingsScenesEdit' },
+          { path: 'detail/:id', id: 'SettingsScenesDetail' },
         ],
       },
       {

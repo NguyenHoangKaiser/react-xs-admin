@@ -32,17 +32,25 @@ const dropItems: MenuProps['items'] = [
 
 interface SceneRenderProps {
   scene: ISceneRule;
-  onClickConditionTypeDrop: MenuProps['onClick'];
-  onClickActionTypeDrop: MenuProps['onClick'];
-  onClick: MenuProps['onClick'];
+  onClickConditionTypeDrop?: MenuProps['onClick'];
+  onClickActionTypeDrop?: MenuProps['onClick'];
+  onClick?: MenuProps['onClick'];
   mode: 'add' | 'edit';
+  viewOnly?: boolean;
 }
 
 const SceneRender = memo((props: SceneRenderProps) => {
-  const { scene, onClickConditionTypeDrop, onClickActionTypeDrop, onClick, mode } = props;
+  const {
+    scene,
+    onClickConditionTypeDrop,
+    onClickActionTypeDrop,
+    onClick,
+    mode,
+    viewOnly = false,
+  } = props;
   const { conditions, actions } = scene;
   const { token } = theme.useToken();
-  console.log('SceneRender');
+
   return (
     <Row style={{ height: '100%', paddingBottom: 24 }}>
       <Col span={7} offset={1}>
@@ -50,76 +58,101 @@ const SceneRender = memo((props: SceneRenderProps) => {
           <div className="condition-dropdown">
             <Dropdown
               trigger={['click']}
+              disabled={viewOnly}
               menu={{
                 items: dropItems,
                 onClick,
                 selectedKeys: [conditions.type.name.toString()],
               }}
             >
-              <Typography.Text style={{ cursor: 'pointer', color: token.blue }}>
+              <Typography.Text
+                style={{ cursor: viewOnly ? 'default' : 'pointer', color: token.blue }}
+              >
                 <Space>
                   {conditions.type.name === EConditionsTypeName.All
                     ? 'ALL OF THESE ARE TRUE'
                     : 'ANY OF THESE ARE TRUE'}
-                  <DownOutlined />
+                  {viewOnly ? null : <DownOutlined />}
                 </Space>
               </Typography.Text>
             </Dropdown>
           </div>
           {conditions.data.map((condition, index) => {
             return (
-              <CardContent type={conditions.type.name} key={`condition-${condition.created}`}>
-                <ConditionCard mode={mode} condition={condition} index={index} />
+              <CardContent
+                hideChain={
+                  viewOnly && conditions.data.length > 0 && index === conditions.data.length - 1
+                }
+                type={conditions.type.name}
+                key={`condition-${condition.created}`}
+              >
+                <ConditionCard
+                  viewOnly={viewOnly}
+                  mode={mode}
+                  condition={condition}
+                  index={index}
+                />
               </CardContent>
             );
           })}
-          <CardContent hideChain={conditions.data.length > 0} type={conditions.type.name}>
-            <Dropdown
-              menu={{ items: typeDrop, onClick: onClickConditionTypeDrop }}
-              trigger={['click']}
-            >
-              <div
-                style={{
-                  color: token.colorTextTertiary,
-                  border: `2px dashed ${token.colorBorder}`,
-                  height: 80,
-                  textAlign: 'center',
-                  lineHeight: '80px',
-                }}
+          {!viewOnly && (
+            <CardContent hideChain={conditions.data.length > 0} type={conditions.type.name}>
+              <Dropdown
+                menu={{ items: typeDrop, onClick: onClickConditionTypeDrop }}
+                trigger={['click']}
               >
-                Click to add Condition
-              </div>
-            </Dropdown>
-          </CardContent>
+                <div
+                  style={{
+                    color: token.colorTextTertiary,
+                    border: `2px dashed ${token.colorBorder}`,
+                    height: 80,
+                    textAlign: 'center',
+                    lineHeight: '80px',
+                  }}
+                >
+                  Click to add Condition
+                </div>
+              </Dropdown>
+            </CardContent>
+          )}
         </div>
       </Col>
       <Col span={7} offset={1}>
         <div className="action-container">
+          <div className="action-dropdown">
+            <Typography.Text style={{ color: token.blue }}>DO THE FOLLOWING</Typography.Text>
+          </div>
           {actions.data.map((action, index) => {
             return (
-              <CardContent type={conditions.type.name} key={`action-${action.created}`}>
-                <ActionCard mode={mode} action={action} index={index} />
+              <CardContent
+                hideChain={viewOnly && actions.data.length > 0 && index === actions.data.length - 1}
+                key={`action-${action.created}`}
+              >
+                <ActionCard viewOnly={viewOnly} mode={mode} action={action} index={index} />
               </CardContent>
             );
           })}
-          <CardContent>
-            <Dropdown
-              menu={{ items: typeDrop, onClick: onClickActionTypeDrop }}
-              trigger={['click']}
-            >
-              <div
-                style={{
-                  color: token.colorTextTertiary,
-                  border: `2px dashed ${token.colorBorder}`,
-                  height: 80,
-                  textAlign: 'center',
-                  lineHeight: '80px',
-                }}
+          {!viewOnly && (
+            <CardContent>
+              <Dropdown
+                disabled={viewOnly}
+                menu={{ items: typeDrop, onClick: onClickActionTypeDrop }}
+                trigger={['click']}
               >
-                Click to add Action
-              </div>
-            </Dropdown>
-          </CardContent>
+                <div
+                  style={{
+                    color: token.colorTextTertiary,
+                    border: `2px dashed ${token.colorBorder}`,
+                    height: 80,
+                    textAlign: 'center',
+                    lineHeight: '80px',
+                  }}
+                >
+                  Click to add Action
+                </div>
+              </Dropdown>
+            </CardContent>
+          )}
         </div>
       </Col>
     </Row>

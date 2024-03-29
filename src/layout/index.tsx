@@ -1,8 +1,6 @@
-import { RouteEnum } from '@/router/utils';
 import { Layout, theme } from 'antd';
 import AppMain from './components/AppMain/AppMain';
 import Navbar from './components/Navbar';
-import PageBlockerPrompt from './components/PageBlocker';
 import SidebarInline from './components/Sidebar/SidebarInline';
 import './index.less';
 
@@ -21,7 +19,7 @@ const LayoutApp: React.FC = () => {
         <Navbar />
         <AppMain />
       </Layout>
-      <PageBlockerPrompt when={false} useWindowPrompt tabs={[RouteEnum.SettingsScenesAdd]} />
+      {/* <PageBlockerPrompt when={false} useWindowPrompt tabs={[RouteEnum.SettingsScenesAdd]} /> */}
     </div>
   );
 };

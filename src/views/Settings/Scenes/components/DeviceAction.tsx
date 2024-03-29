@@ -18,10 +18,12 @@ const DeviceAction = ({
   action,
   index,
   mode,
+  viewOnly,
 }: {
   action: ISceneDeviceAction;
   index: number;
   mode: 'add' | 'edit';
+  viewOnly?: boolean;
 }) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<DeviceFormType>();
@@ -70,61 +72,68 @@ const DeviceAction = ({
 
   // useEffect to watch watchTraitSelect and update value of OnOff, Brightness, ColdWarmColor
   useEffect(() => {
-    if (states || !editing) {
+    if (!editing) {
       return;
     }
+    const stateKey = Object.keys(states || {});
     if (watchTraitSelect) {
-      if (watchTraitSelect.includes('OnOff')) {
-        form.setFieldsValue({
-          states: {
-            OnOff: {
-              on: true,
-              operator: 1,
+      if (!stateKey.includes('OnOff')) {
+        if (watchTraitSelect.includes('OnOff')) {
+          form.setFieldsValue({
+            states: {
+              OnOff: {
+                on: true,
+                operator: 1,
+              },
             },
-          },
-        });
-      } else {
-        form.setFieldsValue({
-          states: {
-            OnOff: undefined,
-          },
-        });
+          });
+        } else {
+          form.setFieldsValue({
+            states: {
+              OnOff: undefined,
+            },
+          });
+        }
       }
-      if (watchTraitSelect.includes('Brightness')) {
-        form.setFieldsValue({
-          states: {
-            ...form.getFieldValue('states'),
-            Brightness: {
-              brightness: 50,
-              operator: 1,
+      if (!stateKey.includes('Brightness')) {
+        if (watchTraitSelect.includes('Brightness')) {
+          form.setFieldsValue({
+            states: {
+              ...form.getFieldValue('states'),
+              Brightness: {
+                brightness: 50,
+                operator: 1,
+              },
             },
-          },
-        });
-      } else {
-        form.setFieldsValue({
-          states: {
-            ...form.getFieldValue('states'),
-            Brightness: undefined,
-          },
-        });
+          });
+        } else {
+          form.setFieldsValue({
+            states: {
+              ...form.getFieldValue('states'),
+              Brightness: undefined,
+            },
+          });
+        }
       }
-      if (watchTraitSelect.includes('ColdWarmColor')) {
-        form.setFieldsValue({
-          states: {
-            ...form.getFieldValue('states'),
-            ColdWarmColor: {
-              coldWarmColor: 50,
-              operator: 1,
+      if (!stateKey.includes('ColdWarmColor')) {
+        if (watchTraitSelect.includes('ColdWarmColor')) {
+          form.setFieldsValue({
+            states: {
+              ...form.getFieldValue('states'),
+              ColdWarmColor: {
+                coldWarmColor: 50,
+                operator: 1,
+              },
             },
-          },
-        });
-      } else {
-        form.setFieldsValue({
-          states: {
-            ...form.getFieldValue('states'),
-            ColdWarmColor: undefined,
-          },
-        });
+          });
+        } else {
+          form.setFieldsValue({
+            states: {
+              ...form.getFieldValue('states'),
+              ColdWarmColor: undefined,
+            },
+          });
+        }
       }
     }
   }, [watchTraitSelect, states, editing]);
@@ -132,7 +141,7 @@ const DeviceAction = ({
   return (
     <div css={getDivCss()} className="mx-6">
       <Form
-        disabled={!editing}
+        disabled={!editing || viewOnly}
         form={form}
         requiredMark={false}
         onFinish={handleSubmit}
@@ -218,6 +227,7 @@ const DeviceAction = ({
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
+                  // initialValue={ESceneOperator.Equal}
                   name={['states', 'OnOff', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
                 >
@@ -253,6 +263,7 @@ const DeviceAction = ({
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
+                  // initialValue={ESceneOperator.Equal}
                   name={['states', 'Brightness', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
                 >
@@ -282,6 +293,7 @@ const DeviceAction = ({
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
+                  // initialValue={ESceneOperator.Equal}
                   name={['states', 'ColdWarmColor', 'operator']}
                   style={{ width: 100, marginBottom: 4 }}
                 >
@@ -306,36 +318,40 @@ const DeviceAction = ({
           )}
         </div>
       </Form>
-      {editing ? (
-        <Button
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          disabled={isFetching || !watchDeviceId || !watchTraitSelect}
-          type="primary"
-          onClick={() => form.submit()}
-        >
-          Save
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            dispatch(
-              editSceneActionData({
-                index,
-                condition: {
-                  ...action,
-                  editing: true,
-                },
-                for: mode,
-              }),
-            );
-          }}
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          type="default"
-        >
-          Edit
-        </Button>
+      {!viewOnly && (
+        <>
+          {editing ? (
+            <Button
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              disabled={isFetching || !watchDeviceId || !watchTraitSelect}
+              type="primary"
+              onClick={() => form.submit()}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                dispatch(
+                  editSceneActionData({
+                    index,
+                    condition: {
+                      ...action,
+                      editing: true,
+                    },
+                    for: mode,
+                  }),
+                );
+              }}
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              type="default"
+            >
+              Edit
+            </Button>
+          )}
+        </>
       )}
     </div>
   );

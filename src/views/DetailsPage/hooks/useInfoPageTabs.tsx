@@ -2,6 +2,7 @@ import type { LocaleId } from '@/locales';
 import type { MultiTabsType } from '@/store/modules/route';
 import { setStoreMultiTabs } from '@/store/modules/route';
 import { useDispatch } from 'react-redux';
+import type { NavigateOptions } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export const useInfoPageTabs = () => {
@@ -26,7 +27,12 @@ export const useInfoPageTabs = () => {
     dispatch(setStoreMultiTabs({ type, tabs }));
   };
 
-  const navigateTabs = (path: string, label?: string, localeLabel?: LocaleId) => {
+  const navigateTabs = (
+    path: string,
+    label?: string,
+    option?: NavigateOptions,
+    localeLabel?: LocaleId,
+  ) => {
     const route = path.split('/');
     let tab: MultiTabsType = {
       key: path,
@@ -44,7 +50,7 @@ export const useInfoPageTabs = () => {
         tabs: tab,
       }),
     );
-    navigate(path);
+    navigate(path, option);
   };
 
   return { handleTabs, navigateTabs };

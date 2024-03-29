@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/store/hooks';
-import { editSceneActionData, editSceneConditionData } from '@/store/modules/scene';
+import { editSceneActionData } from '@/store/modules/scene';
 import { DATE_UTILS, ESceneOperator, ETimeType } from '@/utils/constant';
 import { App, Button, DatePicker, Flex, Form, Select, TimePicker } from 'antd';
 import dayjs from 'dayjs';
@@ -13,17 +13,17 @@ const timeSelect: {
   value: ETimeType;
 }[] = [
   {
-    label: 'Exact time',
-    value: ETimeType.TimeExact,
+    label: 'Delay time',
+    value: ETimeType.TimeDelay,
   },
-  {
-    label: 'Date range',
-    value: ETimeType.DateRange,
-  },
-  {
-    label: 'Time range',
-    value: ETimeType.TimeRange,
-  },
+  // {
+  //   label: 'Date range',
+  //   value: ETimeType.DateRange,
+  // },
+  // {
+  //   label: 'Time range',
+  //   value: ETimeType.TimeRange,
+  // },
   // {
   //   label: 'Set',
   //   value: ETimeType.TimeSet,
@@ -48,16 +48,19 @@ interface TimeFormType {
   formValue?: dayjs.Dayjs | null;
   formDateRange?: [dayjs.Dayjs | null, dayjs.Dayjs | null];
   formTimeRange?: [dayjs.Dayjs | null, dayjs.Dayjs | null];
+  formDuration?: dayjs.Dayjs | null;
 }
 
 const TimeAction = ({
   action,
   index,
   mode,
+  viewOnly,
 }: {
   action: ISceneTimeAction;
   index: number;
   mode: 'add' | 'edit';
+  viewOnly?: boolean;
 }) => {
   const { created, category, editing } = action;
   const { message } = App.useApp();
@@ -67,10 +70,17 @@ const TimeAction = ({
 
   const handleSelectTimeType = (value: ETimeType) => {
     switch (value) {
+      case ETimeType.TimeDelay:
+        if (action.type === ETimeType.TimeDelay) break;
+        form.setFieldsValue({
+          // formOperator: ESceneOperator.Equal,
+          formDuration: dayjs().startOf('day').add(5, 'm'),
+        });
+        break;
       case ETimeType.TimeExact:
         if (action.type === ETimeType.TimeExact) break;
         form.setFieldsValue({
-          formOperator: ESceneOperator.Equal,
+          // formOperator: ESceneOperator.Equal,
           formValue: dayjs().add(12, 'h'),
         });
         break;
@@ -94,6 +104,27 @@ const TimeAction = ({
   const handleSubmit = (values: TimeFormType) => {
     const { formType } = values;
     switch (formType) {
+      case ETimeType.TimeDelay: {
+        const { formOperator, formDuration } = values;
+        if (formOperator && formDuration) {
+          dispatch(
+            editSceneActionData({
+              index,
+              condition: {
+                editing: false,
+                created,
+                category,
+                type: formType,
+                operator: formOperator,
+                duration: formDuration.diff(dayjs().startOf('day'), 's'),
+              },
+              for: mode,
+            }),
+          );
+          message.success('Time action saved');
+        }
+        break;
+      }
       case ETimeType.TimeExact: {
         const { formOperator, formValue } = values;
         if (formOperator && formValue) {
@@ -165,13 +196,13 @@ const TimeAction = ({
   return (
     <div className="mx-6">
       <Form
-        disabled={!editing}
+        disabled={!editing || viewOnly}
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
         initialValues={{
           formType: action.type,
-          formOperator: action.operator,
+          formOperator: ESceneOperator.Equal,
           formValue: action.value ? dayjs.unix(action.value) : undefined,
           formDateRange:
             action.startDate && action.endDate
@@ -184,6 +215,9 @@ const TimeAction = ({
                   dayjs(action.endTime, DATE_UTILS.timeFormat),
                 ]
               : [undefined, undefined],
+          formDuration: action.duration
+            ? dayjs().startOf('day').add(action.duration, 's')
+            : undefined,
         }}
       >
         <Form.Item<TimeFormType>
@@ -204,6 +238,37 @@ const TimeAction = ({
           />
         </Form.Item>
         <div className="mt-4 flex flex-col gap-3">
+          {watchTimeType === ETimeType.TimeDelay && (
+            <Flex justify="space-between" align="center" gap={12}>
+              <Form.Item<TimeFormType>
+                // initialValue={ESceneOperator.Equal}
+                name="formOperator"
+                style={{ width: 100, marginBottom: 0 }}
+              >
+                <OperatorSelect disabled />
+              </Form.Item>
+              <Form.Item<TimeFormType>
+                name="formDuration"
+                style={{ marginBottom: 0 }}
+                rules={[
+                  { type: 'object' as const, required: true, message: 'Please select time!' },
+                ]}
+              >
+                <TimePicker
+                  format={DATE_UTILS.timeFormat}
+                  placeholder={DATE_UTILS.timeFormat}
+                  allowClear={false}
+                  // changeOnScroll
+                  // needConfirm={false}
+                  // showTime
+                  showNow={false}
+                  // renderExtraFooter={() => 'Tip: You can only select time after 12 hours'}
+                  // disabledDate={DATE_UTILS.disabledDate}
+                  // disabledTime={DATE_UTILS.disabledDateTime}
+                />
+              </Form.Item>
+            </Flex>
+          )}
           {watchTimeType === ETimeType.TimeExact && (
             <Flex justify="space-between" align="center" gap={12}>
               <Form.Item<TimeFormType> name="formOperator" style={{ width: 100, marginBottom: 0 }}>
@@ -265,36 +330,39 @@ const TimeAction = ({
           )}
         </div>
       </Form>
-
-      {editing ? (
-        <Button
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          type="primary"
-          onClick={() => form.submit()}
-        >
-          Save
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            dispatch(
-              editSceneConditionData({
-                index,
-                condition: {
-                  ...action,
-                  editing: true,
-                },
-                for: mode,
-              }),
-            );
-          }}
-          style={{ marginTop: 14, marginBottom: 8 }}
-          block
-          type="default"
-        >
-          Edit
-        </Button>
+      {!viewOnly && (
+        <>
+          {editing ? (
+            <Button
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              type="primary"
+              onClick={() => form.submit()}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                dispatch(
+                  editSceneActionData({
+                    index,
+                    condition: {
+                      ...action,
+                      editing: true,
+                    },
+                    for: mode,
+                  }),
+                );
+              }}
+              style={{ marginTop: 14, marginBottom: 8 }}
+              block
+              type="default"
+            >
+              Edit
+            </Button>
+          )}
+        </>
       )}
     </div>
   );

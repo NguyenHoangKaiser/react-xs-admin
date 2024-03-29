@@ -13,6 +13,7 @@ import { PURGE } from 'redux-persist';
 interface SceneSlice {
   addScene: ISceneRule;
   editScene: ISceneRule;
+  detailScene: ISceneRule | null;
   addingScene: boolean;
   editingScene: boolean;
   listScene: {
@@ -49,6 +50,7 @@ const initialState: SceneSlice = {
       data: [],
     },
   },
+  detailScene: null,
   listScene: {
     data: [],
     loading: false,
@@ -62,6 +64,9 @@ export const sceneSlice = createSlice({
     setEditScene: (state, action: PayloadAction<ISceneRule>) => {
       state.editingScene = true;
       state.editScene = action.payload;
+    },
+    setDetailScene: (state, action: PayloadAction<ISceneRule>) => {
+      state.detailScene = action.payload;
     },
     setSceneMetadata: (
       state,
@@ -213,9 +218,15 @@ export const sceneSlice = createSlice({
     },
     finishAddScene: (state) => {
       const { metadata } = state.addScene;
+      const now = dayjs().unix();
       state.listScene.data.push({
         ...state.addScene,
-        metadata: { ...metadata, savedAt: dayjs().unix(), status: EStatus.Active },
+        metadata: {
+          ...metadata,
+          created: now,
+          savedAt: now,
+          status: EStatus.Active,
+        },
       });
       state.addingScene = false;
       state.addScene = initialState.addScene;
@@ -270,6 +281,7 @@ export const sceneSlice = createSlice({
 
 export const {
   setEditScene,
+  setDetailScene,
   setSceneMetadata,
   addSceneAction,
   addSceneCondition,

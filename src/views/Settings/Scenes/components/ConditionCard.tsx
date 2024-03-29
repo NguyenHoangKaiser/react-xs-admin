@@ -42,25 +42,28 @@ interface Props {
   condition: ISceneCondition;
   index: number;
   mode: 'add' | 'edit';
+  viewOnly?: boolean;
 }
 
 const ConditionCard = (props: Props) => {
-  const { condition, index, mode } = props;
+  const { condition, index, mode, viewOnly } = props;
   const dispatch = useAppDispatch();
   return (
     <>
-      <Space style={{ position: 'absolute', top: 2, right: 8 }}>
-        <Button
-          onClick={() =>
-            dispatch(deleteSceneCondition({ index, created: condition.created, for: mode }))
-          }
-          style={{ fontSize: 12, padding: 2 }}
-          shape="round"
-          type="text"
-        >
-          <CloseOutlined />
-        </Button>
-      </Space>
+      {!viewOnly && (
+        <Space style={{ position: 'absolute', top: 2, right: 8 }}>
+          <Button
+            onClick={() =>
+              dispatch(deleteSceneCondition({ index, created: condition.created, for: mode }))
+            }
+            style={{ fontSize: 12, padding: 2 }}
+            shape="round"
+            type="text"
+          >
+            <CloseOutlined />
+          </Button>
+        </Space>
+      )}
       <Typography.Text
         style={{
           fontWeight: 'bold',
@@ -74,9 +77,9 @@ const ConditionCard = (props: Props) => {
         {condition.category.toUpperCase()}
       </Typography.Text>
       {condition.category === 'device' ? (
-        <DeviceCondition mode={mode} condition={condition} index={index} />
+        <DeviceCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />
       ) : condition.category === 'time' ? (
-        <TimeCondition mode={mode} condition={condition} index={index} />
+        <TimeCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />
       ) : null}
     </>
   );

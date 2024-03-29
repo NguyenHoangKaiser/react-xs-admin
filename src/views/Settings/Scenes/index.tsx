@@ -11,7 +11,7 @@ import {
 } from '@/store/modules/scene';
 import { EStatus } from '@/utils/constant';
 import { useInfoPageTabs } from '@/views/DetailsPage/hooks/useInfoPageTabs';
-import { CopyIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
+import { EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
 import { App, Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import type { ISceneRule } from './scene';
@@ -90,8 +90,17 @@ export default () => {
           <Button
             type="default"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+            onClick={() => {
+              // dispatch(setDetailScene(record));
+              const path = `${RouteEnum.SettingsScenesDetail}/${record.metadata.created}`;
+              navigateTabs(path, `Scene ${record.metadata.created}`, {
+                state: {
+                  scene: record,
+                },
+              });
+            }}
           >
-            <CopyIcon height={20} width={20} />
+            <EyeOpenIcon height={20} width={20} />
           </Button>
           <Button
             type="default"
@@ -126,7 +135,7 @@ export default () => {
             <Pencil1Icon height={20} width={20} />
           </Button>
           <Button
-            type="dashed"
+            // type="dashed"
             danger
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
             onClick={() => {
