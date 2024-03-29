@@ -135,14 +135,14 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.Settings,
     id: 'Settings',
     redirect: RouteEnum.SettingsDevices,
-    meta: { label: 'Settings', icon: <SettingOutlined /> },
+    meta: { label: FormattedMessage({ id: 'common.settings' }), icon: <SettingOutlined /> },
     element: <SettingLayout />,
     children: [
       {
         path: 'devices',
         id: 'SettingsDevices',
         element: <SettingDevices />,
-        meta: { label: 'Setting Devices', hideSidebar: true },
+        meta: { label: FormattedMessage({ id: 'common.settingDevice' }), hideSidebar: true },
       },
       {
         path: 'scenes',

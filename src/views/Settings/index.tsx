@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -6,21 +7,24 @@ import { memo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getSettingCss } from './style';
 const { Sider, Content } = Layout;
-const menuItems: MenuProps['items'] = [
-  {
-    key: RouteEnum.SettingsDevices,
-    label: '1. Devices',
-  },
-  {
-    key: RouteEnum.SettingsScenes,
-    label: '2. Scenes',
-  },
-  {
-    key: RouteEnum.SettingsGroups,
-    label: '3. Groups',
-  },
-];
+
 const SettingLayout = memo(() => {
+  const { formatMessage } = useLocale();
+
+  const menuItems: MenuProps['items'] = [
+    {
+      key: RouteEnum.SettingsDevices,
+      label: `1. ${formatMessage({ id: 'common.devices' })}`,
+    },
+    {
+      key: RouteEnum.SettingsScenes,
+      label: `2. ${formatMessage({ id: 'common.scenes' })}`,
+    },
+    {
+      key: RouteEnum.SettingsGroups,
+      label: `3. ${formatMessage({ id: 'common.groups' })}`,
+    },
+  ];
   const { token } = theme.useToken();
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -46,7 +50,7 @@ const SettingLayout = memo(() => {
           level={5}
           style={{ marginLeft: 16, marginTop: 16, color: token.colorTextBase }}
         >
-          Settings
+          {formatMessage({ id: 'common.settings' })}
         </Typography.Title>
         <Menu
           mode="inline"
