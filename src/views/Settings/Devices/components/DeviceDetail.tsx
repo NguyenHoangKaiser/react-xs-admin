@@ -3,6 +3,7 @@ import type { DataType, FieldType } from '@/utils/constant';
 import { Button, Col, Row, Typography, theme } from 'antd';
 import { memo, useState } from 'react';
 
+import { useLocale } from '@/locales';
 import { convertProtocol, convertRole, convertRoom } from '..';
 import DeviceEditFormModal from './EditDeviceModal';
 
@@ -11,6 +12,7 @@ const { Title } = Typography;
 const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
   const { token } = theme.useToken();
   const [open, setOpen] = useState<boolean>(false);
+  const { formatMessage } = useLocale();
 
   const onCreate = (values: FieldType) => {
     console.log('Received values of form: ', values);
@@ -21,7 +23,7 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
     <div className="flex-1">
       <Row className="pl-4">
         <Col span={10}>
-          <Title level={4}>Basic Parameters</Title>
+          <Title level={4}>{formatMessage({ id: 'common.basicParameters' })}</Title>
           <Row>
             <Col span={12}>
               <Typography style={{ color: token.colorTextDescription }}>Name:</Typography>
@@ -49,7 +51,7 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
         style={{ borderTop: `1px solid ${token.colorBorder}`, backgroundColor: token.colorBgBase }}
       >
         <Button type="primary" onClick={() => setOpen(true)}>
-          Save
+          {formatMessage({ id: 'manageAccount.save' })}
         </Button>
       </div>
       <DeviceEditFormModal

@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { DataType } from '@/utils/constant';
 import { DownOutlined, InfoCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
@@ -182,6 +183,7 @@ const SettingDevices: React.FC = () => {
     setSortedInfo({});
   };
   const [expended, setExpended] = useState('0');
+  const { formatMessage } = useLocale();
 
   const expandedRowRender = (record: DataType) => {
     const onChange = (key: string) => {
@@ -191,18 +193,18 @@ const SettingDevices: React.FC = () => {
     const items: TabsProps['items'] = [
       {
         key: '1',
-        label: 'General',
+        label: formatMessage({ id: 'common.general' }),
         children: <DeviceDetail record={record} />,
       },
 
       {
         key: '2',
-        label: 'Advance',
+        label: formatMessage({ id: 'common.advance' }),
         children: <Advance record={record} />,
       },
       {
         key: '3',
-        label: 'Preview',
+        label: formatMessage({ id: 'common.preview' }),
         children: <Preview record={record} />,
       },
     ];
@@ -216,9 +218,9 @@ const SettingDevices: React.FC = () => {
             <Form.Item>
               <Input
                 maxLength={255}
-                placeholder={'name'}
+                placeholder={formatMessage({ id: 'common.name' })}
                 prefix={
-                  <Tooltip title={'search name'}>
+                  <Tooltip title={formatMessage({ id: 'common.searchName' })}>
                     <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                   </Tooltip>
                 }
@@ -238,7 +240,7 @@ const SettingDevices: React.FC = () => {
           </Col>
           <Col>
             <Button type="primary" onClick={submit}>
-              Search
+              {formatMessage({ id: 'common.search' })}
             </Button>
             <Button onClick={reset} style={{ marginLeft: 16 }}>
               Reset
@@ -257,9 +259,9 @@ const SettingDevices: React.FC = () => {
       <Form form={form}>
         <Form.Item name="room" initialValue="all">
           <Select style={{ width: 120 }} onChange={submit}>
-            <Option value="">all</Option>
-            <Option value="1">Other</Option>
-            <Option value="3">Kitchen</Option>
+            <Option value="">{formatMessage({ id: 'common.all' })}</Option>
+            <Option value="1">{formatMessage({ id: 'common.other' })}</Option>
+            <Option value="3">{formatMessage({ id: 'common.kitchen' })}</Option>
           </Select>
         </Form.Item>
         <Form.Item name="name">
@@ -360,39 +362,6 @@ const SettingDevices: React.FC = () => {
 
       ellipsis: true,
     },
-    // {
-    //   title: 'Power',
-    //   dataIndex: 'power',
-    //   key: 'power',
-    //   filters: [
-    //     { text: 'On', value: true },
-    //     { text: 'Off', value: false },
-    //   ],
-    //   filteredValue: filteredInfo.power || null,
-    //   onFilter: (value, record) => {
-    //     return isNumeric(record.power) === value;
-    //   },
-    //   sorter: (a, b) => compareByPower(a, b),
-    //   sortOrder: sortedInfo.columnKey === 'power' ? sortedInfo.order : null,
-    //   render: (_text, record) => (
-    //     <div className="w-10 h-10 flex items-center justify-center">
-    //       {isNumeric(record.power) ? (
-    //         <span>
-    //           <BatteryGauge
-    //             value={record.power}
-    //             size={66}
-    //             formatValue={undefined}
-    //             aspectRatio={0.4}
-    //           />
-    //         </span>
-    //       ) : (
-    //         ''
-    //       )}
-    //     </div>
-    //   ),
-
-    //   ellipsis: true,
-    // },
     {
       title: '',
       key: 'action',

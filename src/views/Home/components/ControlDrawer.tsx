@@ -1,5 +1,6 @@
 import LayoutSpin from '@/components/LayoutSpin';
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IGetDeviceInfoResult } from '@/server/devicesApi';
 import { useControlDeviceMutation, useGetDeviceInfoQuery } from '@/server/devicesApi';
 import type { TIconType } from '@/utils/constant';
@@ -52,12 +53,14 @@ const PropertyRender = ({ title, children }: { title: string; children?: ReactNo
 };
 
 const EnergyConsumption = () => {
+  const { formatMessage } = useLocale();
+
   return (
     <>
-      <PropertyRender title="Current consumption :">
+      <PropertyRender title={`${formatMessage({ id: 'common.consumption' })} :`}>
         <Typography.Text>0.0 W</Typography.Text>
       </PropertyRender>
-      <PropertyRender title="Total energy use :">
+      <PropertyRender title={`${formatMessage({ id: 'common.totalEnergyUse' })} :`}>
         <Typography.Text>0.0 kWh</Typography.Text>
       </PropertyRender>
     </>
@@ -91,6 +94,8 @@ const BrightnessMarks: SliderSingleProps['marks'] = {
 
 const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
   const { locale } = useIntl();
+  const { formatMessage } = useLocale();
+
   const { token } = theme.useToken();
   const [controlDevice] = useControlDeviceMutation();
   const { data, isFetching } = useGetDeviceInfoQuery(
@@ -139,10 +144,10 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
                 <TitleRender
                   icon="light-bulb"
                   name={pDevice?.name}
-                  description={`Device type: LIGHT`}
+                  description={formatMessage({ id: 'common.deviceLight' })}
                 />
                 {traits?.find((trait) => trait.name === 'OnOff') && (
-                  <PropertyRender title="Power switch :">
+                  <PropertyRender title={formatMessage({ id: 'common.powerSwitch' })}>
                     <Switch
                       onChange={onControlDevice}
                       disabled={disabled}
@@ -158,7 +163,9 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
                     }}
                   >
                     <div className="w-full mt-3 flex justify-between items-center">
-                      <Typography.Title level={5}>Brightness :</Typography.Title>
+                      <Typography.Title level={5}>
+                        {formatMessage({ id: 'common.brightness' })} :
+                      </Typography.Title>
                     </div>
                     <Slider
                       disabled={disabled}
@@ -183,7 +190,9 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
                     }}
                   >
                     <div className="w-full mt-3 flex justify-between items-center">
-                      <Typography.Title level={5}>Color :</Typography.Title>
+                      <Typography.Title level={5}>
+                        {formatMessage({ id: 'common.color' })}:
+                      </Typography.Title>
                     </div>
                     <ConfigProvider
                       theme={{
@@ -226,8 +235,12 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
           default:
             return (
               <Flex vertical justify="center" align="center">
-                <TitleRender icon="maintenance" name={pDevice?.name} description={`Device type:`} />
-                <PropertyRender title="Power switch :">
+                <TitleRender
+                  icon="maintenance"
+                  name={pDevice?.name}
+                  description={formatMessage({ id: 'common.deviceType' })}
+                />
+                <PropertyRender title={formatMessage({ id: 'common.powerSwitch' })}>
                   {/* <Switch checked={!!pDevice?.status} /> */}
                 </PropertyRender>
                 <EnergyConsumption />
@@ -242,7 +255,7 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
 
   return (
     <Drawer
-      title="Control Panel"
+      title={formatMessage({ id: 'common.controlPanel' })}
       placement="right"
       getContainer={false}
       extra={<Button type="text" shape="circle" icon={<SettingOutlined />} />}

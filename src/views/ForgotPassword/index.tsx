@@ -1,10 +1,10 @@
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
-import { useLocale } from '@/locales';
+import { FormattedMessage, useLocale } from '@/locales';
 import { authApi } from '@/server/authApi';
 import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginFormPage, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
-import { Button, Divider, Space, theme } from 'antd';
+import { Button, Divider, Form, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,6 @@ const Forgot = memo(() => {
 
   const [forgot] = authApi.useForgotMutation();
   const [autoPlay, isAutoPlay] = useState(true);
-  const [emailT, setEmailT] = useState('1');
   const [forgotStep, setForgotStep] = useState<ForgotStep>('verify');
 
   const iconStyles: CSSProperties = {
@@ -52,7 +51,7 @@ const Forgot = memo(() => {
     //   console.error(error);
     // }
   };
-
+  const [form] = Form.useForm();
   return (
     <div
       style={{
@@ -61,6 +60,7 @@ const Forgot = memo(() => {
       }}
     >
       <LoginFormPage
+        form={form}
         backgroundImageUrl="https://wallpapercave.com/wp/wp4756877.jpg"
         logo="src/assets/luci_logo.png"
         backgroundVideoUrl={
@@ -68,7 +68,7 @@ const Forgot = memo(() => {
             ? 'https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr'
             : ''
         }
-        title="Quên mật khẩu"
+        title={formatMessage({ id: 'common.forgotPassword' })}
         onFinish={forgotStep == 'verify' ? onVerify : onFinish}
         containerStyle={{
           backgroundColor: thme.token.colorBgBase,
@@ -76,10 +76,12 @@ const Forgot = memo(() => {
         }}
         submitter={{
           searchConfig: {
-            submitText: forgotStep == 'verify' ? 'Tiếp tục' : 'Thay đổi mật khẩu',
+            submitText:
+              forgotStep == 'verify'
+                ? formatMessage({ id: 'common.continue' })
+                : formatMessage({ id: 'common.changePassword' }),
           },
         }}
-        onValuesChange={(changeValues) => setEmailT(changeValues.email)}
         subTitle=" "
         actions={
           <div className="flex justify-center items-center flex-col pt-4">
@@ -92,7 +94,7 @@ const Forgot = memo(() => {
                 forgotStep == 'verify' ? navigate('/') : setForgotStep('verify');
               }}
             >
-              Quay lại Đăng nhập
+              {formatMessage({ id: 'common.backToLogin' })}
             </Button>
             <Divider plain>
               <span
@@ -102,7 +104,7 @@ const Forgot = memo(() => {
                   fontSize: 14,
                 }}
               >
-                Khác
+                {formatMessage({ id: 'common.other' })}
               </span>
             </Divider>
             <Space align="center" size={24}>
@@ -142,7 +144,17 @@ const Forgot = memo(() => {
             }}
             name="email"
             placeholder={formatMessage({ id: 'login.username' })}
-            rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
+            rules={[
+              {
+                required: true,
+                message: (
+                  <FormattedMessage
+                    id="login.userNameRules"
+                    defaultMessage="Please input the name"
+                  />
+                ),
+              },
+            ]}
           />
           {forgotStep == 'verify' && (
             <ProFormCaptcha
@@ -160,25 +172,24 @@ const Forgot = memo(() => {
               captchaProps={{
                 size: 'large',
               }}
-              phoneName="otp"
-              placeholder={'Mã OTP: 1234'}
+              placeholder={formatMessage({ id: 'common.otp' })}
               captchaTextRender={(timing, count) => {
                 if (timing) {
-                  return `${count} ${'Còn'}`;
+                  return `${count} ${'s'}`;
                 }
-                return 'Gửi mã';
+                return formatMessage({ id: 'common.sendCode' });
               }}
               name="otp"
               rules={[
                 {
                   required: true,
-                  message: 'Mã OTP không được để trống',
+                  message: <FormattedMessage id="common.requireOtp" />,
                 },
               ]}
               onGetCaptcha={async () => {
                 try {
                   await forgot({
-                    email: emailT,
+                    email: form.getFieldValue('email'),
                   }).unwrap();
                 } catch (error) {
                   console.error(error);
@@ -201,11 +212,11 @@ const Forgot = memo(() => {
                     />
                   ),
                 }}
-                placeholder={'Mật khẩu mới'}
+                placeholder={formatMessage({ id: 'common.newPassword' })}
                 rules={[
                   {
                     required: true,
-                    message: 'Mật khẩu không được để trống',
+                    message: <FormattedMessage id="common.requirePassword" />,
                   },
                 ]}
               />
@@ -222,16 +233,16 @@ const Forgot = memo(() => {
                     />
                   ),
                 }}
-                placeholder={'Nhập lại mật khẩu mới'}
+                placeholder={formatMessage({ id: 'common.reEnterPassword' })}
                 rules={[
                   {
                     required: true,
-                    message: 'Mật khẩu không được để trống',
+                    message: <FormattedMessage id="common.requirePassword" />,
                   },
                   ({ getFieldValue }) => ({
                     validator(_) {
                       if (getFieldValue('rPassword') != getFieldValue('password')) {
-                        return Promise.reject('Mật khẩu không trùng khớp');
+                        return Promise.reject(formatMessage({ id: 'common.passwordNotMatch' }));
                       }
                       return Promise.resolve();
                     },
@@ -248,7 +259,7 @@ const Forgot = memo(() => {
           display: 'ruby',
         }}
       >
-        Bản quyền thuộc © 2024
+        {formatMessage({ id: 'common.license' })}
         <a
           style={{ color: 'white', paddingLeft: 4 }}
           href="http://luci.vn"

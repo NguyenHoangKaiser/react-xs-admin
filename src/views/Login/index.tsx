@@ -1,6 +1,6 @@
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
-import { useLocale } from '@/locales';
+import { FormattedMessage, useLocale } from '@/locales';
 import { initAsyncRoute } from '@/router/utils';
 import { useLoginMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
@@ -74,7 +74,7 @@ const Login = memo(() => {
             ? 'https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr'
             : ''
         }
-        title="Login"
+        title={formatMessage({ id: 'common.login' })}
         onFinish={onFinish}
         containerStyle={{
           backgroundColor: thme.token.colorBgBase,
@@ -91,7 +91,7 @@ const Login = memo(() => {
                   fontSize: 14,
                 }}
               >
-                Cách khác
+                {formatMessage({ id: 'common.other' })}
               </span>
             </Divider>
             <Space align="center" size={24}>
@@ -131,7 +131,17 @@ const Login = memo(() => {
               ),
             }}
             placeholder={formatMessage({ id: 'login.username' })}
-            rules={[{ required: true, message: formatMessage({ id: 'login.userNameRules' }) }]}
+            rules={[
+              {
+                required: true,
+                message: (
+                  <FormattedMessage
+                    id="login.userNameRules"
+                    defaultMessage="Please input the name"
+                  />
+                ),
+              },
+            ]}
           />
           <ProFormText.Password
             name="password"
@@ -150,7 +160,7 @@ const Login = memo(() => {
             rules={[
               {
                 required: true,
-                message: '请输入密码！',
+                message: <FormattedMessage id="common.requirePassword" />,
               },
             ]}
           />
@@ -162,7 +172,7 @@ const Login = memo(() => {
           }}
         >
           <ProFormCheckbox noStyle name="remember" valuePropName="checked">
-            Ghi nhớ mật khẩu
+            {formatMessage({ id: 'common.rememberPassword' })}
           </ProFormCheckbox>
           <a
             href={'/forgot'}
@@ -181,7 +191,7 @@ const Login = memo(() => {
           display: 'ruby',
         }}
       >
-        Bản quyền thuộc © 2024
+        {formatMessage({ id: 'common.license' })}
         <a
           style={{ color: 'white', paddingLeft: 4 }}
           href="http://luci.vn"

@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IDevicesListItem, TIconType } from '@/utils/constant';
 import { Card, Flex, Typography } from 'antd';
 import type { CardProps } from 'antd/es/card';
@@ -32,6 +33,7 @@ const IconRender = ({ icon, name }: { icon: TIconType; name: string }) => {
 const DeviceCard = ({ device, ...rest }: DeviceCardProps) => {
   // const { token } = theme.useToken();
   const { locale } = useIntl();
+  const { formatMessage } = useLocale();
 
   const getCardSwitch = useCallback(
     (pDevice: IDevicesListItem) => {
@@ -45,11 +47,13 @@ const DeviceCard = ({ device, ...rest }: DeviceCardProps) => {
               <IconRender icon={'light-bulb'} name={pDevice.name || ''} />
               {!device_status?.status ? (
                 <Typography.Text type="secondary" ellipsis>
-                  Disconnected
+                  {formatMessage({ id: 'common.disconnected' })}
                 </Typography.Text>
               ) : (
                 <Typography.Text type="success" ellipsis>
-                  {states?.OnOff ? 'On' : 'Off'}{' '}
+                  {states?.OnOff
+                    ? formatMessage({ id: 'common.on' })
+                    : formatMessage({ id: 'common.off' })}
                   {mainTrait?.name && mainTrait?.name === 'OnOff'
                     ? `(${states?.Brightness?.brightness}%)`
                     : ''}
