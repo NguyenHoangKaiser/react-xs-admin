@@ -1,4 +1,4 @@
-import { useLocale } from '@/locales';
+import { FormattedMessage, useLocale } from '@/locales';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { memo } from 'react';
 
@@ -32,7 +32,9 @@ const ChangePassword = memo(() => {
             <Form.Item<FieldType>
               name="oldPassword"
               label={formatMessage({ id: 'manageAccount.oldPassword' })}
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[
+                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+              ]}
               colon
             >
               <Input />
@@ -40,7 +42,9 @@ const ChangePassword = memo(() => {
             <Form.Item<FieldType>
               name="newPassword"
               label={formatMessage({ id: 'manageAccount.newPassword' })}
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[
+                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+              ]}
               colon
             >
               <Input />
@@ -48,7 +52,9 @@ const ChangePassword = memo(() => {
             <Form.Item<FieldType>
               name="reNewPassword"
               label={formatMessage({ id: 'manageAccount.reNewPassword' })}
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[
+                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+              ]}
               colon
             >
               <Input />

@@ -46,12 +46,21 @@ const Home = memo(() => {
   const items = useMemo(
     () =>
       data?.items?.map((item, index): IDevicesListItem => {
-        const id = 12 + (index % 3);
+        if (index) {
+          const id = 12 + (index % 3);
+          return {
+            ...item,
+            building_area: {
+              id,
+              name: `Building ${id}`,
+            },
+          };
+        }
         return {
           ...item,
           building_area: {
-            id,
-            name: `Building ${id}`,
+            id: 9,
+            name: 'Building 9',
           },
         };
       }) || [],
@@ -79,7 +88,6 @@ const Home = memo(() => {
     () => anchorItems.map((item) => `collapse${item.key}`),
     [anchorItems],
   );
-  console.log('defaultActiveKey', defaultActiveKey);
 
   // useCallback to memoize the function generateCollapseItems
   const generateCollapseItems = useCallback(
@@ -87,7 +95,9 @@ const Home = memo(() => {
       const getChild = (list: IAnchorItem[]): CollapseProps['items'] => {
         const render: CollapseProps['items'] = [];
         list.forEach((item) => {
-          if (item.children && item.children.length) {
+          const haveChildren = item.children && item.children.length;
+          const haveRenderDevice = item.renderDevice && item.renderDevice.length;
+          if (haveChildren && !haveRenderDevice) {
             return render.push({
               key: `collapse${item.key}`,
               label: (
@@ -98,13 +108,13 @@ const Home = memo(() => {
               children: (
                 <Collapse
                   {...CollapseProp}
-                  defaultActiveKey={item.children.map((child) => `collapse${child.key}`)}
-                  items={generateCollapseItems(item.children)}
+                  defaultActiveKey={item.children?.map((child) => `collapse${child.key}`)}
+                  items={generateCollapseItems(item.children!)}
                 />
               ),
             });
           }
-          if (item.renderDevice && item.renderDevice.length) {
+          if (haveRenderDevice && !haveChildren) {
             return render.push({
               key: `collapse${item.key}`,
               label: (
@@ -131,6 +141,43 @@ const Home = memo(() => {
                     );
                   }}
                 />
+              ),
+            });
+          }
+          if (haveChildren && haveRenderDevice) {
+            return render.push({
+              key: `collapse${item.key}`,
+              label: (
+                <Typography.Title style={{ marginBottom: 0 }} level={4} id={item.key}>
+                  {item.title}
+                </Typography.Title>
+              ),
+              children: (
+                <>
+                  <List
+                    grid={collapseListLayout}
+                    loading={isFetching}
+                    dataSource={item.renderDevice}
+                    renderItem={(device) => {
+                      return (
+                        <List.Item>
+                          <DeviceCard
+                            onClick={() => {
+                              setSelectedDevice(device._id);
+                              setOpen(true);
+                            }}
+                            device={device}
+                          />
+                        </List.Item>
+                      );
+                    }}
+                  />
+                  <Collapse
+                    {...CollapseProp}
+                    defaultActiveKey={item.children?.map((child) => `collapse${child.key}`)}
+                    items={generateCollapseItems(item.children!)}
+                  />
+                </>
               ),
             });
           }
