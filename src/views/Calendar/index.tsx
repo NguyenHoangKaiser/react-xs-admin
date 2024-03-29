@@ -82,8 +82,12 @@ const Calendar = () => {
               content={
                 <div style={{ padding: 20 }}>
                   <div>
-                    <div style={{ textTransform: 'capitalize' }}>{value.format('dddd')}</div>
-                    <span style={{ fontSize: 40 }}>{value.format('DD')}</span>
+                    <div style={{ textTransform: 'capitalize' }}>
+                      <strong>{value.format('dddd')}</strong>
+                    </div>
+                    <span style={{ fontSize: 40, color: token.colorPrimary }}>
+                      {value.format('DD')}
+                    </span>
                   </div>
                   {listData.map((item, index) => {
                     if (index < 3) return;
@@ -110,7 +114,7 @@ const Calendar = () => {
                 </div>
               }
             >
-              <a>{listData.length - 3} thẻ khác</a>
+              <a style={{ color: token.colorPrimary }}>{listData.length - 3} thẻ khác</a>
             </Popover>
           )}
         </ul>
@@ -134,7 +138,7 @@ const Calendar = () => {
             />
           </Col>
         </Row>
-        <Row style={{ borderBottom: `1px solid ${token.colorBorder}` }}>
+        <Row>
           <Col className="p-4" span={24}>
             <Checkbox onChange={() => setOwner(!owner)} checked={owner}>
               Lịch của tôi
@@ -191,32 +195,24 @@ const Calendar = () => {
           <Col span={2}>
             <Button onClick={() => setSelectedDay(dayjs())}>Hôm nay</Button>
           </Col>
-          <Col span={1}>
+          <Col span={2}>
             <div
               style={{
-                fontSize: 17,
+                fontSize: 16,
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
+                gap: 16,
               }}
-              onClick={() => setSelectedDay(selectedDay.subtract(1, 'day'))}
             >
-              <LeftOutlined size={24} />
+              <LeftOutlined
+                size={24}
+                onClick={() => setSelectedDay(selectedDay.subtract(1, 'day'))}
+              />
+              <RightOutlined size={24} onClick={() => setSelectedDay(selectedDay.add(1, 'day'))} />
             </div>
           </Col>
-          <Col span={1}>
-            <div
-              style={{
-                fontSize: 17,
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
-              onClick={() => setSelectedDay(selectedDay.add(1, 'day'))}
-            >
-              <RightOutlined size={24} />
-            </div>
-          </Col>
+
           <Col span={4}>
             <div>
               {`${
@@ -228,7 +224,7 @@ const Calendar = () => {
 
           <Col span={4} offset={12}>
             <Segmented<'Day' | 'Week' | 'Month'>
-              options={['Month', 'Week', 'Day']}
+              options={['Day', 'Week', 'Month']}
               value={mode}
               onChange={(value) => setMode(value)}
             />

@@ -21,9 +21,15 @@ import {
   Typography,
   theme,
 } from 'antd';
+import dayjs from 'dayjs';
+import * as duration from 'dayjs/plugin/duration';
+import * as LocalData from 'dayjs/plugin/localeData';
 import { useState } from 'react';
 import ControlACModal from './components/ControlACModal';
+import RepeatTypeRender from './components/RepeatTypeRender';
 import SelectDeviceModal from './components/SelectDeviceModal';
+dayjs.extend(LocalData);
+dayjs.extend(duration);
 
 export interface FormCalendar {
   color?: string;
@@ -47,6 +53,26 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
+const colLayout1 = {
+  md: { span: 24 },
+  lg: { span: 5 },
+  xl: { span: 4 },
+  xxl: { span: 3 },
+};
+
+const colLayout2 = {
+  md: { span: 24 },
+  lg: { span: 12 },
+  xl: { span: 12 },
+  xxl: { span: 6 },
+};
+const colLayout3 = {
+  md: { span: 4 },
+  lg: { span: 4 },
+  xl: { span: 4 },
+  xxl: { span: 2 },
+};
+
 const CalendarAdd = () => {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
@@ -57,11 +83,15 @@ const CalendarAdd = () => {
   const [controlACModal, setControlACModal] = useState<boolean>(false);
   const [listDevicesId, setListDevicesId] = useState<number[]>([]);
   const [deviceType, setDeviceType] = useState<string>();
+  const [repeatType, setRepeatType] = useState<number>(0);
+
+  const [listDayOfMonth, setListDayOfMonth] = useState<number[]>([]);
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setColor(e.key);
     form.setFieldValue('color', e.key);
   };
+
   const items: MenuProps['items'] = [
     {
       key: 'D50000',
@@ -118,6 +148,8 @@ const CalendarAdd = () => {
     repeat_type: 0,
   };
 
+  console.log(repeatType);
+
   return (
     <Form<FormCalendar>
       {...layout}
@@ -137,7 +169,7 @@ const CalendarAdd = () => {
           schedule: {
             end_time: values.end_time,
             start_time: values.start_time,
-            repeat_type: values.repeat_type,
+            repeat_type: repeatType,
             run_time: values.start_time,
             month_chosen: [],
             monthdays: [],
@@ -151,8 +183,8 @@ const CalendarAdd = () => {
     >
       <Row className="pt-6 pl-4">
         <Col span={24}>
-          <Row gutter={16}>
-            <Col span={2} className="mr-4">
+          <Row>
+            <Col {...colLayout1}>
               <Form.Item name={'color'}>
                 <Dropdown menu={menuProps}>
                   <Button>
@@ -172,13 +204,13 @@ const CalendarAdd = () => {
                 </Dropdown>
               </Form.Item>
             </Col>
-            <Col span={6}>
-              <Form.Item name={'name'} wrapperCol={{ span: 24 }}>
+            <Col {...colLayout2}>
+              <Form.Item name={'name'} wrapperCol={{ span: 22 }}>
                 <Input placeholder="Tên lịch" />
               </Form.Item>
             </Col>
-            <Col span={2}>
-              <Form.Item>
+            <Col {...colLayout3}>
+              <Form.Item wrapperCol={{ span: 24 }}>
                 <Button className="w-full" type="primary" htmlType="submit">
                   Lưu
                 </Button>
@@ -188,6 +220,7 @@ const CalendarAdd = () => {
         </Col>
       </Row>
       <Row className="px-4">
+        {/* //TODO: Tab detail device */}
         <Col xl={10} lg={12} md={24}>
           <div
             css={css`
@@ -206,6 +239,7 @@ const CalendarAdd = () => {
                       defaultValue={deviceType}
                       onChange={(value) => {
                         setDeviceType(value);
+                        setListDevicesId([]);
                       }}
                     >
                       <Select.Option value="LIGHT">Đèn</Select.Option>
@@ -214,7 +248,9 @@ const CalendarAdd = () => {
                     </Select>
                   </Col>
                   <Col span={4}>
-                    <Button onClick={() => setSelectedDeviceModal(true)}>Thêm thiết bị</Button>
+                    <Button disabled={!deviceType} onClick={() => setSelectedDeviceModal(true)}>
+                      Thêm thiết bị
+                    </Button>
                   </Col>
                 </Row>
                 <Row>
@@ -253,6 +289,7 @@ const CalendarAdd = () => {
             </Tabs>
           </div>
         </Col>
+        {/* //TODO: Tab status device */}
         <Col xl={7} lg={12} md={24}>
           <div
             css={css`
@@ -267,8 +304,8 @@ const CalendarAdd = () => {
                   <Col span={24}>
                     <Form.Item
                       label={'Ngày bắt đầu'}
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 18 }}
+                      labelCol={{ xxl: 6, xl: 8, md: 5 }}
+                      wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
                       name={'start_time'}
                     >
@@ -276,8 +313,8 @@ const CalendarAdd = () => {
                     </Form.Item>
                     <Form.Item
                       label="Trạng thái"
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 18 }}
+                      labelCol={{ xxl: 6, xl: 8, md: 5 }}
+                      wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
                     >
                       <Switch />
@@ -329,6 +366,7 @@ const CalendarAdd = () => {
             </Tabs>
           </div>
         </Col>
+        {/* //TODO: Tab repeat event */}
         <Col xl={7} md={24}>
           <div
             css={css`
@@ -343,12 +381,12 @@ const CalendarAdd = () => {
                   <Col span={24}>
                     <Form.Item
                       label={'Lặp lại'}
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 10 }}
+                      labelCol={{ xxl: 6, xl: 8, md: 3 }}
+                      wrapperCol={{ xxl: 10, xl: 14, md: 6 }}
                       labelAlign="left"
                       name={'repeat_type'}
                     >
-                      <Select>
+                      <Select onChange={(value) => setRepeatType(value)}>
                         <Select.Option value={0}>Không lặp</Select.Option>
                         <Select.Option value={1}>Hàng ngày</Select.Option>
                         <Select.Option value={2}>Hàng tuần</Select.Option>
@@ -356,10 +394,20 @@ const CalendarAdd = () => {
                         <Select.Option value={4}>Hàng năm</Select.Option>
                       </Select>
                     </Form.Item>
+                    {/* component repeat type */}
+                    {repeatType !== 0 && (
+                      <Form.Item wrapperCol={{ span: 24 }}>
+                        <RepeatTypeRender
+                          repeatType={repeatType}
+                          listDayOfMonth={listDayOfMonth}
+                          setListDayOfMonth={setListDayOfMonth}
+                        />
+                      </Form.Item>
+                    )}
                     <Form.Item
                       label={'Ngày kết thúc'}
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 18 }}
+                      labelCol={{ xxl: 6, xl: 8, md: 3 }}
+                      wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
                       name={'end_time'}
                     >

@@ -48,8 +48,8 @@ const ControlACModal = (props: ControlACProps) => {
         <Col span={24}>
           <Row className="py-2">
             <Col span={3}>
-              <Button className="w-full h-[40px]">
-                <SvgIcon name="leaf" className="text-3xl" />
+              <Button className="w-full h-[40px] flex items-center justify-center">
+                <SvgIcon name="leaf" className="text-[24px]" />
               </Button>
             </Col>
           </Row>

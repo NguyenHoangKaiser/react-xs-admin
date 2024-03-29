@@ -8,84 +8,125 @@ import {
   ExclamationCircleOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
-import { Col, Modal, Row, Tag, Typography } from 'antd';
+import { Col, Flex, Modal, Row, Tag, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
 
 const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
+  const { token } = theme.useToken();
   const confirm = () => {
     Modal.confirm({
-      title: 'Confirm',
+      title: 'Xác nhận',
       icon: <ExclamationCircleOutlined />,
-      content: 'Bla bla ...',
+      content: 'Bạn có chắc chắn muốn xóa lịch này?',
       okText: 'Xóa',
       cancelText: 'Hủy',
     });
   };
   return (
-    <div className="py-4 pl-6 w-[480px]">
-      {(data.schedule?.run_time ?? 0) >= dayjs().unix() && (
+    <div className="pl-3 w-[480px] ">
+      {(data.schedule?.run_time ?? 0) >= dayjs().unix() ? (
         <Row>
-          <Col span={2} offset={20}>
-            <EditOutlined />
+          <Col span={21}>
+            <div
+              className="h-[20px] w-full"
+              style={{
+                position: 'relative',
+                top: 10,
+                left: -20,
+                background: `linear-gradient(135deg, ${token.colorPrimary} , transparent )`,
+                filter: 'blur(30px)',
+              }}
+            />
           </Col>
           <Col span={2}>
+            <EditOutlined />
+          </Col>
+          <Col span={1}>
             <DeleteOutlined onClick={confirm} />
+          </Col>
+        </Row>
+      ) : (
+        <Row>
+          <Col span={21}>
+            <div
+              className="h-[20px] w-full"
+              style={{
+                position: 'relative',
+                top: 10,
+                left: -20,
+                background: `linear-gradient(135deg, ${token.colorPrimary} , transparent )`,
+                filter: 'blur(30px)',
+              }}
+            />
           </Col>
         </Row>
       )}
       <Row>
-        <Col span={2}>
-          <Tag color={data.color}>#{data.order}</Tag>
+        <Col span={1}>
+          <Flex justify="center">
+            <Tag color={data.color}>#{data.order}</Tag>
+          </Flex>
         </Col>
-        <Col span={21} offset={1}>
-          <Typography.Title level={5}>{data.name}</Typography.Title>
+        <Col span={22} offset={1}>
+          <Typography.Title level={5} style={{ color: token.colorPrimary }}>
+            {data.name}
+          </Typography.Title>
         </Col>
       </Row>
-      <Row>
-        <Col span={2}>
-          <CalendarOutlined />
+      <Row align={'middle'}>
+        <Col span={1}>
+          <Flex justify="center">
+            <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
+          </Flex>
         </Col>
-        <Col span={21} offset={1}>
+        <Col span={22} offset={1}>
           <Typography.Text>
             Ngày bắt đầu:{' '}
             {dayjs((data.schedule?.start_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
           </Typography.Text>
         </Col>
       </Row>
-      <Row>
-        <Col span={2}>
-          <CalendarOutlined />
+      <Row align={'middle'} className="pt-2">
+        <Col span={1}>
+          <Flex justify="center">
+            <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
+          </Flex>
         </Col>
-        <Col span={21} offset={1}>
+        <Col span={22} offset={1}>
           <Typography.Text>
             Ngày kết thúc:{' '}
             {dayjs((data.schedule?.end_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
           </Typography.Text>
         </Col>
       </Row>
-      <Row>
-        <Col span={2}>
-          <DeploymentUnitOutlined />
+      <Row align={'middle'} className="pt-2">
+        <Col span={1}>
+          <Flex justify="center">
+            <DeploymentUnitOutlined style={{ color: token.colorTextQuaternary }} />
+          </Flex>
         </Col>
-        <Col span={21} offset={1}>
+        <Col span={22} offset={1}>
           <Typography.Text>Số lượng: {data.out?.devices?.length} thiết bị</Typography.Text>
         </Col>
       </Row>
-      <Row>
-        <Col span={2}>
-          <ReloadOutlined />
+      <Row align={'middle'} className="pt-2">
+        <Col span={1}>
+          <Flex justify="center">
+            <ReloadOutlined style={{ color: token.colorTextQuaternary }} />
+          </Flex>
         </Col>
-        <Col span={21} offset={1}>
+        <Col span={22} offset={1}>
           <Typography.Text>Kiểu lặp: {getRepeat(data)}</Typography.Text>
         </Col>
       </Row>
       {data && data.owner_name && (
-        <Row>
-          <Col span={2}>
-            <CalendarOutlined />
+        <Row align={'middle'} className="pt-2">
+          <Col span={1}>
+            <Flex justify="center">
+              <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
+            </Flex>
           </Col>
-
-          <Col span={21} offset={1}>
+          <Col span={22} offset={1}>
             <Typography.Text>Người tạo: {data.owner_name}</Typography.Text>
           </Col>
         </Row>
