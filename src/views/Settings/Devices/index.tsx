@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { DataType } from '@/utils/constant';
 import { DownOutlined, InfoCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
@@ -182,6 +183,7 @@ const SettingDevices: React.FC = () => {
     setSortedInfo({});
   };
   const [expended, setExpended] = useState('0');
+  const { formatMessage } = useLocale();
 
   const expandedRowRender = (record: DataType) => {
     const onChange = (key: string) => {
@@ -191,18 +193,18 @@ const SettingDevices: React.FC = () => {
     const items: TabsProps['items'] = [
       {
         key: '1',
-        label: 'General',
+        label: formatMessage({ id: 'common.general' }),
         children: <DeviceDetail record={record} />,
       },
 
       {
         key: '2',
-        label: 'Advance',
+        label: formatMessage({ id: 'common.advance' }),
         children: <Advance record={record} />,
       },
       {
         key: '3',
-        label: 'Preview',
+        label: formatMessage({ id: 'common.preview' }),
         children: <Preview record={record} />,
       },
     ];
@@ -216,9 +218,9 @@ const SettingDevices: React.FC = () => {
             <Form.Item>
               <Input
                 maxLength={255}
-                placeholder={'name'}
+                placeholder={formatMessage({ id: 'common.name' })}
                 prefix={
-                  <Tooltip title={'search name'}>
+                  <Tooltip title={formatMessage({ id: 'common.searchName' })}>
                     <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                   </Tooltip>
                 }
@@ -238,7 +240,7 @@ const SettingDevices: React.FC = () => {
           </Col>
           <Col>
             <Button type="primary" onClick={submit}>
-              Search
+              {formatMessage({ id: 'common.search' })}
             </Button>
             <Button onClick={reset} style={{ marginLeft: 16 }}>
               Reset
@@ -257,9 +259,9 @@ const SettingDevices: React.FC = () => {
       <Form form={form}>
         <Form.Item name="room" initialValue="all">
           <Select style={{ width: 120 }} onChange={submit}>
-            <Option value="">all</Option>
-            <Option value="1">Other</Option>
-            <Option value="3">Kitchen</Option>
+            <Option value="">{formatMessage({ id: 'common.all' })}</Option>
+            <Option value="1">{formatMessage({ id: 'common.other' })}</Option>
+            <Option value="3">{formatMessage({ id: 'common.kitchen' })}</Option>
           </Select>
         </Form.Item>
         <Form.Item name="name">
@@ -360,39 +362,6 @@ const SettingDevices: React.FC = () => {
 
       ellipsis: true,
     },
-    // {
-    //   title: 'Power',
-    //   dataIndex: 'power',
-    //   key: 'power',
-    //   filters: [
-    //     { text: 'On', value: true },
-    //     { text: 'Off', value: false },
-    //   ],
-    //   filteredValue: filteredInfo.power || null,
-    //   onFilter: (value, record) => {
-    //     return isNumeric(record.power) === value;
-    //   },
-    //   sorter: (a, b) => compareByPower(a, b),
-    //   sortOrder: sortedInfo.columnKey === 'power' ? sortedInfo.order : null,
-    //   render: (_text, record) => (
-    //     <div className="w-10 h-10 flex items-center justify-center">
-    //       {isNumeric(record.power) ? (
-    //         <span>
-    //           <BatteryGauge
-    //             value={record.power}
-    //             size={66}
-    //             formatValue={undefined}
-    //             aspectRatio={0.4}
-    //           />
-    //         </span>
-    //       ) : (
-    //         ''
-    //       )}
-    //     </div>
-    //   ),
-
-    //   ellipsis: true,
-    // },
     {
       title: '',
       key: 'action',
@@ -401,9 +370,9 @@ const SettingDevices: React.FC = () => {
         <div className="flex items-center justify-center ">
           <a type="text" onClick={() => expend(`${index + 1}`)}>
             {!expended.includes(`${index + 1}`) ? (
-              <RightOutlined style={{ ...iconStyles }} />
+              <RightOutlined style={{ ...iconStyles, color: token.colorText }} />
             ) : (
-              <DownOutlined style={{ ...iconStyles }} />
+              <DownOutlined style={{ ...iconStyles, color: token.colorText }} />
             )}
           </a>
         </div>
@@ -446,3 +415,136 @@ const SettingDevices: React.FC = () => {
 };
 
 export default SettingDevices;
+
+// const columns: TableColumnsType<IDevice> = [
+//   {
+//     title: 'Name',
+//     dataIndex: 'name',
+//     key: 'name',
+//   },
+//   {
+//     title: 'Status',
+//     dataIndex: ['device_status', 'status'],
+//     key: 'status',
+//     align: 'center',
+//     width: 100,
+//     render: (status) => (
+//       <Switch checkedChildren={'Active'} unCheckedChildren={'Inactive'} checked={!!status} />
+//     ),
+//   },
+//   {
+//     title: 'Run',
+//     key: 'run',
+//     align: 'center',
+//     width: 100,
+//     render: () => (
+//       <div className="flex items-center justify-center">
+//         <Button
+//           type="primary"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <PlayIcon height={20} width={20} />
+//         </Button>
+//       </div>
+//     ),
+//   },
+//   {
+//     title: 'Action',
+//     key: 'action',
+//     align: 'center',
+//     render: () => (
+//       <Space size={'large'}>
+//         <Button
+//           type="default"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <CopyIcon height={20} width={20} />
+//         </Button>
+//         <Button
+//           type="default"
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <Pencil1Icon height={20} width={20} />
+//         </Button>
+//         <Button
+//           type="dashed"
+//           danger
+//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
+//         >
+//           <TrashIcon height={20} width={20} />
+//         </Button>
+//       </Space>
+//     ),
+//   },
+//   Table.EXPAND_COLUMN,
+// ];
+
+// export default () => {
+//   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
+//   const [pagination, setPagination] = useState<IPagination>({ perPage: 3, currentPage: 1 });
+//   const { data, isFetching } = useGetDevicesQuery(
+//     {
+//       hotel_id: hotel_id?.toString() || '',
+//       floor_id: idx_Floor?.toString() || '',
+//       ...pagination,
+//     },
+//     // {
+//     //   refetchOnFocus: true,
+//     // },
+//   );
+
+//   return (
+//     <ConfigProvider
+//       theme={{
+//         components: {
+//           Table: {
+//             headerBorderRadius: 0,
+//           },
+//         },
+//       }}
+//     >
+//       <Row>
+//         <Col
+//           style={{
+//             padding: '8px 16px',
+//           }}
+//           span={24}
+//         >
+//           <Button type="primary">Add Scene</Button>
+//           <Input.Search style={{ width: 200, float: 'right' }} />
+//         </Col>
+//       </Row>
+//       <div>
+//         <Table
+//           expandable={{
+//             expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.name}</p>,
+//             // rowExpandable: (record) => record.name !== 'Not Expandable',
+//           }}
+//           columns={columns}
+//           loading={isFetching}
+//           rowKey="id"
+//           dataSource={data ? data.items : []}
+//           pagination={{
+//             defaultPageSize: pagination.perPage,
+//             showSizeChanger: true,
+//             defaultCurrent: pagination.currentPage,
+//             current: pagination.currentPage,
+//             pageSizeOptions: ['3', '5', '10', '20'],
+//             position: ['topCenter'],
+//             showTotal(total, range) {
+//               return `${range[0]}-${range[1]} of ${total} items`;
+//             },
+//             total: data?.pagination?.totalCount,
+//             onShowSizeChange(_current, size) {
+//               setPagination((prev) => ({ ...prev, perPage: size }));
+//             },
+//             onChange(page, pageSize) {
+//               setPagination((prev) => ({ ...prev, currentPage: page, perPage: pageSize }));
+//             },
+//           }}
+//           scroll={{ y: 642 }}
+//         />
+//       </div>
+//     </ConfigProvider>
+//   );
+// };

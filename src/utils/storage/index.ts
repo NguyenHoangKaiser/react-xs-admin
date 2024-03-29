@@ -34,7 +34,7 @@ export const setStorage = <T>(
     value = null;
   }
 
-  if (isNaN(expire) || expire < 0) throw new Error('Expire 必须是数字');
+  if (isNaN(expire) || expire < 0) throw new Error('Expire Must be numbers');
 
   if (config.expire > 0 || expire > 0) expire = (expire ? expire : config.expire) * 1000;
   const data = {

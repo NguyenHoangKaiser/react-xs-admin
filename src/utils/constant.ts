@@ -1,14 +1,13 @@
 import type { IDevice } from '@/server/apiTypes';
 import type { ICalendarResult } from '@/server/calendarApi';
-import type { TreeDataNode } from 'antd';
+import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'antd';
+import dayjs from 'dayjs';
+import _ from 'lodash';
 
 export enum APIs {
-  ROUTE_LIST = '/mock_api/getRoute',
   LOGIN = '/site/login',
-  GET_USER_INFO = '/mock_api/getUserInfo',
-  GET_PERM_CODE = '/mock_api/getPermCode',
   LOGOUT = '/site/logout',
-  GET_TODOS = '/mock_api/todos',
+  MOCK_GET_TODOS = 'http://localhost:5173/mock_api/todos',
   FORGOT_PASSWORD = '/site/request-password-reset',
   VERIFY = '/site/verify-password-reset',
   GET_HOTELS = '/hotel',
@@ -17,6 +16,46 @@ export enum APIs {
   CONTROL_DEVICE = '/device/control',
   CALENDAR = 'rule-device',
 }
+
+export enum ETimeType {
+  TimeExact = 'time.exact',
+  TimeOnce = 'time.once',
+  TimeDayOfWeek = 'time.dayOfWeek',
+  TimeDayOfMonth = 'time.dayOfMonth',
+  TimeRange = 'time.range',
+  DateRange = 'date.range',
+  TimeSet = 'time.set',
+  // TimeBefore = 'time.before',
+  // TimeAfter = 'time.after',
+  TimeSchedule = 'time.schedule',
+  TimeRepeat = 'time.repeat',
+  TimeDelay = 'time.delay',
+}
+
+export enum ESceneOperator {
+  Equal = 1,
+  NotEqual = 2,
+  GreaterThan = 3,
+  LessThan = 4,
+  GreaterThanOrEqual = 5,
+  LessThanOrEqual = 6,
+}
+
+export enum EConditionsTypeName {
+  All = 1,
+  Any = 2,
+}
+
+export enum EStatus {
+  Inactive = 0,
+  Active = 1,
+  Paused = 2,
+}
+
+export const COLORS = {
+  PrimaryColor: '#409eff',
+};
+
 export type TIconType =
   | 'air-conditioner'
   | 'light-bulb'
@@ -60,6 +99,19 @@ export interface IListIconItem {
   name_en: string;
   type: TIconType;
 }
+
+export const ListIconVariant: IconVariant[] = [
+  'bulb',
+  'calendar',
+  'rocket',
+  'star',
+  'sun',
+  'moon',
+  'trophy',
+  'umbrella',
+  'medal',
+  'gift',
+];
 
 export const ListIconImage: IListIconItem[] = [
   {
@@ -119,7 +171,55 @@ export const IconTemplate = {
   star: 'star',
 };
 
+const timeFormat = 'HH:mm:ss';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
+
 export type IconVariant = keyof typeof IconTemplate;
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
+/**
+ *  Disable date before today and add 12 hours for Antd RangePicker
+ * @param current
+ * @returns
+ */
+const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+  return current && current < dayjs().add(12, 'h').startOf('day');
+};
+
+/**
+ * Range preset for Antd TimeRangePicker with Next 7 days and Next 30 days
+ */
+const timeRangePickerRangePresets: TimeRangePickerProps['presets'] = [
+  { label: 'Next 7 Days', value: [dayjs().add(12, 'h').add(7, 'd'), dayjs().add(12, 'h')] },
+  {
+    label: 'Next 30 Days',
+    value: [dayjs().add(12, 'h').add(30, 'd'), dayjs().add(12, 'h')],
+  },
+];
+
+const disabledDateTime = (current: dayjs.Dayjs) => {
+  if (!current) return {};
+  const now = dayjs();
+  if (current > now.add(12, 'h')) {
+    return {};
+  }
+  return {
+    disabledHours: () => _.range(0, now.add(12, 'h').hour()),
+    // disabledMinutes:
+    //   current.hour() === now.hour() ? () => _.range(0, now.minute()) : () => [],
+    // disabledSeconds:
+    //   current.hour() === now.hour() && current.minute() === now.minute()
+    //     ? () => _.range(0, now.second())
+    //     : () => [],
+  };
+};
+
+export const DATE_UTILS = {
+  disabledDate,
+  disabledDateTime,
+  timeFormat,
+  dateFormat,
+  timeRangePickerRangePresets,
+};
 
 export const FAKE_DATA: {
   devicesList: { items: IDevicesListItem1[] };
@@ -127,6 +227,174 @@ export const FAKE_DATA: {
 } = {
   devicesList: {
     items: [
+      {
+        id: 24,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 23,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 22,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 21,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 20,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 19,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
+      {
+        id: 18,
+        name: 'A20.01',
+        description: null,
+        handover: null,
+        medias: null,
+        status: 0,
+        status_name: 'Chưa ở',
+        capacity: 75,
+        building_area: { id: 17, name: 'A30' },
+        resident_user: { id: '', phone: '', first_name: '', last_name: '' },
+        resident_user_name: '',
+        parent_path: 'A30',
+        code: 'EBZLV9',
+        date_received: null,
+        date_delivery: 1670723410,
+        set_water_level: 1,
+        total_members: 1,
+        form_type: 11,
+        form_type_name: 'Villa The Symphony',
+        form_type_name_en: 'Villa The Symphony',
+        created_at: 1709689811,
+        updated_at: 1709689811,
+      },
       {
         id: 17,
         name: 'A20.01',
@@ -856,7 +1124,7 @@ export function generateTreeNode(
   return anchorList;
 }
 export interface IGroupDevices {
-  id: number;
+  id?: number;
   group_name?: string;
   category?: string;
   section?: string;
@@ -3099,6 +3367,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 1,
       group_name: 'group 1',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -3465,6 +3736,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 2,
       group_name: 'group 2',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -3831,6 +4105,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 3,
       group_name: 'group 3',
+      category: 'Dimmer',
+      icon: 'gift',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -4197,6 +4474,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 4,
       group_name: 'group 4',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -4563,6 +4843,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 5,
       group_name: 'group 5',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,
@@ -4929,6 +5212,9 @@ export const FAKE_GROUP_CHILD: IGroupType = {
     {
       id: 6,
       group_name: 'group 6',
+      category: 'Dimmer',
+      icon: 'bulb',
+      section: 'Khu A1',
       devices: [
         {
           id: 17,

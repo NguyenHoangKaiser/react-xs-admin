@@ -37,13 +37,9 @@ export const UserSlice = createSlice({
       state.user_id = payload.userInfo.id;
       state.userInfo = payload.userInfo;
     });
-    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (_state, { payload }) => {
       if (payload) {
-        delete state.userInfo;
-        delete state.access_token;
-        delete state.token_refresh;
-        delete state.email;
-        delete state.user_id;
+        return initialState;
       }
     });
   },

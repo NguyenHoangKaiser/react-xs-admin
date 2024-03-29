@@ -34,6 +34,9 @@ const Statistical = lazy(() => import('@/views/Statistical'));
 const Notification = lazy(() => import('@/views/Notification'));
 const Calendar = lazy(() => import('@/views/Calendar'));
 const CalendarAdd = lazy(() => import('@/views/Calendar/CalendarAdd'));
+const SettingsArea = lazy(() => import('@/views/Settings/Area'));
+const SettingsScenesAdd = lazy(() => import('@/views/Settings/Scenes/AddScene'));
+const SettingsScenesDetail = lazy(() => import('@/views/Settings/Scenes/DetailScene'));
 
 export const defaultRoute: RouteList[] = [
   {
@@ -142,19 +145,46 @@ export const defaultRoute: RouteList[] = [
     path: RouteEnum.Settings,
     id: 'Settings',
     redirect: RouteEnum.SettingsDevices,
-    meta: { label: 'Settings', icon: <SettingOutlined /> },
+    meta: { label: FormattedMessage({ id: 'common.settings' }), icon: <SettingOutlined /> },
     element: <SettingLayout />,
     children: [
       {
         path: 'devices',
         id: 'SettingsDevices',
         element: <SettingDevices />,
-        meta: { label: 'Setting Devices', hideSidebar: true },
+        meta: { label: FormattedMessage({ id: 'common.settingDevice' }), hideSidebar: true },
       },
       {
         path: 'scenes',
         id: 'SettingsScenes',
-        element: <SettingsScenes />,
+        redirect: '/setting/scenes/list',
+        // element: <SettingsScenes />,
+        children: [
+          {
+            path: 'list',
+            id: 'SettingsScenesList',
+            element: <SettingsScenes />,
+            meta: { label: 'Setting Scenes', hideSidebar: true },
+          },
+          {
+            path: 'add',
+            id: 'SettingsScenesAdd',
+            element: <SettingsScenesAdd mode="add" />,
+            meta: { label: 'Add Scene ', hideSidebar: true },
+          },
+          {
+            path: 'edit/:id',
+            id: 'SettingsScenesEdit',
+            element: <SettingsScenesAdd mode="edit" />,
+            meta: { label: 'Edit Scene ', hideSidebar: true },
+          },
+          {
+            path: 'detail/:id',
+            id: 'SettingsScenesDetail',
+            element: <SettingsScenesDetail />,
+            meta: { label: 'Detail Scene ', hideSidebar: true },
+          },
+        ],
         meta: { label: 'Setting Scenes', hideSidebar: true },
       },
       {
@@ -166,8 +196,18 @@ export const defaultRoute: RouteList[] = [
           hideSidebar: true,
         },
       },
+      {
+        path: 'area',
+        id: 'SettingsArea',
+        element: <SettingsArea />,
+        meta: {
+          label: FormattedMessage({ id: 'common.settingArea' }),
+          hideSidebar: true,
+        },
+      },
     ],
   },
+
   {
     path: RouteEnum.Statistical,
     id: 'Statistical',

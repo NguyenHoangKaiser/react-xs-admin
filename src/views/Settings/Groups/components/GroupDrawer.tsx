@@ -1,14 +1,42 @@
 import SvgIcon from '@/components/SvgIcon';
-import type { IGroupDevices, IListIconItem } from '@/utils/constant';
+import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { SettingOutlined } from '@ant-design/icons';
-import { Button, Drawer, Flex, Slider, Switch, Typography, theme, type DrawerProps } from 'antd';
+import type { DrawerProps, MenuProps } from 'antd';
+import { Drawer, Dropdown, Flex, Slider, Space, Switch, Typography, theme } from 'antd';
 
 interface ControlDrawerProps extends DrawerProps {
   group: IGroupDevices | undefined | null;
-  icon: IListIconItem | undefined | null;
+  icon: IconVariant | undefined | null;
+  onClickEdit: () => void;
+  onClickDelete: () => void;
 }
 
-const GroupDrawer = ({ group, icon, ...rest }: ControlDrawerProps) => {
+const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: ControlDrawerProps) => {
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'Sửa',
+    },
+
+    {
+      key: '2',
+      danger: true,
+      label: 'Xóa',
+    },
+  ];
+
+  const menuChange: MenuProps['onClick'] = (e) => {
+    switch (e.key) {
+      case '1':
+        onClickEdit();
+        break;
+      case '2':
+        onClickDelete();
+        break;
+      default:
+        break;
+    }
+  };
   const { token } = theme.useToken();
   return (
     <Drawer
@@ -16,28 +44,24 @@ const GroupDrawer = ({ group, icon, ...rest }: ControlDrawerProps) => {
       placement="right"
       open={!!group}
       getContainer={false}
-      extra={<Button type="text" shape="circle" icon={<SettingOutlined />} />}
+      extra={
+        <Dropdown menu={{ items, onClick: menuChange }} placement="bottom">
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              <SettingOutlined />
+            </Space>
+          </a>
+        </Dropdown>
+      }
       {...rest}
     >
       <Flex vertical justify="center" align="center">
         <div className="mb-4">
           {icon && (
             <span style={{ fontSize: '60px' }}>
-              <SvgIcon name={icon.type} />
+              <SvgIcon name={icon} />
             </span>
           )}
-          {/* {device?.status ? (
-              <Image
-                width={60}
-                src={icon.on}
-                fallback={icon.name}
-                preview={false}
-              />
-            ) : (
-              <Typography.Text ellipsis style={{ fontSize: 28, marginTop: 5 }}>
-                {locale === 'en-US' ? icon.name_en : icon.name}
-              </Typography.Text>
-            )} */}
         </div>
         <Typography.Title level={3}>{group?.group_name}</Typography.Title>
 
@@ -65,6 +89,32 @@ const GroupDrawer = ({ group, icon, ...rest }: ControlDrawerProps) => {
             },
           }}
         />
+        {group?.category === 'ww' ? (
+          <>
+            <div className="w-full mt-3 flex justify-between items-center">
+              <Typography.Title level={5}>Color :</Typography.Title>
+            </div>
+            <Slider
+              style={{
+                width: '100%',
+                borderBottom: `1px solid ${token.colorBorder}`,
+                paddingBottom: 22,
+              }}
+              styles={{
+                track: {
+                  background: 'linear-gradient(45deg, rgb(255,255,255), rgb(248,252,0))',
+                },
+              }}
+              tooltip={{
+                formatter(value) {
+                  return `${value}`;
+                },
+              }}
+            />
+          </>
+        ) : (
+          <></>
+        )}
         <div
           style={{
             borderBottom: `1px solid ${token.colorBorder}`,

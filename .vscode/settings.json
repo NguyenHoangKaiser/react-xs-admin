@@ -7,7 +7,7 @@
   "i18n-ally.sortKeys": true,
   "i18n-ally.pathMatcher": "{locale}/modules/{namespaces}.json",
   "i18n-ally.keystyle": "flat",
-  "cSpell.words": ["ahooks", "devid", "multisampling", "reqid", "thme", "Todos"],
+  "cSpell.words": ["ahooks", "devid", "hclid", "multisampling", "reqid", "thme", "Todos"],
   "i18n-ally.sourceLanguage": "vi",
   "i18n-ally.refactor.templates": [
     {
