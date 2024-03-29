@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import type { IDevicesListItem1, IListIconItem } from '@/utils/constant';
 import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import { getCollapseCss } from '@/views/Home/style';
@@ -135,6 +136,7 @@ const DetailArea = ({
   const onCreate = () => {
     setOpen(false);
   };
+  const { formatMessage } = useLocale();
 
   return data ? (
     <div css={getCollapseCss()}>
@@ -156,11 +158,11 @@ const DetailArea = ({
         cancelText="No"
       >
         <Button danger className="absolute top-2 right-4">
-          Xóa
+          {formatMessage({ id: 'common.delete' })}
         </Button>
       </Popconfirm>
       <Button type="primary" className="absolute top-2 right-20" onClick={() => setOpen(true)}>
-        Chỉnh sửa
+        {formatMessage({ id: 'common.edit' })}
       </Button>
       <EditAreaFormModal
         open={open}
@@ -172,10 +174,10 @@ const DetailArea = ({
   ) : (
     <div className="p-4 m-4">
       <Row className="flex justify-between">
-        <Typography.Title>Thông tin chung</Typography.Title>
+        <Typography.Title>{formatMessage({ id: 'common.basicInformation' })}</Typography.Title>
       </Row>
       <Row gutter={24} style={{ marginTop: 16 }}>
-        <Col xl={8} lg={7} md={24} style={{ paddingRight: 24 }}>
+        <Col xl={8} lg={24} style={{ paddingRight: 24 }}>
           <img
             style={{ width: '100%', height: '100%' }}
             src={
@@ -185,31 +187,31 @@ const DetailArea = ({
         </Col>
         <Col xl={16} lg={17} md={24}>
           <Row className="mb-4 text-">
-            <Col span={4}>Tên dự án:</Col>
+            <Col span={4}>{formatMessage({ id: 'common.projectName' })}:</Col>
             <Col offset={1} span={19} style={{ fontWeight: 'bold' }}>
               Luci IBMS
             </Col>
           </Row>
           <Row className="mb-4">
-            <Col span={4}>Tên miền:</Col>
+            <Col span={4}>{formatMessage({ id: 'common.domainName' })}:</Col>
             <Col offset={1} span={19} style={{ fontWeight: 'bold' }}>
               https://luci.vn/
             </Col>
           </Row>
           <Row className="mb-4">
-            <Col span={4}>Thành phố:</Col>
+            <Col span={4}>{formatMessage({ id: 'common.city' })}:</Col>
             <Col offset={1} span={19} style={{ fontWeight: 'bold' }}>
               Tp. Hà Nội
             </Col>
           </Row>
           <Row className="mb-4">
-            <Col span={4}>Địa chỉ:</Col>
+            <Col span={4}>{formatMessage({ id: 'common.address' })}:</Col>
             <Col offset={1} span={19} style={{ fontWeight: 'bold' }}>
               Tầng 2, toà New Skyline, Đường Nguyễn Khuyến, Phường Văn Quán, Quận Hà Đông,
             </Col>
           </Row>
           <Row className="mb-4">
-            <Col span={4}>Giới thiệu:</Col>
+            <Col span={4}>{formatMessage({ id: 'common.introduce' })}:</Col>
             <Col offset={1} span={19} style={{ whiteSpace: 'pre-wrap' }}>
               Luci iBMS là một hệ thống đồng bộ, cho phép quản lý, điều khiển các hệ thống cơ điện,
               cung cấp nước sinh hoạt, điều hòa thông gió, cảnh báo môi trường, an ninh, báo cháy

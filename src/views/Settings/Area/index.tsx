@@ -1,5 +1,5 @@
 import TreeAnchorTwo from '@/layout/components/PageAnchor/TreeAnchorTwo';
-import { useLocale } from '@/locales';
+import { FormattedMessage, useLocale } from '@/locales';
 import type { IDevicesListItem1, ISectionListItem } from '@/utils/constant';
 import { FAKE_DATA } from '@/utils/constant';
 import { PlusCircleOutlined } from '@ant-design/icons';
@@ -155,7 +155,7 @@ const SettingArea = memo(() => {
       {add || treeData.length === 0 ? (
         <Row className="px-4 pt-4">
           <Col span={24}>
-            <Typography.Title level={4}>Khu vực mới</Typography.Title>
+            <Typography.Title level={4}>{formatMessage({ id: 'common.newArea' })}</Typography.Title>
             <Form
               layout="horizontal"
               labelCol={{ xs: 8, xl: 6, xxl: 4 }}
@@ -165,13 +165,15 @@ const SettingArea = memo(() => {
             >
               <Form.Item
                 name="name"
-                label="Tên khu vực"
-                rules={[{ required: true, message: 'Please input area name!' }]}
+                label={formatMessage({ id: 'common.areaName' })}
+                rules={[
+                  { required: true, message: <FormattedMessage id="common.areaNameRequire" /> },
+                ]}
                 colon
               >
                 <Input />
               </Form.Item>
-              <Form.Item name="parent" label="Thuộc khu vực">
+              <Form.Item name="parent" label={formatMessage({ id: 'common.belong' })}>
                 <Typography>
                   {getParentTitles(anchorItems2, data?.titleWithNoIcon ?? '', [])}
                 </Typography>
@@ -183,7 +185,7 @@ const SettingArea = memo(() => {
                   style={{ marginRight: 16 }}
                   onClick={() => setAdd(false)}
                 >
-                  Cancel
+                  {formatMessage({ id: 'common.cancel' })}
                 </Button>
                 <Button type="primary" htmlType="button">
                   {formatMessage({ id: 'manageAccount.save' })}

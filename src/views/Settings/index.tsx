@@ -26,7 +26,7 @@ const SettingLayout = memo(() => {
     },
     {
       key: RouteEnum.SettingsArea,
-      label: '4. Area',
+      label: `4. ${formatMessage({ id: 'common.area' })}`,
     },
   ];
   const { token } = theme.useToken();

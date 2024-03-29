@@ -1,4 +1,5 @@
 import LayoutSpin from '@/components/LayoutSpin';
+import { useLocale } from '@/locales';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { InputProps, TreeProps } from 'antd';
 import { Button, Col, Input, Layout, Tree, theme } from 'antd';
@@ -29,6 +30,7 @@ const TreeAnchorTwo = ({ children, treeProps, title, loading, inputProps }: Tree
   const onDefaultSelect: TreeProps['onSelect'] = (selectedKeys) => {
     navigate(`#${selectedKeys[0]}`);
   };
+  const { formatMessage } = useLocale();
 
   return (
     <Layout>
@@ -56,7 +58,7 @@ const TreeAnchorTwo = ({ children, treeProps, title, loading, inputProps }: Tree
             {!collapsed && (
               <Search
                 style={{ marginBottom: 8, paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
-                placeholder="Search"
+                placeholder={formatMessage({ id: 'common.search' })}
                 onChange={onChange}
                 allowClear
               />

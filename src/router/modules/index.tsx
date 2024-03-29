@@ -194,7 +194,7 @@ export const defaultRoute: RouteList[] = [
         id: 'SettingsArea',
         element: <SettingsArea />,
         meta: {
-          label: 'Setting Area',
+          label: FormattedMessage({ id: 'common.settingArea' }),
           hideSidebar: true,
         },
       },
