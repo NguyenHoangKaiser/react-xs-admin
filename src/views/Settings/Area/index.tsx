@@ -1,5 +1,5 @@
 import TreeAnchorTwo from '@/layout/components/PageAnchor/TreeAnchorTwo';
-import { FormattedMessage, useLocale } from '@/locales';
+import { useLocale } from '@/locales';
 import type { IDevicesListItem1, ISectionListItem } from '@/utils/constant';
 import { FAKE_DATA } from '@/utils/constant';
 import { PlusCircleOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import type { TreeDataNode, TreeProps } from 'antd';
 import { Button, Col, Form, Input, Row, Typography, theme } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { memo, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import DetailArea from './DetailArea';
 import type { IAnchorItem2 } from './utils/utils';
 import { generateAnchorList2, getParentKey, getParentTitles } from './utils/utils';

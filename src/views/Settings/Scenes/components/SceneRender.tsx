@@ -1,34 +1,14 @@
+import { getIntlText } from '@/locales';
 import { EConditionsTypeName } from '@/utils/constant';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Col, Dropdown, Row, Space, theme, Typography } from 'antd';
 import { memo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import type { ISceneRule } from '../scene';
 import ActionCard from './ActionCard';
 import { CardContent } from './ChainLink';
 import ConditionCard from './ConditionCard';
-
-const typeDrop: MenuProps['items'] = [
-  {
-    label: 'Device',
-    key: 'device',
-  },
-  {
-    label: 'Time',
-    key: 'time',
-  },
-];
-
-const dropItems: MenuProps['items'] = [
-  {
-    label: 'ALL OF THESE ARE TRUE',
-    key: '1',
-  },
-  {
-    label: 'ANY OF THESE ARE TRUE',
-    key: '2',
-  },
-];
 
 interface SceneRenderProps {
   scene: ISceneRule;
@@ -38,6 +18,25 @@ interface SceneRenderProps {
   mode: 'add' | 'edit';
   viewOnly?: boolean;
 }
+
+const ColLayout = {
+  md: {
+    span: 19,
+    offset: 1,
+  },
+  lg: {
+    span: 18,
+    offset: 1,
+  },
+  xl: {
+    span: 10,
+    offset: 1,
+  },
+  xxl: {
+    span: 7,
+    offset: 1,
+  },
+};
 
 const SceneRender = memo((props: SceneRenderProps) => {
   const {
@@ -51,9 +50,31 @@ const SceneRender = memo((props: SceneRenderProps) => {
   const { conditions, actions } = scene;
   const { token } = theme.useToken();
 
+  const dropItems: MenuProps['items'] = [
+    {
+      label: <FormattedMessage id="common.scene.ALL" />,
+      key: '1',
+    },
+    {
+      label: <FormattedMessage id="common.scene.ANY" />,
+      key: '2',
+    },
+  ];
+
+  const typeDrop: MenuProps['items'] = [
+    {
+      label: <FormattedMessage id="common.device" />,
+      key: 'device',
+    },
+    {
+      label: <FormattedMessage id="common.time" />,
+      key: 'time',
+    },
+  ];
+
   return (
     <Row style={{ height: '100%', paddingBottom: 24 }}>
-      <Col span={7} offset={1}>
+      <Col {...ColLayout} style={{ marginBottom: 18 }}>
         <div className="condition-container">
           <div className="condition-dropdown">
             <Dropdown
@@ -70,8 +91,8 @@ const SceneRender = memo((props: SceneRenderProps) => {
               >
                 <Space>
                   {conditions.type.name === EConditionsTypeName.All
-                    ? 'ALL OF THESE ARE TRUE'
-                    : 'ANY OF THESE ARE TRUE'}
+                    ? getIntlText({ id: 'common.scene.ALL' })
+                    : getIntlText({ id: 'common.scene.ANY' })}
                   {viewOnly ? null : <DownOutlined />}
                 </Space>
               </Typography.Text>
@@ -110,17 +131,19 @@ const SceneRender = memo((props: SceneRenderProps) => {
                     lineHeight: '80px',
                   }}
                 >
-                  Click to add Condition
+                  <FormattedMessage id="common.scene.clickCondition" />
                 </div>
               </Dropdown>
             </CardContent>
           )}
         </div>
       </Col>
-      <Col span={7} offset={1}>
+      <Col {...ColLayout}>
         <div className="action-container">
           <div className="action-dropdown">
-            <Typography.Text style={{ color: token.blue }}>DO THE FOLLOWING</Typography.Text>
+            <Typography.Text style={{ color: token.blue }}>
+              <FormattedMessage id="common.scene.DO" />
+            </Typography.Text>
           </div>
           {actions.data.map((action, index) => {
             return (
@@ -148,7 +171,7 @@ const SceneRender = memo((props: SceneRenderProps) => {
                     lineHeight: '80px',
                   }}
                 >
-                  Click to add Action
+                  <FormattedMessage id="common.scene.clickAction" />
                 </div>
               </Dropdown>
             </CardContent>

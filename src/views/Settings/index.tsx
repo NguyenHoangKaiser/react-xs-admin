@@ -40,13 +40,17 @@ const SettingLayout = memo(() => {
       <Sider
         className="sidebar"
         breakpoint="lg"
+        onBreakpoint={(broken) => {
+          if (broken) setCollapsed(true);
+          else setCollapsed(false);
+        }}
         collapsedWidth="55"
         width={230}
         theme="light"
         collapsed={collapsed}
         trigger={null}
         collapsible
-        css={{
+        style={{
           backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
           height: 'calc(100vh - 110px)',

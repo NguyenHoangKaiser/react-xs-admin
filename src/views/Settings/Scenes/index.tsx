@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { FormatMessage, getIntlText } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setStoreMultiTabs } from '@/store/modules/route';
@@ -13,6 +14,7 @@ import { EStatus } from '@/utils/constant';
 import { useInfoPageTabs } from '@/views/DetailsPage/hooks/useInfoPageTabs';
 import { EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
 import { App, Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
+import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { ISceneRule } from './scene';
 
@@ -25,6 +27,78 @@ export default () => {
   const { modal } = App.useApp();
   const { navigateTabs } = useInfoPageTabs();
 
+  const onDetail = (record: ISceneRule) => {
+    // dispatch(setDetailScene(record));
+    const path = `${RouteEnum.SettingsScenesDetail}/${record.metadata.created}`;
+    navigateTabs({
+      path,
+      localeLabel: 'layout.menu.settingSceneDetail',
+      option: {
+        state: {
+          scene: record,
+        },
+      },
+    });
+  };
+
+  const onEdit = (record: ISceneRule) => {
+    if (editingScene) {
+      modal.confirm({
+        title: getIntlText({ id: 'common.scene.editUnsaved' }),
+        content: getIntlText({ id: 'common.scene.editUnsavedContent' }),
+        okText: getIntlText({ id: 'common.proceed' }),
+        cancelText: getIntlText({ id: 'common.scene.editUnsavedContinue' }),
+        onOk: () => {
+          dispatch(setEditScene(record));
+          const oldPath = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
+          dispatch(setStoreMultiTabs({ type: 'delete', tabs: { key: oldPath } }));
+          const path = `${RouteEnum.SettingsScenesEdit}/${record.metadata.created}`;
+          navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
+        },
+        onCancel: () => {
+          const path = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
+          navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
+        },
+      });
+    } else {
+      dispatch(setEditScene(record));
+      const path = `${RouteEnum.SettingsScenesEdit}/${record.metadata.created}`;
+      navigateTabs({ path, localeLabel: 'layout.menu.settingSceneEdit' });
+    }
+  };
+
+  const onDelete = (record: ISceneRule) => {
+    modal.confirm({
+      title: getIntlText({ id: 'common.scene.deleteScene' }),
+      content: getIntlText({ id: 'common.scene.actionNotUndone' }),
+      okText: getIntlText({ id: 'common.delete' }),
+      cancelText: getIntlText({ id: 'common.cancel' }),
+      onOk: () => {
+        dispatch(deleteScene({ created: record.metadata.created! }));
+      },
+    });
+  };
+
+  const onAddScene = () => {
+    if (addingScene) {
+      modal.confirm({
+        title: getIntlText({ id: 'common.scene.addUnsaved' }),
+        content: getIntlText({ id: 'common.scene.addUnsavedContent' }),
+        okText: getIntlText({ id: 'common.proceed' }),
+        cancelText: getIntlText({ id: 'common.scene.addUnsavedContinue' }),
+        onOk: () => {
+          dispatch(resetAddScene());
+          navigate(RouteEnum.SettingsScenesAdd);
+        },
+        onCancel: () => {
+          navigate(RouteEnum.SettingsScenesAdd);
+        },
+      });
+    } else {
+      navigate(RouteEnum.SettingsScenesAdd);
+    }
+  };
+
   const columns: TableColumnsType<ISceneRule> = [
     {
       title: 'Icon',
@@ -34,7 +108,7 @@ export default () => {
       width: 100,
       render: (icon) => (
         <div style={{ fontSize: 32 }}>
-          <SvgIcon name={icon || 'light-bulb'} />
+          <SvgIcon name={icon || 'maintenance'} />
         </div>
       ),
     },
@@ -46,26 +120,20 @@ export default () => {
       render: (_text, _record, index) => <span>{index + 1}</span>,
     },
     {
-      title: 'Name',
+      title: FormatMessage({ id: 'common.scene.name' }),
       dataIndex: ['metadata', 'name'],
       key: 'name',
     },
     {
-      title: 'Status',
+      title: FormatMessage({ id: 'common.status' }),
       dataIndex: ['metadata', 'status'],
       key: 'status',
       align: 'center',
       width: 100,
-      render: (status) => (
-        <Switch
-          checkedChildren={'Active'}
-          unCheckedChildren={'Inactive'}
-          defaultChecked={status === EStatus.Active}
-        />
-      ),
+      render: (status) => <Switch defaultChecked={status === EStatus.Active} />,
     },
     {
-      title: 'Run',
+      title: FormatMessage({ id: 'common.run' }),
       key: 'run',
       align: 'center',
       width: 100,
@@ -81,7 +149,7 @@ export default () => {
       ),
     },
     {
-      title: 'Action',
+      title: FormatMessage({ id: 'common.action' }),
       key: 'action',
       align: 'center',
       dataIndex: ['metadata', 'savedAt'],
@@ -91,13 +159,7 @@ export default () => {
             type="default"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
             onClick={() => {
-              // dispatch(setDetailScene(record));
-              const path = `${RouteEnum.SettingsScenesDetail}/${record.metadata.created}`;
-              navigateTabs(path, `Scene ${record.metadata.created}`, {
-                state: {
-                  scene: record,
-                },
-              });
+              onDetail(record);
             }}
           >
             <EyeOpenIcon height={20} width={20} />
@@ -106,48 +168,16 @@ export default () => {
             type="default"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
             onClick={() => {
-              if (editingScene) {
-                modal.confirm({
-                  title: 'You have unsaved changes in Edit Scene page',
-                  content:
-                    'Proceed to Edit this scene will lose all unsaved changes. Do you want to proceed?',
-                  okText: 'Proceed',
-                  cancelText: 'Keep Editing',
-                  onOk: () => {
-                    dispatch(setEditScene(record));
-                    const oldPath = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
-                    dispatch(setStoreMultiTabs({ type: 'delete', tabs: { key: oldPath } }));
-                    const path = `${RouteEnum.SettingsScenesEdit}/${record.metadata.created}`;
-                    navigateTabs(path, 'Edit Scene');
-                  },
-                  onCancel: () => {
-                    const path = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
-                    navigateTabs(path, 'Edit Scene');
-                  },
-                });
-              } else {
-                dispatch(setEditScene(record));
-                const path = `${RouteEnum.SettingsScenesEdit}/${record.metadata.created}`;
-                navigateTabs(path, 'Edit Scene');
-              }
+              onEdit(record);
             }}
           >
             <Pencil1Icon height={20} width={20} />
           </Button>
           <Button
-            // type="dashed"
             danger
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
             onClick={() => {
-              modal.confirm({
-                title: 'Are you sure you want to delete this scene?',
-                content: 'This action cannot be undone.',
-                okText: 'Delete',
-                cancelText: 'Cancel',
-                onOk: () => {
-                  dispatch(deleteScene({ created: record.metadata.created! }));
-                },
-              });
+              onDelete(record);
             }}
           >
             <TrashIcon height={20} width={20} />
@@ -166,30 +196,8 @@ export default () => {
           }}
           span={24}
         >
-          <Button
-            type="primary"
-            onClick={() => {
-              if (addingScene) {
-                modal.confirm({
-                  title: 'You have unsaved changes in Add Scene page',
-                  content:
-                    'Proceed to Add new scene will lose all unsaved changes. Do you want to proceed?',
-                  okText: 'Proceed',
-                  cancelText: 'Keep Editing',
-                  onOk: () => {
-                    dispatch(resetAddScene());
-                    navigate(RouteEnum.SettingsScenesAdd);
-                  },
-                  onCancel: () => {
-                    navigate(RouteEnum.SettingsScenesAdd);
-                  },
-                });
-              } else {
-                navigate(RouteEnum.SettingsScenesAdd);
-              }
-            }}
-          >
-            Add Scene
+          <Button type="primary" onClick={onAddScene}>
+            <FormattedMessage id="common.scene.addScene" />
           </Button>
           <Input.Search style={{ width: 200, float: 'right' }} />
         </Col>
@@ -198,7 +206,9 @@ export default () => {
         <Table
           expandable={{
             expandedRowRender: (record) => (
-              <p style={{ margin: 0 }}>{record.metadata.description || 'No description'}</p>
+              <p style={{ margin: 0 }}>
+                {record.metadata.description || getIntlText({ id: 'common.noDescription' })}
+              </p>
             ),
             // rowExpandable: (record) => record.name !== 'Not Expandable',
           }}

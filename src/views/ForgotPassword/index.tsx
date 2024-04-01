@@ -1,12 +1,13 @@
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
-import { FormattedMessage, useLocale } from '@/locales';
+import { useLocale } from '@/locales';
 import { authApi } from '@/server/authApi';
 import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginFormPage, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
 import { Button, Divider, Form, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { getCss } from './style';
 import type { ForgotPasswordForm } from './type';

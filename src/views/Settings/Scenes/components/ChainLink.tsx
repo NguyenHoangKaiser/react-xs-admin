@@ -1,3 +1,4 @@
+import { getIntlText } from '@/locales';
 import type { CSSObject } from '@emotion/react';
 import type { GlobalToken } from 'antd';
 import { Card, theme, Typography } from 'antd';
@@ -23,7 +24,7 @@ const ChainLink = ({
         }}
         // type={active ? 'success' : 'secondary'}
       >
-        {text === 2 ? 'OR' : 'AND'}
+        {text === 2 ? getIntlText({ id: 'common.OR' }) : getIntlText({ id: 'common.AND' })}
       </Typography.Text>
     </div>
   );

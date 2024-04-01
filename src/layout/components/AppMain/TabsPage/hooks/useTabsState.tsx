@@ -13,27 +13,27 @@ export const useTabsState = (pathKey: string, openDropdown: boolean) => {
 
   const [rightClickTags] = useState<RightClickTags[]>([
     {
-      text: getIntlText('tab.refresh'),
+      text: getIntlText({ id: 'tab.refresh' }),
       disabled: false,
       code: 'refresh',
     },
     {
-      text: getIntlText('tab.close'),
+      text: getIntlText({ id: 'tab.close' }),
       disabled: false,
       code: 'close',
     },
     {
-      text: getIntlText('tab.closeOther'),
+      text: getIntlText({ id: 'tab.closeOther' }),
       disabled: false,
       code: 'closeOther',
     },
     {
-      text: getIntlText('tab.closeLeft'),
+      text: getIntlText({ id: 'tab.closeLeft' }),
       disabled: false,
       code: 'closeLeftOther',
     },
     {
-      text: getIntlText('tab.closeRight'),
+      text: getIntlText({ id: 'tab.closeRight' }),
       disabled: false,
       code: 'closeRightOther',
     },
