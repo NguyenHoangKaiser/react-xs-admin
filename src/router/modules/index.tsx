@@ -2,7 +2,13 @@ import Layout from '@/layout';
 import Authority from '@/layout/Authority';
 import { FormatMessage } from '@/locales';
 import type { RouteList } from '@/router/route';
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  BarChartOutlined,
+  CalendarOutlined,
+  HomeOutlined,
+  NotificationOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { RouteEnum } from '../utils';
@@ -21,6 +27,10 @@ const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
+const Statistical = lazy(() => import('@/views/Statistical'));
+const Notification = lazy(() => import('@/views/Notification'));
+const Calendar = lazy(() => import('@/views/Calendar'));
+const CalendarAdd = lazy(() => import('@/views/Calendar/CalendarAdd'));
 const SettingsArea = lazy(() => import('@/views/Settings/Area'));
 const SettingsScenesAdd = lazy(() => import('@/views/Settings/Scenes/AddScene'));
 const SettingsScenesDetail = lazy(() => import('@/views/Settings/Scenes/DetailScene'));
@@ -201,6 +211,43 @@ export const defaultRoute: RouteList[] = [
         },
       },
     ],
+  },
+
+  {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+    element: <Statistical />,
+    meta: {
+      label: 'Statistical',
+      icon: <BarChartOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Notification,
+    id: 'Notification',
+    element: <Notification />,
+    meta: {
+      label: 'Notification',
+      icon: <NotificationOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Calendar,
+    id: 'Calendar',
+    element: <Calendar />,
+    meta: {
+      label: 'Calendar',
+      icon: <CalendarOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.CalendarAdd,
+    id: 'CalendarAdd',
+    element: <CalendarAdd />,
+    meta: {
+      label: 'CalendarAdd',
+      hideSidebar: true,
+    },
   },
 ];
 

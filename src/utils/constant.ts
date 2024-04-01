@@ -1,4 +1,5 @@
 import type { IDevice } from '@/server/apiTypes';
+import type { ICalendarResult } from '@/server/calendarApi';
 import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'antd';
 import dayjs from 'dayjs';
 import _ from 'lodash';
@@ -13,6 +14,7 @@ export enum APIs {
   GET_DEVICES = '/device',
   GET_DEVICE_INFO = '/device/info',
   CONTROL_DEVICE = '/device/control',
+  CALENDAR = 'rule-device',
 }
 
 export enum ETimeType {
@@ -81,7 +83,21 @@ export type TIconType =
   | 'trophy'
   | 'maintenance'
   | 'umbrella'
-  | 'battery';
+  | 'battery'
+  | 'bar-chart-1'
+  | 'bar-chart-2'
+  | 'bar-chart-3'
+  | 'bar-chart-4'
+  | 'leaf'
+  | 'snowflake'
+  | 'waterdrop'
+  | 'h-wind-1'
+  | 'h-wind-2'
+  | 'h-wind-3'
+  | 'v-wind-1'
+  | 'v-wind-2'
+  | 'v-wind-3'
+  | 'v-wind-4';
 export interface IListIconItem {
   id: number;
   name: string;
@@ -5579,4 +5595,22 @@ export interface DataType {
   role: number;
   roomId: number;
   image: TIconType;
+}
+
+export function getRepeat(data: ICalendarResult) {
+  return (() => {
+    switch (data.schedule?.repeat_type) {
+      case 0:
+        return 'Không lặp';
+      case 1:
+        return 'Lặp lại hàng ngày';
+      case 2:
+        return 'Lặp lại hàng tuần';
+      case 3:
+        return 'Lặp lại hàng tháng';
+      case 4:
+        return 'Lặp lại hàng năm';
+      default:
+    }
+  })();
 }

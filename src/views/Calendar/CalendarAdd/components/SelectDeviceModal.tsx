@@ -1,12 +1,11 @@
 import SvgIcon from '@/components/SvgIcon';
-import type { IDevicesListItem1, IGroupDevices } from '@/utils/constant';
+import type { IDevicesListItem1 } from '@/utils/constant';
 import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import type { CheckboxProps } from 'antd';
 import {
   Card,
   Checkbox,
   Col,
-  Divider,
   Flex,
   Input,
   List,
@@ -22,12 +21,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 interface ModalProps {
   open: boolean;
   onCancel: () => void;
-  formData?: IGroupDevices;
+  setListDevices: React.Dispatch<React.SetStateAction<number[]>>;
+  listDevices: number[];
 }
 
-const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
+const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: ModalProps) => {
   const { token } = theme.useToken();
-  const [checkedList, setCheckedList] = useState<number[]>([]);
+  const [checkedList, setCheckedList] = useState<number[]>(listDevices);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<IDevicesListItem1[]>([]);
 
@@ -47,8 +47,6 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
       setCheckedList(checkedList.filter((item) => item !== device.id));
     }
   };
-
-  console.log('formData', formData);
 
   const loadMoreData = () => {
     if (loading) {
@@ -76,14 +74,17 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose
-      onOk={() => {}}
+      onOk={() => {
+        setListDevices(checkedList);
+        onCancel();
+      }}
       width={'80%'}
     >
       <Row className="pt-4 h-full w-full">
         <Col span={24}>
-          <Row className="px-4 items-center mb-2">
+          <Row gutter={16} className=" items-center mb-2">
             <Col xxl={6} xl={8} lg={10} md={12}>
-              <Input.Search placeholder="Search device" />
+              <Input.Search placeholder="Tìm kiếm thiết bị" />
             </Col>
             <Col xxl={18} xl={16} lg={14} md={12}>
               <Flex justify="end">
@@ -111,7 +112,6 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
               next={loadMoreData}
               hasMore={data.length < FAKE_DATA.devicesList.items.length}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-              endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
               scrollableTarget="scrollableDiv"
             >
               <List
