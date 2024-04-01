@@ -14,6 +14,8 @@ import { EStatus } from '@/utils/constant';
 import { useInfoPageTabs } from '@/views/DetailsPage/hooks/useInfoPageTabs';
 import { EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
 import { App, Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
+
+import { useDayJs } from '@/hooks/useDayJs';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { ISceneRule } from './scene';
@@ -26,6 +28,7 @@ export default () => {
   const { addingScene, editingScene, editScene } = useAppSelector(sceneSelector);
   const { modal } = App.useApp();
   const { navigateTabs } = useInfoPageTabs();
+  const { DAYJS } = useDayJs();
 
   const onDetail = (record: ISceneRule) => {
     // dispatch(setDetailScene(record));
@@ -200,6 +203,7 @@ export default () => {
             <FormattedMessage id="common.scene.addScene" />
           </Button>
           <Input.Search style={{ width: 200, float: 'right' }} />
+          <span>{DAYJS().format('MMM')}</span>
         </Col>
       </Row>
       <div>
