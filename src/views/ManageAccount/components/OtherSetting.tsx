@@ -32,7 +32,6 @@ const OtherSetting = memo(() => {
     dispatch(setAppLocale(info.key as LocaleType));
   };
 
-  console.log(toggleNotice);
   return (
     <>
       <span className="text-2xl font-semibold">

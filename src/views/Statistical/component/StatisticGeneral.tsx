@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Col, Flex, List, Row, Statistic, Typography, theme } from 'antd';
 import ColumnChart from './ColumnChart';
@@ -6,6 +7,8 @@ import LineChart from './LineChart';
 
 const StatisticGeneral = () => {
   const thme = theme.useToken();
+  const { formatMessage } = useLocale();
+
   return (
     <Row className="h-full w-full">
       <Col span={12}>
@@ -25,7 +28,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Production</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.production' })}
+                  </Typography.Title>
+                }
                 value={0.01}
                 precision={2}
                 valueStyle={{ color: thme.token.colorSuccess, fontSize: 16, fontWeight: 'bold' }}
@@ -41,7 +48,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Consumption</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.consumption' })}
+                  </Typography.Title>
+                }
                 value={0.01}
                 precision={2}
                 valueStyle={{ color: thme.token.colorError, fontSize: 16, fontWeight: 'bold' }}
@@ -54,7 +65,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Balance</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.balance' })}
+                  </Typography.Title>
+                }
                 value={-0.08}
                 precision={2}
                 valueStyle={{ color: thme.token.colorError, fontSize: 16, fontWeight: 'bold' }}
@@ -84,7 +99,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Billing period comparison</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.billComparison' })}
+                  </Typography.Title>
+                }
                 value={-0.08}
                 precision={2}
                 valueStyle={{
@@ -103,7 +122,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Current</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic..currentPeriod' })}
+                  </Typography.Title>
+                }
                 value={-0.08}
                 precision={2}
                 valueStyle={{
@@ -119,7 +142,11 @@ const StatisticGeneral = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Previous</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.previousPeriod' })}
+                  </Typography.Title>
+                }
                 value={-0.08}
                 precision={2}
                 valueStyle={{
@@ -144,7 +171,9 @@ const StatisticGeneral = () => {
           >
             <div className="flex flex-row gap-4 pb-4">
               <SvgIcon name="maintenance" className="text-3xl" />
-              <Typography.Title level={5}>Energy Balance</Typography.Title>
+              <Typography.Title level={5}>
+                {formatMessage({ id: 'statistic.energyBalance' })}
+              </Typography.Title>
             </div>
             <LineChart />
           </div>
@@ -162,7 +191,9 @@ const StatisticGeneral = () => {
             <div className="flex flex-row gap-4 items-center">
               <SvgIcon name="maintenance" className="text-3xl" />
               <div className="flex flex-col">
-                <Typography.Title level={5}>Top consuming devices</Typography.Title>
+                <Typography.Title level={5}>
+                  {formatMessage({ id: 'statistic.topDeviceConsumption' })}
+                </Typography.Title>
                 <Typography.Text>Last hour</Typography.Text>
               </div>
             </div>

@@ -1,10 +1,12 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import { Col, DatePicker, Flex, List, Row, Segmented, Statistic, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
 import SavingsChart from './TinyLine';
 
 const StatisticSavings = () => {
   const thme = theme.useToken();
+  const { formatMessage } = useLocale();
 
   return (
     <Row className="h-full w-full">
@@ -25,8 +27,12 @@ const StatisticSavings = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Sumary consumption</Typography.Title>}
-                value={'Including average sumary at billing period'}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.summaryConsumption' })}
+                  </Typography.Title>
+                }
+                value={formatMessage({ id: 'statistic.noteSummaryConsumption' })}
                 precision={2}
                 valueStyle={{ color: thme.token.colorText, fontSize: 14 }}
                 suffix="kWh"
@@ -40,7 +46,11 @@ const StatisticSavings = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Billing period</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.billPeriod' })}
+                  </Typography.Title>
+                }
                 value={0.0}
                 precision={2}
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
@@ -55,7 +65,11 @@ const StatisticSavings = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Average at period</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.averagePeriod' })}
+                  </Typography.Title>
+                }
                 value={0.08}
                 precision={2}
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
@@ -67,7 +81,11 @@ const StatisticSavings = () => {
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
               <Statistic
-                title={<Typography.Title level={5}>Year consumption</Typography.Title>}
+                title={
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.yearConsumption' })}
+                  </Typography.Title>
+                }
                 value={253.53}
                 precision={2}
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
@@ -92,7 +110,10 @@ const StatisticSavings = () => {
             <Col span={12}>
               <div className="flex justify-end pr-8">
                 <Segmented<string>
-                  options={['Day', 'Week']}
+                  options={[
+                    formatMessage({ id: 'statistic.day' }),
+                    formatMessage({ id: 'statistic.week' }),
+                  ]}
                   onChange={(value) => {
                     console.log(value);
                   }}
@@ -108,12 +129,12 @@ const StatisticSavings = () => {
               <Row>
                 <Col span={12}>
                   <Typography.Title level={5} style={{ color: `${thme.token.green6}` }}>
-                    Production: 0.00 $
+                    {formatMessage({ id: 'statistic.production' })}: 0.00 $
                   </Typography.Title>
                 </Col>
                 <Col span={12} className="flex justify-end">
                   <Typography.Title level={5} style={{ color: `${thme.token['red-6']}` }}>
-                    Consumption: 1.61 $
+                    {formatMessage({ id: 'statistic.consumption' })}: 1.61 $
                   </Typography.Title>
                 </Col>
               </Row>
@@ -125,10 +146,14 @@ const StatisticSavings = () => {
                 }}
               >
                 <Col span={12}>
-                  <Typography.Title level={5}>DEVICE</Typography.Title>
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'common.devices' }).toUpperCase()}
+                  </Typography.Title>
                 </Col>
                 <Col span={12} className="flex justify-end">
-                  <Typography.Title level={5}>CONSUMPTION</Typography.Title>
+                  <Typography.Title level={5}>
+                    {formatMessage({ id: 'statistic.consumption' }).toUpperCase()}
+                  </Typography.Title>
                 </Col>
               </Row>
               <List

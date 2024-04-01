@@ -56,6 +56,27 @@ export const COLORS = {
   PrimaryColor: '#409eff',
 };
 
+export enum TypeNotice {
+  All = 'all',
+  Error = 'error',
+  Maintain = 'maintain',
+  Firealarm = 'firealarm',
+}
+
+export enum TypeCalendar {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+}
+
+export enum TypeRepeat {
+  None = 'none',
+  Daily = 'daily',
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
 export type TIconType =
   | 'air-conditioner'
   | 'light-bulb'

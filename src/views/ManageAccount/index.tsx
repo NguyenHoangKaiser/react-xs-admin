@@ -23,7 +23,7 @@ const ManageAccount: React.FC = () => {
     },
     {
       label: formatMessage({ id: 'manageAccount.setting' }),
-      key: 'otherSetting',
+      key: 'config',
       children: <OtherSetting />,
     },
   ];

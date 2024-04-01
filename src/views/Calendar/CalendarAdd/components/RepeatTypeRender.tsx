@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import { Checkbox, Divider, Flex, Space, Tag } from 'antd';
 import dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Props) => {
+  const { formatMessage } = useLocale();
+
   const getListDayOfMonth = (dayInMonth: number) => {
     const listDay = [];
     for (let index = 1; index <= dayInMonth; index++) {
@@ -33,7 +36,7 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
         {dayjs.weekdays().map((day) => (
           <Checkbox key={day}>{day}</Checkbox>
         ))}
-        <Checkbox>Tất cả</Checkbox>
+        <Checkbox>{formatMessage({ id: 'common.all' })}</Checkbox>
       </Space>
     );
   }
@@ -59,7 +62,7 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
             }
           }}
         >
-          Tất cả
+          {formatMessage({ id: 'common.all' })}
         </Tag.CheckableTag>
       </Flex>
     );
@@ -87,7 +90,7 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
               }
             }}
           >
-            Tất cả
+            {formatMessage({ id: 'common.all' })}
           </Tag.CheckableTag>
         </Flex>
         <Divider />

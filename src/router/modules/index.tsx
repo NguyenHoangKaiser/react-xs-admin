@@ -213,7 +213,7 @@ export const defaultRoute: RouteList[] = [
     id: 'Statistical',
     element: <Statistical />,
     meta: {
-      label: 'Statistical',
+      label: FormattedMessage({ id: 'common.statistical' }),
       icon: <BarChartOutlined />,
     },
   },
@@ -222,7 +222,7 @@ export const defaultRoute: RouteList[] = [
     id: 'Notification',
     element: <Notification />,
     meta: {
-      label: 'Notification',
+      label: FormattedMessage({ id: 'common.notice' }),
       icon: <NotificationOutlined />,
     },
   },
@@ -231,7 +231,7 @@ export const defaultRoute: RouteList[] = [
     id: 'Calendar',
     element: <Calendar />,
     meta: {
-      label: 'Calendar',
+      label: FormattedMessage({ id: 'common.calendar' }),
       icon: <CalendarOutlined />,
     },
   },
@@ -240,7 +240,7 @@ export const defaultRoute: RouteList[] = [
     id: 'CalendarAdd',
     element: <CalendarAdd />,
     meta: {
-      label: 'CalendarAdd',
+      label: FormattedMessage({ id: 'calendar.addCalendar' }),
       hideSidebar: true,
     },
   },

@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import type { ICalendarResult } from '@/server/calendarApi';
 import { getRepeat } from '@/utils/constant';
 import {
@@ -13,13 +14,14 @@ import dayjs from 'dayjs';
 
 const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
   const confirm = () => {
     Modal.confirm({
-      title: 'Xác nhận',
+      title: formatMessage({ id: 'group.confirm' }),
       icon: <ExclamationCircleOutlined />,
-      content: 'Bạn có chắc chắn muốn xóa lịch này?',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      content: formatMessage({ id: 'calendar.confirmDelete' }),
+      okText: formatMessage({ id: 'common.delete' }),
+      cancelText: formatMessage({ id: 'group.cancel' }),
     });
   };
   return (
@@ -34,7 +36,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
                 top: 10,
                 left: -20,
                 background: `linear-gradient(135deg, ${token.colorPrimary} , transparent )`,
-                filter: 'blur(30px)',
+                filter: 'blur(35px)',
               }}
             />
           </Col>
@@ -81,7 +83,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
         </Col>
         <Col span={22} offset={1}>
           <Typography.Text>
-            Ngày bắt đầu:{' '}
+            {formatMessage({ id: 'calendar.dateStart' })}:{' '}
             {dayjs((data.schedule?.start_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
           </Typography.Text>
         </Col>
@@ -94,7 +96,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
         </Col>
         <Col span={22} offset={1}>
           <Typography.Text>
-            Ngày kết thúc:{' '}
+            {formatMessage({ id: 'calendar.dateEnd' })}:{' '}
             {dayjs((data.schedule?.end_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
           </Typography.Text>
         </Col>
@@ -106,7 +108,10 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
           </Flex>
         </Col>
         <Col span={22} offset={1}>
-          <Typography.Text>Số lượng: {data.out?.devices?.length} thiết bị</Typography.Text>
+          <Typography.Text>
+            {formatMessage({ id: 'calendar.quantity' })}:{' '}
+            {formatMessage({ id: 'calendar.totalDevice' }, { count: data.out?.devices?.length })}
+          </Typography.Text>
         </Col>
       </Row>
       <Row align={'middle'} className="pt-2">
@@ -116,7 +121,9 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
           </Flex>
         </Col>
         <Col span={22} offset={1}>
-          <Typography.Text>Kiểu lặp: {getRepeat(data)}</Typography.Text>
+          <Typography.Text>
+            {formatMessage({ id: 'calendar.typeRepeat' })}: {getRepeat(data)}
+          </Typography.Text>
         </Col>
       </Row>
       {data && data.owner_name && (
@@ -127,7 +134,9 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
             </Flex>
           </Col>
           <Col span={22} offset={1}>
-            <Typography.Text>Người tạo: {data.owner_name}</Typography.Text>
+            <Typography.Text>
+              {formatMessage({ id: 'calendar.creator' })}: {data.owner_name}
+            </Typography.Text>
           </Col>
         </Row>
       )}
