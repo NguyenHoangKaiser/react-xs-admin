@@ -14,18 +14,6 @@ import { defaultRoute } from './modules';
 export enum RouteEnum {
   Home = '/home',
   Login = '/login',
-  // Nested = '/nested',
-  // Menu1 = '/nested/menu1',
-  // Menu1_1 = '/nested/menu1/menu1-1',
-  // Menu1_2 = '/nested/menu1/menu1-2',
-  // Power = '/power',
-  // Permissions = '/power/permissions',
-  // TestPermissionsA = '/power/test-permissions-a',
-  // TestPermissionsB = '/power/test-permissions-b',
-  // DetailsPage = '/details-page',
-  // DetailPageIndex = '/details-page/index',
-  // DetailsInfo = '/details-page/details-info',
-  // DetailsParams = '/details-page/details-params',
   Forgot = '/forgot',
   ManageAccount = '/manage-account',
   Settings = '/setting',
@@ -48,66 +36,6 @@ const arr = [
     path: RouteEnum.Home,
     id: 'Home',
   },
-  // {
-  //   path: RouteEnum.Nested,
-  //   id: 'Nested',
-  //   redirect: RouteEnum.Menu1,
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       id: 'Menu1',
-  //       redirect: RouteEnum.Menu1_1,
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           id: 'Menu1-1',
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           id: 'Menu1-2',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: RouteEnum.Power,
-  //   id: 'Power',
-  //   redirect: RouteEnum.Permissions,
-  //   children: [
-  //     {
-  //       path: 'permissions',
-  //       id: 'Permissions',
-  //     },
-  //     {
-  //       path: 'test-permissions-a',
-  //       id: 'TestPermissionsA',
-  //     },
-  //     {
-  //       path: 'test-permissions-b',
-  //       id: 'TestPermissionsB',
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: RouteEnum.DetailsPage,
-  //   id: 'DetailsPage',
-  //   redirect: RouteEnum.DetailPageIndex,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       id: 'INDEX',
-  //     },
-  //     {
-  //       path: 'details-info',
-  //       id: 'DetailsInfo',
-  //     },
-  //     {
-  //       path: 'details-params/:id',
-  //       id: 'DetailsParams',
-  //     },
-  //   ],
-  // },
   {
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
