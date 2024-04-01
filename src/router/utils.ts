@@ -41,6 +41,22 @@ const arr = [
     id: 'ManageAccount',
   },
   {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+  },
+  {
+    path: RouteEnum.Notification,
+    id: 'Notification',
+  },
+  {
+    path: RouteEnum.Calendar,
+    id: 'Calendar',
+  },
+  {
+    path: RouteEnum.CalendarAdd,
+    id: 'CalendarAdd',
+  },
+  {
     path: RouteEnum.Settings,
     id: 'Settings',
     redirect: RouteEnum.SettingsDevices,
@@ -66,22 +82,6 @@ const arr = [
         id: 'SettingsArea',
       },
     ],
-  },
-  {
-    path: RouteEnum.Statistical,
-    id: 'Statistical',
-  },
-  {
-    path: RouteEnum.Notification,
-    id: 'Notification',
-  },
-  {
-    path: RouteEnum.Calendar,
-    id: 'Calendar',
-  },
-  {
-    path: RouteEnum.CalendarAdd,
-    id: 'CalendarAdd',
   },
 ];
 

@@ -1,8 +1,8 @@
-import { getIntlText } from '@/locales';
 import { useAppDispatch } from '@/store/hooks';
 import { deleteSceneAction } from '@/store/modules/scene';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Space, Typography } from 'antd';
+import { useIntl } from 'react-intl';
 import type { ISceneAction } from '../scene';
 import DeviceAction from './DeviceAction';
 import TimeAction from './TimeAction';
@@ -16,6 +16,7 @@ interface Props {
 
 const ActionCard = (props: Props) => {
   const { action, index, mode, viewOnly } = props;
+  const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
   return (
     <>
@@ -43,8 +44,8 @@ const ActionCard = (props: Props) => {
           lineHeight: '24px',
         }}
       >
-        {action.category === 'device-action' && getIntlText({ id: 'common.device' })}
-        {action.category === 'time-action' && getIntlText({ id: 'common.time' })}
+        {action.category === 'device-action' && formatMessage({ id: 'common.device' })}
+        {action.category === 'time-action' && formatMessage({ id: 'common.time' })}
       </Typography.Text>
       {action.category === 'device-action' ? (
         <DeviceAction viewOnly={viewOnly} mode={mode} action={action} index={index} />

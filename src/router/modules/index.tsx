@@ -44,6 +44,42 @@ export const defaultRoute: RouteList[] = [
     },
   },
   {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+    element: <Statistical />,
+    meta: {
+      label: 'Statistical',
+      icon: <BarChartOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Notification,
+    id: 'Notification',
+    element: <Notification />,
+    meta: {
+      label: 'Notification',
+      icon: <NotificationOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Calendar,
+    id: 'Calendar',
+    element: <Calendar />,
+    meta: {
+      label: 'Calendar',
+      icon: <CalendarOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.CalendarAdd,
+    id: 'CalendarAdd',
+    element: <CalendarAdd />,
+    meta: {
+      label: 'CalendarAdd',
+      hideSidebar: true,
+    },
+  },
+  {
     path: RouteEnum.Settings,
     id: 'Settings',
     redirect: RouteEnum.SettingsDevices,
@@ -116,43 +152,6 @@ export const defaultRoute: RouteList[] = [
         },
       },
     ],
-  },
-
-  {
-    path: RouteEnum.Statistical,
-    id: 'Statistical',
-    element: <Statistical />,
-    meta: {
-      label: 'Statistical',
-      icon: <BarChartOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.Notification,
-    id: 'Notification',
-    element: <Notification />,
-    meta: {
-      label: 'Notification',
-      icon: <NotificationOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.Calendar,
-    id: 'Calendar',
-    element: <Calendar />,
-    meta: {
-      label: 'Calendar',
-      icon: <CalendarOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.CalendarAdd,
-    id: 'CalendarAdd',
-    element: <CalendarAdd />,
-    meta: {
-      label: 'CalendarAdd',
-      hideSidebar: true,
-    },
   },
 ];
 

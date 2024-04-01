@@ -1,5 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
-import { FormatMessage, getIntlText } from '@/locales';
+import { FormatMessage } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setStoreMultiTabs } from '@/store/modules/route';
@@ -11,24 +11,24 @@ import {
   setEditScene,
 } from '@/store/modules/scene';
 import { EStatus } from '@/utils/constant';
-import { useInfoPageTabs } from '@/views/DetailsPage/hooks/useInfoPageTabs';
+
 import { EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
 import { App, Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
 
-import { useDayJs } from '@/hooks/useDayJs';
-import { FormattedMessage } from 'react-intl';
+import { useInfoPageTabs } from '@/hooks/useInfoPageTabs';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { ISceneRule } from './scene';
 
 export default () => {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
   //TODO: Replace with real data from API
   const { data } = useAppSelector(listSceneSelector);
   const dispatch = useAppDispatch();
   const { addingScene, editingScene, editScene } = useAppSelector(sceneSelector);
   const { modal } = App.useApp();
   const { navigateTabs } = useInfoPageTabs();
-  const { DAYJS } = useDayJs();
 
   const onDetail = (record: ISceneRule) => {
     // dispatch(setDetailScene(record));
@@ -47,10 +47,10 @@ export default () => {
   const onEdit = (record: ISceneRule) => {
     if (editingScene) {
       modal.confirm({
-        title: getIntlText({ id: 'common.scene.editUnsaved' }),
-        content: getIntlText({ id: 'common.scene.editUnsavedContent' }),
-        okText: getIntlText({ id: 'common.proceed' }),
-        cancelText: getIntlText({ id: 'common.scene.editUnsavedContinue' }),
+        title: formatMessage({ id: 'common.scene.editUnsaved' }),
+        content: formatMessage({ id: 'common.scene.editUnsavedContent' }),
+        okText: formatMessage({ id: 'common.proceed' }),
+        cancelText: formatMessage({ id: 'common.scene.editUnsavedContinue' }),
         onOk: () => {
           dispatch(setEditScene(record));
           const oldPath = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
@@ -72,10 +72,10 @@ export default () => {
 
   const onDelete = (record: ISceneRule) => {
     modal.confirm({
-      title: getIntlText({ id: 'common.scene.deleteScene' }),
-      content: getIntlText({ id: 'common.scene.actionNotUndone' }),
-      okText: getIntlText({ id: 'common.delete' }),
-      cancelText: getIntlText({ id: 'common.cancel' }),
+      title: formatMessage({ id: 'common.scene.deleteScene' }),
+      content: formatMessage({ id: 'common.scene.actionNotUndone' }),
+      okText: formatMessage({ id: 'common.delete' }),
+      cancelText: formatMessage({ id: 'common.cancel' }),
       onOk: () => {
         dispatch(deleteScene({ created: record.metadata.created! }));
       },
@@ -85,10 +85,10 @@ export default () => {
   const onAddScene = () => {
     if (addingScene) {
       modal.confirm({
-        title: getIntlText({ id: 'common.scene.addUnsaved' }),
-        content: getIntlText({ id: 'common.scene.addUnsavedContent' }),
-        okText: getIntlText({ id: 'common.proceed' }),
-        cancelText: getIntlText({ id: 'common.scene.addUnsavedContinue' }),
+        title: formatMessage({ id: 'common.scene.addUnsaved' }),
+        content: formatMessage({ id: 'common.scene.editUnsavedContent' }),
+        okText: formatMessage({ id: 'common.proceed' }),
+        cancelText: formatMessage({ id: 'common.scene.addUnsavedContinue' }),
         onOk: () => {
           dispatch(resetAddScene());
           navigate(RouteEnum.SettingsScenesAdd);
@@ -203,7 +203,6 @@ export default () => {
             <FormattedMessage id="common.scene.addScene" />
           </Button>
           <Input.Search style={{ width: 200, float: 'right' }} />
-          <span>{DAYJS().format('MMM')}</span>
         </Col>
       </Row>
       <div>
@@ -211,7 +210,7 @@ export default () => {
           expandable={{
             expandedRowRender: (record) => (
               <p style={{ margin: 0 }}>
-                {record.metadata.description || getIntlText({ id: 'common.noDescription' })}
+                {record.metadata.description || formatMessage({ id: 'common.noDescription' })}
               </p>
             ),
             // rowExpandable: (record) => record.name !== 'Not Expandable',

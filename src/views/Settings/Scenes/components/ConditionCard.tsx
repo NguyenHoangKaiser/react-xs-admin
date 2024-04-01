@@ -1,10 +1,10 @@
-import { getIntlText } from '@/locales';
 import { useAppDispatch } from '@/store/hooks';
 import { deleteSceneCondition } from '@/store/modules/scene';
 import { ESceneOperator } from '@/utils/constant';
 import { CloseOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd';
 import { Button, Select, Space, Typography } from 'antd';
+import { useIntl } from 'react-intl';
 import type { ISceneCondition } from '../scene';
 import DeviceCondition from './DeviceCondition';
 import TimeCondition from './TimeCondition';
@@ -47,6 +47,7 @@ interface Props {
 }
 
 const ConditionCard = (props: Props) => {
+  const { formatMessage } = useIntl();
   const { condition, index, mode, viewOnly } = props;
   const dispatch = useAppDispatch();
   return (
@@ -75,8 +76,8 @@ const ConditionCard = (props: Props) => {
           lineHeight: '24px',
         }}
       >
-        {condition.category === 'device' && getIntlText({ id: 'common.device' })}
-        {condition.category === 'time' && getIntlText({ id: 'common.time' })}
+        {condition.category === 'device' && formatMessage({ id: 'common.device' })}
+        {condition.category === 'time' && formatMessage({ id: 'common.time' })}
       </Typography.Text>
       {condition.category === 'device' ? (
         <DeviceCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />
