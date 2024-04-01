@@ -1,3 +1,4 @@
+import { getIntlText } from '@/locales';
 import { useAppDispatch } from '@/store/hooks';
 import { deleteSceneCondition } from '@/store/modules/scene';
 import { ESceneOperator } from '@/utils/constant';
@@ -74,7 +75,8 @@ const ConditionCard = (props: Props) => {
           lineHeight: '24px',
         }}
       >
-        {condition.category.toUpperCase()}
+        {condition.category === 'device' && getIntlText({ id: 'common.device' })}
+        {condition.category === 'time' && getIntlText({ id: 'common.time' })}
       </Typography.Text>
       {condition.category === 'device' ? (
         <DeviceCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />

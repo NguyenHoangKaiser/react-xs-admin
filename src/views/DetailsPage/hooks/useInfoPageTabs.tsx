@@ -27,17 +27,27 @@ export const useInfoPageTabs = () => {
     dispatch(setStoreMultiTabs({ type, tabs }));
   };
 
-  const navigateTabs = (
-    path: string,
-    label?: string,
-    option?: NavigateOptions,
-    localeLabel?: LocaleId,
-  ) => {
-    const route = path.split('/');
+  const navigateTabs = ({
+    path,
+    label,
+    localeLabel,
+    option,
+  }: {
+    path: string;
+    label?: string;
+    localeLabel?: LocaleId;
+    option?: NavigateOptions;
+  }) => {
+    // const route = path.split('/');
     let tab: MultiTabsType = {
       key: path,
-      label: label || route[route.length - 1],
     };
+    if (label) {
+      tab = {
+        ...tab,
+        label,
+      };
+    }
     if (localeLabel) {
       tab = {
         ...tab,

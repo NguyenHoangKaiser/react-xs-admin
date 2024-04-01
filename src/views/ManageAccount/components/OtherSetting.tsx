@@ -2,6 +2,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { useLocale, type LocaleType } from '@/locales';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppLocale, setAppThemeMode, setToggleNotice } from '@/store/modules/app';
+import { ELocale } from '@/utils/constant';
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Col, Dropdown, Row, Space, Switch, theme, type MenuProps } from 'antd';
 import { memo, useMemo } from 'react';
@@ -17,13 +18,13 @@ const OtherSetting = memo(() => {
     return [
       {
         label: formatMessage({ id: 'common.vietnamese' }),
-        key: 'vi-VN',
-        disabled: locale === 'vi-VN',
+        key: ELocale.vi,
+        disabled: locale === ELocale.vi,
       }, // Be sure to fill in the menu item key
       {
         label: formatMessage({ id: 'common.english' }),
-        key: 'en-US',
-        disabled: locale === 'en-US',
+        key: ELocale.en,
+        disabled: locale === ELocale.en,
       },
     ];
   }, [locale]);

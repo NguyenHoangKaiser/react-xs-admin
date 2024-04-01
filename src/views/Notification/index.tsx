@@ -1,4 +1,4 @@
-import { FormattedMessage, useLocale } from '@/locales';
+import { FormatMessage, useLocale } from '@/locales';
 import { TypeNotice } from '@/utils/constant';
 import type { TableColumnsType, TableProps } from 'antd';
 import { Button, Col, Input, Row, Table, Typography } from 'antd';
@@ -21,11 +21,11 @@ type Sorts = GetSingle<Parameters<NonNullable<TableProps<DataType>['onChange']>>
 const convertType = (type: TypeNotice) => {
   switch (type) {
     case TypeNotice.Error:
-      return FormattedMessage({ id: 'notice.typeError' });
+      return FormatMessage({ id: 'notice.typeError' });
     case TypeNotice.Maintain:
-      return FormattedMessage({ id: 'notice.typeMaintain' });
+      return FormatMessage({ id: 'notice.typeMaintain' });
     case TypeNotice.Firealarm:
-      return FormattedMessage({ id: 'notice.typeFirealarm' });
+      return FormatMessage({ id: 'notice.typeFirealarm' });
     default:
       return '';
   }

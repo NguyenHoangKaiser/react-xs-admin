@@ -1,4 +1,6 @@
+import SvgIcon from '@/components/SvgIcon';
 import { useTabsChange } from '@/layout/components/AppMain/TabsPage/hooks/useTabsChange';
+import { getIntlText } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -11,10 +13,12 @@ import {
   finishEditScene,
   setSceneMetadata,
 } from '@/store/modules/scene';
+import { ListIconImage, type TIconType } from '@/utils/constant';
 import { SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { App, Button, Col, Drawer, Flex, Form, Input, Row, Space, theme } from 'antd';
+import { App, Button, Col, Drawer, Flex, Form, Input, Row, Select, Space, theme } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SceneRender from '../components/SceneRender';
 import { getSceneContainerCss } from '../style';
@@ -22,6 +26,7 @@ import { getSceneContainerCss } from '../style';
 interface FormFieldType {
   name: string;
   description: string;
+  icon: TIconType;
 }
 
 export default ({ mode }: { mode: 'add' | 'edit' }) => {
@@ -30,13 +35,20 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const sceneAdd = useAppSelector(addSceneSelector);
   const sceneEdit = useAppSelector(editSceneSelector);
   const scene = useMemo(() => (mode === 'add' ? sceneAdd : sceneEdit), [mode, sceneAdd, sceneEdit]);
-  console.log('scene', {
-    scene,
-    mode,
-    sceneAdd,
-    sceneEdit,
-  });
+  const { locale } = useIntl();
+
+  const listIcon = useMemo(
+    () =>
+      ListIconImage.map((icon) => ({
+        label: locale === 'en' ? icon.name_en : icon.name,
+        value: icon.type,
+      })),
+    [locale],
+  );
+
   const { metadata, conditions, actions } = scene;
+  const conditionHasDevice = conditions.data.some((condition) => condition.category === 'device');
+  const actionHasDevice = actions.data.some((action) => action.category === 'device-action');
   const dispatch = useAppDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
   const location = useLocation();
@@ -49,12 +61,13 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         data: {
           name: values.name,
           description: values.description,
+          icon: values.icon,
         },
         for: mode,
       }),
     );
     setOpenDrawer(false);
-    message.success('Scene info updated');
+    message.success(getIntlText({ id: 'common.scene.infoUpdated' }));
   };
 
   const onClick = useCallback(
@@ -155,18 +168,24 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
 
   const finishScene = useCallback(() => {
     if (metadata.name === '') {
-      message.error('Please enter scene name');
+      message.error(getIntlText({ id: 'common.scene.pleaseEnterName' }));
       return;
     }
     removeTab(pathKey, {
       route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
-      title: mode === 'add' ? 'Finish adding scene?' : 'Finish editing scene?',
+      title:
+        mode === 'add'
+          ? getIntlText({ id: 'common.scene.finishAdding' })
+          : getIntlText({ id: 'common.scene.finishEditing' }),
       content: 'Any unsaved changes will be lost.',
       trigger: actions.data.length > 0 || conditions.data.length > 0,
       callback: () => {
         dispatch(mode === 'add' ? finishAddScene() : finishEditScene());
         notification.success({
-          message: mode === 'add' ? 'Scene added successfully' : 'Scene updated successfully',
+          message:
+            mode === 'add'
+              ? getIntlText({ id: 'common.scene.addedSuccess' })
+              : getIntlText({ id: 'common.scene.editSuccess' }),
           placement: 'bottomRight',
         });
         // navigate(RouteEnum.SettingsScenes, { replace: true });
@@ -178,7 +197,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
     <div css={getSceneContainerCss(token)}>
       <Row className="my-4">
         <Col span={22} offset={1}>
-          <Flex justify="space-between" align="center">
+          <Flex justify="space-between" align="center" wrap="wrap" gap="middle">
             <Button type="text" onClick={showDrawer} className="title-scene">
               {metadata.name ? (
                 <span
@@ -194,21 +213,26 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
                     color: token.colorTextSecondary,
                   }}
                 >
-                  Enter name in Edit Scene Info
+                  <FormattedMessage id="common.scene.enterNameEdit" />
                 </span>
               )}
             </Button>
             <Space>
               <Button type="default" icon={<SettingOutlined />} onClick={showDrawer}>
-                Edit Scene Info
+                {getIntlText({ id: 'common.scene.editInfo' })}
               </Button>
               <Button
                 type="primary"
-                disabled={actions.data.length === 0 || conditions.data.length === 0}
+                disabled={
+                  actions.data.length === 0 ||
+                  conditions.data.length === 0 ||
+                  !conditionHasDevice ||
+                  !actionHasDevice
+                }
                 icon={<SaveOutlined />}
                 onClick={finishScene}
               >
-                Finish Scene
+                {getIntlText({ id: 'common.scene.finishScene' })}
               </Button>
             </Space>
           </Flex>
@@ -222,7 +246,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         onClickConditionTypeDrop={onClickConditionTypeDrop}
       />
       <Drawer
-        title="Edit Scene Info"
+        title={getIntlText({ id: 'common.scene.editInfo' })}
         getContainer={false}
         placement="right"
         onClose={onClose}
@@ -235,7 +259,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         style={{ position: 'relative' }}
       >
         <Form
-          name="Scene Information"
+          name={getIntlText({ id: 'common.scene.sceneInfo' })}
           layout="vertical"
           initialValues={metadata}
           onFinish={onFinish}
@@ -244,20 +268,40 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         >
           <Form.Item<FormFieldType>
             name="name"
-            label="Name"
-            rules={[{ required: true, message: 'Please enter scene name' }]}
+            label={<FormattedMessage id="common.scene.name" />}
+            rules={[
+              { required: true, message: getIntlText({ id: 'common.scene.requireSceneName' }) },
+            ]}
           >
-            <Input placeholder="Please enter scene name" />
+            <Input placeholder={getIntlText({ id: 'common.scene.pleaseEnterName' })} />
           </Form.Item>
-          <Form.Item<FormFieldType> name="description" label="Description">
-            <Input.TextArea rows={4} placeholder="Please enter scene description" />
+          <Form.Item<FormFieldType>
+            name="description"
+            label={<FormattedMessage id="common.description" />}
+          >
+            <Input.TextArea
+              rows={4}
+              placeholder={getIntlText({ id: 'common.scene.pleaseEnterDescription' })}
+            />
+          </Form.Item>
+          <Form.Item<FormFieldType> label="Icon" name="icon">
+            <Select
+              placeholder={getIntlText({ id: 'common.scene.pleaseSelectIcon' })}
+              options={listIcon}
+              optionRender={(option) => (
+                <Space size="large">
+                  <SvgIcon name={option.value as TIconType} className="text-2xl mb-1" />
+                  <span>{option.data.label}</span>
+                </Space>
+              )}
+            />
           </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             style={{ position: 'absolute', bottom: 18, right: 18 }}
           >
-            Submit
+            <FormattedMessage id="common.submit" />
           </Button>
         </Form>
       </Drawer>

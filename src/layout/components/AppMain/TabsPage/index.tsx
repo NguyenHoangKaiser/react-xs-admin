@@ -8,7 +8,7 @@ import { findRouteByPath, RouteEnum } from '@/router/utils';
 import { useAppSelector } from '@/store/hooks';
 // import { useRefresh } from '@/hooks/web/useRefresh';
 import { useRouteList } from '@/hooks/useRouteList';
-import { FormattedMessage } from '@/locales';
+import { FormatMessage } from '@/locales';
 import { sceneSelector } from '@/store/modules/scene';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
@@ -41,7 +41,7 @@ const TabsPage = memo((_props: Props) => {
         label: (
           <TabsItemLabel pathKey={i.key}>
             <div className="tabs-tab-label">
-              {i.localeLabel ? FormattedMessage({ id: i.localeLabel }) : ''}
+              {i.localeLabel ? FormatMessage({ id: i.localeLabel }) : ''}
               {i.label || routeBy?.label}
             </div>
           </TabsItemLabel>

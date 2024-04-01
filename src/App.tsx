@@ -18,6 +18,7 @@ import { initAsyncRoute } from './router/utils';
 import type { TSocket } from './socket';
 import { useAppSelector } from './store/hooks';
 import { userSelector } from './store/modules/user';
+import { ELocale } from './utils/constant';
 
 export interface GlobalContent {
   socket?: TSocket;
@@ -118,7 +119,7 @@ function App() {
 
   const getLocale = useMemo(() => {
     setIntl(locale);
-    if (locale === 'en-US') {
+    if (locale === ELocale.en) {
       dayjs.locale('en');
       return enUS;
     } else {

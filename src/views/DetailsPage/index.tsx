@@ -12,7 +12,7 @@ const DetailsPage = () => {
       path = `/details-page/details-params/${i}`;
     }
     // handleTabs(pateType, 'add', i);
-    navigateTabs(path);
+    navigateTabs({ path });
   };
 
   return (

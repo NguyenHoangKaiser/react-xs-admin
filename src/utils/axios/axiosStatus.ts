@@ -14,37 +14,37 @@ export function checkStatus(
       errMessage = `${msg}`;
       break;
     case 401:
-      errMessage = getIntlText('api.errMsg401');
+      errMessage = getIntlText({ id: 'api.errMsg401' });
       break;
     case 403:
-      errMessage = getIntlText('api.errMsg403');
+      errMessage = getIntlText({ id: 'api.errMsg403' });
       break;
     case 404:
-      errMessage = getIntlText('api.errMsg404');
+      errMessage = getIntlText({ id: 'api.errMsg404' });
       break;
     case 405:
-      errMessage = getIntlText('api.errMsg405');
+      errMessage = getIntlText({ id: 'api.errMsg405' });
       break;
     case 408:
-      errMessage = getIntlText('api.errMsg408');
+      errMessage = getIntlText({ id: 'api.errMsg408' });
       break;
     case 500:
-      errMessage = getIntlText('api.errMsg500');
+      errMessage = getIntlText({ id: 'api.errMsg500' });
       break;
     case 501:
-      errMessage = getIntlText('api.errMsg501');
+      errMessage = getIntlText({ id: 'api.errMsg501' });
       break;
     case 502:
-      errMessage = getIntlText('api.errMsg502');
+      errMessage = getIntlText({ id: 'api.errMsg502' });
       break;
     case 503:
-      errMessage = getIntlText('api.errMsg503');
+      errMessage = getIntlText({ id: 'api.errMsg503' });
       break;
     case 504:
-      errMessage = getIntlText('api.errMsg504');
+      errMessage = getIntlText({ id: 'api.errMsg504' });
       break;
     case 505:
-      errMessage = getIntlText('api.errMsg505');
+      errMessage = getIntlText({ id: 'api.errMsg505' });
       break;
     default:
   }
