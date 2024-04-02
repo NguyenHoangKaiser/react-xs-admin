@@ -22,6 +22,9 @@ import { useState } from 'react';
 import { Calendar as BigCalendar, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { useDayJs } from '@/hooks/useDayJs';
+import { useLocale } from '@/locales';
+import { TypeCalendar } from '@/utils/constant';
 import { useNavigate } from 'react-router-dom';
 import PopoverScheduleDetail from './components/PopoverScheduleDetail';
 import { getCssCalendar } from './style';
@@ -31,6 +34,8 @@ const localizer = dayjsLocalizer(dayjs);
 const Calendar = () => {
   const { hotel_id } = useAppSelector(hotelSelector);
   const { token } = theme.useToken();
+  const { DAYJS } = useDayJs();
+  const { formatMessage } = useLocale();
   const navigate = useNavigate();
   const [selectedDay, setSelectedDay] = useState<Dayjs>(dayjs());
   const [owner, setOwner] = useState<boolean>(false);
@@ -44,7 +49,7 @@ const Calendar = () => {
     end_at: Math.round(selectedDay.endOf('month').valueOf() / 1000),
   });
 
-  const [mode, setMode] = useState<'Day' | 'Week' | 'Month'>('Month');
+  const [mode, setMode] = useState<TypeCalendar>(TypeCalendar.Month);
 
   const getListData = (value: Dayjs) => {
     if (value.month() !== selectedDay.month() || !data) {
@@ -102,7 +107,7 @@ const Calendar = () => {
                           <li>
                             <Badge
                               color={item.color}
-                              text={`${dayjs((item.schedule?.run_time ?? 0) * 1000).format(
+                              text={`${DAYJS((item.schedule?.run_time ?? 0) * 1000).format(
                                 'hh:mm A',
                               )}, ${item.name}`}
                             />
@@ -114,7 +119,9 @@ const Calendar = () => {
                 </div>
               }
             >
-              <a style={{ color: token.colorPrimary }}>{listData.length - 3} thẻ khác</a>
+              <a style={{ color: token.colorPrimary }}>
+                {formatMessage({ id: 'calendar.otherCard' }, { count: listData.length - 3 })}
+              </a>
             </Popover>
           )}
         </ul>
@@ -141,7 +148,7 @@ const Calendar = () => {
         <Row>
           <Col className="p-4" span={24}>
             <Checkbox onChange={() => setOwner(!owner)} checked={owner}>
-              Lịch của tôi
+              {formatMessage({ id: 'calendar.myCalendar' })}
             </Checkbox>
           </Col>
           <Col className="p-4" span={24}>
@@ -153,7 +160,7 @@ const Calendar = () => {
                   : setType(type.filter((t) => t !== 'LIGHT'));
               }}
             >
-              Lịch đèn
+              {formatMessage({ id: 'calendar.lightCalendar' })}
             </Checkbox>
           </Col>
           <Col className="p-4" span={24}>
@@ -165,7 +172,7 @@ const Calendar = () => {
                   : setType(type.filter((t) => t !== 'AC'));
               }}
             >
-              Lịch điều hòa
+              {formatMessage({ id: 'calendar.ACCalendar' })}
             </Checkbox>
           </Col>
           <Col className="p-4" span={24}>
@@ -177,7 +184,7 @@ const Calendar = () => {
                   : setType(type.filter((t) => t !== 'PW'));
               }}
             >
-              Lịch bơm nước
+              {formatMessage({ id: 'calendar.pwCalendar' })}
             </Checkbox>
           </Col>
         </Row>
@@ -193,7 +200,9 @@ const Calendar = () => {
           }}
         >
           <Col span={2}>
-            <Button onClick={() => setSelectedDay(dayjs())}>Hôm nay</Button>
+            <Button onClick={() => setSelectedDay(dayjs())}>
+              {formatMessage({ id: 'calendar.today' })}
+            </Button>
           </Col>
           <Col span={2}>
             <div
@@ -214,23 +223,24 @@ const Calendar = () => {
           </Col>
 
           <Col span={4}>
-            <div>
-              {`${
-                dayjs(selectedDay).format('dddd').charAt(0).toUpperCase() +
-                dayjs(selectedDay).format('dddd').slice(1)
-              }, ${dayjs(selectedDay).format('LL')}`}
+            <div style={{ textTransform: 'capitalize' }}>
+              {DAYJS(selectedDay.toDate()).format('dddd, D MMMM, YYYY')}
             </div>
           </Col>
 
           <Col span={4} offset={12}>
-            <Segmented<'Day' | 'Week' | 'Month'>
-              options={['Day', 'Week', 'Month']}
+            <Segmented<TypeCalendar>
+              options={[
+                { value: TypeCalendar.Day, label: formatMessage({ id: 'calendar.day' }) },
+                { value: TypeCalendar.Week, label: formatMessage({ id: 'calendar.week' }) },
+                { value: TypeCalendar.Month, label: formatMessage({ id: 'calendar.month' }) },
+              ]}
               value={mode}
               onChange={(value) => setMode(value)}
             />
           </Col>
         </Row>
-        {mode === 'Week' && (
+        {mode === TypeCalendar.Week && (
           <div css={getCssCalendar(token)}>
             <BigCalendar
               localizer={localizer}
@@ -238,14 +248,14 @@ const Calendar = () => {
                 ...data,
                 id,
                 title: data.name,
-                start: dayjs((data.schedule?.run_time ?? 0) * 1000).toDate(),
-                end: dayjs((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
+                start: DAYJS((data.schedule?.run_time ?? 0) * 1000).toDate(),
+                end: DAYJS((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
               }))}
               defaultDate={selectedDay.toDate()}
               date={selectedDay.toDate()}
               onNavigate={(date) => {
-                setSelectedDay(dayjs(date));
-                setMode('Day');
+                setSelectedDay(DAYJS(date));
+                setMode(TypeCalendar.Day);
               }}
               toolbar={false}
               startAccessor="start"
@@ -263,7 +273,7 @@ const Calendar = () => {
             />
           </div>
         )}
-        {mode === 'Day' && (
+        {mode === TypeCalendar.Day && (
           <div css={getCssCalendar(token)}>
             <BigCalendar
               localizer={localizer}
@@ -271,13 +281,13 @@ const Calendar = () => {
                 ...data,
                 id,
                 title: data.name,
-                start: dayjs((data.schedule?.run_time ?? 0) * 1000).toDate(),
-                end: dayjs((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
+                start: DAYJS((data.schedule?.run_time ?? 0) * 1000).toDate(),
+                end: DAYJS((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
               }))}
               defaultDate={selectedDay.toDate()}
               date={selectedDay.toDate()}
               onNavigate={(date) => {
-                setSelectedDay(dayjs(date));
+                setSelectedDay(DAYJS(date));
               }}
               toolbar={false}
               startAccessor="start"
@@ -295,7 +305,7 @@ const Calendar = () => {
             />
           </div>
         )}
-        {mode === 'Month' && (
+        {mode === TypeCalendar.Month && (
           <div css={getCssCalendar(token)}>
             <AntCalendar
               cellRender={cellRender}
@@ -312,7 +322,7 @@ const Calendar = () => {
         )}
       </Col>
       <FloatButton
-        tooltip={<div>Tạo lịch</div>}
+        tooltip={<div>{formatMessage({ id: 'calendar.addCalendar' })}</div>}
         shape="circle"
         type="primary"
         icon={<PlusOutlined />}

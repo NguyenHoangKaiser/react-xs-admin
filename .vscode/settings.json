@@ -18,8 +18,20 @@
     "thme",
     "Todos"
   ],
-  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.sourceLanguage": "vi",
   "i18n-ally.refactor.templates": [
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-7",
+      "name": "React Intl 8",
+      "description": "React Intl template v8",
+      "template": "getIntlText({ id: '{key}' {args}})"
+    },
+    {
+      "key": "i18n-ally.refactor.templates.react-intl-8",
+      "name": "React Intl 9",
+      "description": "React Intl template v9",
+      "template": "{getIntlText({ id: '{key}' {args}})}"
+    },
     {
       "key": "i18n-ally.refactor.templates.react-intl",
       "name": "React Intl",
@@ -67,12 +79,6 @@
       "name": "React Intl 6",
       "description": "React Intl template v6",
       "template": "FormatMessage({ id: '{key}' {args}})"
-    },
-    {
-      "key": "i18n-ally.refactor.templates.react-intl-7",
-      "name": "React Intl 8",
-      "description": "React Intl template v8",
-      "template": "getIntlText({ id: '{key}' {args}})"
     }
   ],
   "i18n-ally.regex.usageMatchAppend": [

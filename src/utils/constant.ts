@@ -1,8 +1,13 @@
+import { getIntlText } from '@/locales';
 import type { IDevice } from '@/server/apiTypes';
-import type { ICalendarResult } from '@/server/calendarApi';
 import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'antd';
 import dayjs from 'dayjs';
 import _ from 'lodash';
+
+export const defaultDimension = {
+  width: 'calc(100vw - 77px)',
+  height: 'calc(100vh - 110px)',
+};
 
 export enum APIs {
   LOGIN = '/site/login',
@@ -60,6 +65,27 @@ export enum ELocale {
 export const COLORS = {
   PrimaryColor: '#409eff',
 };
+
+export enum TypeNotice {
+  All = 'all',
+  Error = 'error',
+  Maintain = 'maintain',
+  Firealarm = 'firealarm',
+}
+
+export enum TypeCalendar {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+}
+
+export enum TypeRepeat {
+  None = 0,
+  Daily = 1,
+  Weekly = 2,
+  Monthly = 3,
+  Yearly = 4,
+}
 
 export type TIconType =
   | 'air-conditioner'
@@ -5621,19 +5647,19 @@ export interface DataType {
   image: TIconType;
 }
 
-export function getRepeat(data: ICalendarResult) {
+export function getRepeat(type?: number) {
   return (() => {
-    switch (data.schedule?.repeat_type) {
+    switch (type) {
       case 0:
-        return 'Không lặp';
+        return getIntlText({ id: 'calendar.noRepeat' });
       case 1:
-        return 'Lặp lại hàng ngày';
+        return getIntlText({ id: 'calendar.repeatEveryDay' });
       case 2:
-        return 'Lặp lại hàng tuần';
+        return getIntlText({ id: 'calendar.repeatWeekly' });
       case 3:
-        return 'Lặp lại hàng tháng';
+        return getIntlText({ id: 'calendar.repeatMonthly' });
       case 4:
-        return 'Lặp lại hàng năm';
+        return getIntlText({ id: 'calendar.repeatYearly' });
       default:
     }
   })();

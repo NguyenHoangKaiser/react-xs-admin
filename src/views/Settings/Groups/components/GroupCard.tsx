@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { Card, Flex, Typography } from 'antd';
 import type { CardProps } from 'antd/es/card';
@@ -9,6 +10,7 @@ interface DeviceCardProps extends CardProps {
 }
 
 const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
+  const { formatMessage } = useLocale();
   return (
     <Card
       hoverable
@@ -34,7 +36,9 @@ const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
         >
           {group.group_name || 'Name'}
         </Typography.Title>
-        <Typography.Text>{group.devices?.length} Thiết bị</Typography.Text>
+        <Typography.Text>
+          {formatMessage({ id: 'group.device' }, { count: group.devices?.length })}
+        </Typography.Text>
       </Flex>
     </Card>
   );

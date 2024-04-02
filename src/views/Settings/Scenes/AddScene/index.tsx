@@ -1,6 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useTabsChange } from '@/layout/components/AppMain/TabsPage/hooks/useTabsChange';
-import { getIntlText } from '@/locales';
 import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -31,6 +30,7 @@ interface FormFieldType {
 
 export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const { token } = theme.useToken();
+  const { formatMessage } = useIntl();
   const { message, notification } = App.useApp();
   const sceneAdd = useAppSelector(addSceneSelector);
   const sceneEdit = useAppSelector(editSceneSelector);
@@ -67,7 +67,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
       }),
     );
     setOpenDrawer(false);
-    message.success(getIntlText({ id: 'common.scene.infoUpdated' }));
+    message.success(formatMessage({ id: 'common.scene.infoUpdated' }));
   };
 
   const onClick = useCallback(
@@ -168,24 +168,24 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
 
   const finishScene = useCallback(() => {
     if (metadata.name === '') {
-      message.error(getIntlText({ id: 'common.scene.pleaseEnterName' }));
+      message.error(formatMessage({ id: 'common.scene.pleaseEnterName' }));
       return;
     }
     removeTab(pathKey, {
       route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
       title:
         mode === 'add'
-          ? getIntlText({ id: 'common.scene.finishAdding' })
-          : getIntlText({ id: 'common.scene.finishEditing' }),
-      content: 'Any unsaved changes will be lost.',
+          ? formatMessage({ id: 'common.scene.finishAdding' })
+          : formatMessage({ id: 'common.scene.finishEditing' }),
+      content: formatMessage({ id: 'common.scene.lostUnsaved' }),
       trigger: actions.data.length > 0 || conditions.data.length > 0,
       callback: () => {
         dispatch(mode === 'add' ? finishAddScene() : finishEditScene());
         notification.success({
           message:
             mode === 'add'
-              ? getIntlText({ id: 'common.scene.addedSuccess' })
-              : getIntlText({ id: 'common.scene.editSuccess' }),
+              ? formatMessage({ id: 'common.scene.addedSuccess' })
+              : formatMessage({ id: 'common.scene.editSuccess' }),
           placement: 'bottomRight',
         });
         // navigate(RouteEnum.SettingsScenes, { replace: true });
@@ -219,7 +219,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
             </Button>
             <Space>
               <Button type="default" icon={<SettingOutlined />} onClick={showDrawer}>
-                {getIntlText({ id: 'common.scene.editInfo' })}
+                {formatMessage({ id: 'common.scene.editInfo' })}
               </Button>
               <Button
                 type="primary"
@@ -232,7 +232,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
                 icon={<SaveOutlined />}
                 onClick={finishScene}
               >
-                {getIntlText({ id: 'common.scene.finishScene' })}
+                {formatMessage({ id: 'common.scene.finishScene' })}
               </Button>
             </Space>
           </Flex>
@@ -246,7 +246,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         onClickConditionTypeDrop={onClickConditionTypeDrop}
       />
       <Drawer
-        title={getIntlText({ id: 'common.scene.editInfo' })}
+        title={formatMessage({ id: 'common.scene.editInfo' })}
         getContainer={false}
         placement="right"
         onClose={onClose}
@@ -259,7 +259,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         style={{ position: 'relative' }}
       >
         <Form
-          name={getIntlText({ id: 'common.scene.sceneInfo' })}
+          name={formatMessage({ id: 'common.scene.sceneInfo' })}
           layout="vertical"
           initialValues={metadata}
           onFinish={onFinish}
@@ -270,10 +270,10 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
             name="name"
             label={<FormattedMessage id="common.scene.name" />}
             rules={[
-              { required: true, message: getIntlText({ id: 'common.scene.requireSceneName' }) },
+              { required: true, message: formatMessage({ id: 'common.scene.requireSceneName' }) },
             ]}
           >
-            <Input placeholder={getIntlText({ id: 'common.scene.pleaseEnterName' })} />
+            <Input placeholder={formatMessage({ id: 'common.scene.pleaseEnterName' })} />
           </Form.Item>
           <Form.Item<FormFieldType>
             name="description"
@@ -281,12 +281,12 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
           >
             <Input.TextArea
               rows={4}
-              placeholder={getIntlText({ id: 'common.scene.pleaseEnterDescription' })}
+              placeholder={formatMessage({ id: 'common.scene.pleaseEnterDescription' })}
             />
           </Form.Item>
           <Form.Item<FormFieldType> label="Icon" name="icon">
             <Select
-              placeholder={getIntlText({ id: 'common.scene.pleaseSelectIcon' })}
+              placeholder={formatMessage({ id: 'common.scene.pleaseSelectIcon' })}
               options={listIcon}
               optionRender={(option) => (
                 <Space size="large">
@@ -301,7 +301,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
             htmlType="submit"
             style={{ position: 'absolute', bottom: 18, right: 18 }}
           >
-            <FormattedMessage id="common.submit" />
+            <FormattedMessage id="common.save" />
           </Button>
         </Form>
       </Drawer>

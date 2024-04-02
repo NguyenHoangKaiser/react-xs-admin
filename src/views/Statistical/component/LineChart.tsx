@@ -24,7 +24,7 @@ const LineChart = () => {
     },
     interaction: {
       tooltip: {
-        marker: false,
+        marker: true,
       },
     },
     style: {

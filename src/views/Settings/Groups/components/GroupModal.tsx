@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { FAKE_DATA, ListIconVariant } from '@/utils/constant';
 import {
@@ -31,17 +32,26 @@ const GroupForm: React.FC<GroupFormProps> = ({
 }) => {
   const [form] = Form.useForm();
   const thme = theme.useToken();
+  const { formatMessage } = useLocale();
 
   useEffect(() => {
     onFormInstanceReady(form);
   }, []);
   return (
     <Form layout="vertical" form={form} name="form_in_modal" initialValues={initialValues}>
-      <Form.Item label="Tên nhóm" name="group_name" rules={[{ required: true }]}>
-        <Input placeholder="Tên nhóm" />
+      <Form.Item
+        label={formatMessage({ id: 'group.nameGroup' })}
+        name="group_name"
+        rules={[{ required: true }]}
+      >
+        <Input placeholder={formatMessage({ id: 'group.nameGroup' })} />
       </Form.Item>
-      <Form.Item label="Khu vực" name="section" rules={[{ required: true }]}>
-        <Select placeholder="Chọn khu vực">
+      <Form.Item
+        label={formatMessage({ id: 'common.area' })}
+        name="section"
+        rules={[{ required: true }]}
+      >
+        <Select placeholder={formatMessage({ id: 'group.selectArea' })}>
           {FAKE_DATA.sectionList.items.map((section) => {
             return (
               <Select.Option value={section.id} key={section.id}>
@@ -52,7 +62,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         </Select>
       </Form.Item>
       <Form.Item
-        label="Loại thiết bị"
+        label={formatMessage({ id: 'common.deviceType' })}
         name="category"
         rules={[{ required: typeModal === 'lighting' ? true : false }]}
         initialValue={
@@ -60,7 +70,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         }
       >
         {typeModal === 'lighting' ? (
-          <Select placeholder="Chọn loại thiết bị">
+          <Select placeholder={formatMessage({ id: 'group.selectTypeDevice' })}>
             <Select.Option value="dimmer">Dimmer</Select.Option>
             <Select.Option value="rgb">RGB</Select.Option>
             <Select.Option value="ww">WW</Select.Option>
@@ -126,14 +136,20 @@ const GroupFormModal: React.FC<GroupFormModalProps> = ({
   setSelectedIcon,
   typeModal,
 }) => {
+  const { formatMessage } = useLocale();
+
   const [formInstance, setFormInstance] = useState<FormInstance>();
 
   return (
     <Modal
       open={open}
-      title={`${typeModal === 'normal' ? 'Thêm nhóm thường' : 'Thêm nhóm lighting'}`}
-      okText="Lưu"
-      cancelText="Hủy"
+      title={`${
+        typeModal === 'normal'
+          ? formatMessage({ id: 'group.addGroupNormal' })
+          : formatMessage({ id: 'group.addGroupLighting' })
+      }`}
+      okText={formatMessage({ id: 'manageAccount.save' })}
+      cancelText={formatMessage({ id: 'group.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose

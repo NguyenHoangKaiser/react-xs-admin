@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IDevicesListItem1, IGroupDevices } from '@/utils/constant';
 import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import type { CheckboxProps } from 'antd';
@@ -6,7 +7,6 @@ import {
   Card,
   Checkbox,
   Col,
-  Divider,
   Flex,
   Input,
   List,
@@ -27,6 +27,7 @@ interface ModalProps {
 
 const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
   const [checkedList, setCheckedList] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<IDevicesListItem1[]>([]);
@@ -70,9 +71,9 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
   return (
     <Modal
       open={open}
-      title={'Chọn thiết bị'}
-      okText="Lưu"
-      cancelText="Hủy"
+      title={formatMessage({ id: 'group.selectDevice' })}
+      okText={formatMessage({ id: 'manageAccount.save' })}
+      cancelText={formatMessage({ id: 'group.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose
@@ -92,7 +93,7 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
                   onChange={onCheckAllChange}
                   checked={checkAll}
                 >
-                  Chọn tất cả
+                  {formatMessage({ id: 'group.selectAll' })}
                 </Checkbox>
               </Flex>
             </Col>
@@ -111,7 +112,6 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
               next={loadMoreData}
               hasMore={data.length < FAKE_DATA.devicesList.items.length}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-              endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
               scrollableTarget="scrollableDiv"
             >
               <List

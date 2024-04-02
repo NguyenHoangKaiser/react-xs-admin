@@ -1,4 +1,4 @@
-import TreeAnchorTwo from '@/layout/components/PageAnchor/TreeAnchorTwo';
+import TreeAnchor from '@/layout/components/PageAnchor/TreeAnchor';
 import { useLocale } from '@/locales';
 import type { IDevicesListItem1, ISectionListItem } from '@/utils/constant';
 import { FAKE_DATA } from '@/utils/constant';
@@ -149,9 +149,17 @@ const SettingArea = memo(() => {
     setAutoExpandParent(false);
   };
   return (
-    <TreeAnchorTwo
+    <TreeAnchor
       treeProps={{ treeData, onExpand, expandedKeys, autoExpandParent, onSelect }}
-      inputProps={{ onChange }}
+      siderProps={{ breakpoint: 'xl' }}
+      title={
+        <Input.Search
+          style={{ marginBottom: 8, paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
+          placeholder={formatMessage({ id: 'common.search' })}
+          onChange={onChange}
+          allowClear
+        />
+      }
     >
       {add || treeData.length === 0 ? (
         <Row className="px-4 pt-4">
@@ -202,7 +210,7 @@ const SettingArea = memo(() => {
           location={getParentTitles(anchorItems2, data?.titleWithNoIcon ?? '', []) ?? ''}
         />
       )}
-    </TreeAnchorTwo>
+    </TreeAnchor>
   );
 });
 

@@ -9,6 +9,23 @@ interface FieldType {
   reNewPassword: string;
 }
 
+const formLayout = {
+  labelCol: {
+    xs: 24,
+    md: 24,
+    lg: 8,
+    xl: 6,
+    xxl: 4,
+  },
+  wrapperCol: {
+    xs: 20,
+    md: 20,
+    lg: 12,
+    xl: 12,
+    xxl: 8,
+  },
+};
+
 const ChangePassword = memo(() => {
   const { formatMessage } = useLocale();
 
@@ -23,13 +40,7 @@ const ChangePassword = memo(() => {
       </span>
       <Row className="mt-8">
         <Col span={24}>
-          <Form
-            layout="horizontal"
-            labelCol={{ xs: 8, xl: 6, xxl: 4 }}
-            wrapperCol={{ span: 8 }}
-            labelAlign="left"
-            onFinish={() => onFinish}
-          >
+          <Form layout="horizontal" {...formLayout} labelAlign="left" onFinish={() => onFinish}>
             <Form.Item<FieldType>
               name="oldPassword"
               label={formatMessage({ id: 'manageAccount.oldPassword' })}
@@ -60,7 +71,7 @@ const ChangePassword = memo(() => {
             >
               <Input />
             </Form.Item>
-            <Form.Item<FieldType> wrapperCol={{ offset: 4, span: 10 }}>
+            <Form.Item<FieldType> wrapperCol={{ offset: 8 }}>
               <Button type="primary" htmlType="submit">
                 {formatMessage({ id: 'manageAccount.save' })}
               </Button>

@@ -33,14 +33,13 @@ const OtherSetting = memo(() => {
     dispatch(setAppLocale(info.key as LocaleType));
   };
 
-  console.log(toggleNotice);
   return (
     <>
       <span className="text-2xl font-semibold">
         {formatMessage({ id: 'manageAccount.setting' })}
       </span>
       <Row style={{ marginTop: 32 }}>
-        <Col xs={8} xl={6} xxl={4}>
+        <Col xs={10} md={10} lg={6} xl={6} xxl={4}>
           <Row style={{ marginBottom: 24 }}>
             <span>{formatMessage({ id: 'manageAccount.settingNotice' })}</span>
           </Row>
@@ -85,53 +84,6 @@ const OtherSetting = memo(() => {
             </Dropdown>
           </Row>
         </Col>
-        {/* <Flex align="center">
-          <Col xs={8} xl={6} xxl={4}>
-            <span>{formatMessage({ id: 'manageAccount.settingNotice' })}</span>
-          </Col>
-          <Col span={8}>
-            <Switch
-              size="default"
-              onChange={() => dispatch(setToggleNotice(!toggleNotice))}
-              value={toggleNotice}
-            />
-          </Col>
-        </Flex>
-        <Flex align="center">
-          <Col xs={8} xl={6} xxl={4}>
-            <span>{formatMessage({ id: 'manageAccount.changeTheme' })}</span>
-          </Col>
-          <Col span={8}>
-            <div
-              className={`app-theme cursor ${themeMode === 'dark' && 'app-theme-dark'}`}
-              style={{ border: `1px solid ${thme.token.colorBorder}` }}
-              onClick={() => {
-                dispatch(setAppThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
-              }}
-            >
-              <div className="theme-inner" style={{ backgroundColor: thme.token.colorBorder }} />
-              <SvgIcon name="sun" />
-              <SvgIcon name="moon" />
-            </div>
-          </Col>
-        </Flex>
-        <Flex align="center">
-          <Col xs={8} xl={6} xxl={4}>
-            <span>{formatMessage({ id: 'manageAccount.changeLanguage' })}</span>
-          </Col>
-          <Col span={8}>
-            <Dropdown menu={{ items: menuItems, onClick: menuClick }}>
-              <Button>
-                <Space>
-                  {locale === 'en-US'
-                    ? formatMessage({ id: 'common.english' })
-                    : formatMessage({ id: 'common.vietnamese' })}
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
-          </Col>
-        </Flex> */}
       </Row>
     </>
   );

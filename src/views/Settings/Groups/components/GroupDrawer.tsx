@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { SettingOutlined } from '@ant-design/icons';
 import type { DrawerProps, MenuProps } from 'antd';
@@ -12,16 +13,17 @@ interface ControlDrawerProps extends DrawerProps {
 }
 
 const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: ControlDrawerProps) => {
+  const { formatMessage } = useLocale();
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: 'Sửa',
+      label: formatMessage({ id: 'group.edit' }),
     },
 
     {
       key: '2',
       danger: true,
-      label: 'Xóa',
+      label: formatMessage({ id: 'common.delete' }),
     },
   ];
 
@@ -40,7 +42,7 @@ const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: Contr
   const { token } = theme.useToken();
   return (
     <Drawer
-      title="Control Panel"
+      title={formatMessage({ id: 'common.controlPanel' })}
       placement="right"
       open={!!group}
       getContainer={false}
@@ -71,11 +73,15 @@ const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: Contr
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Power switch :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.powerSwitch' })} :
+          </Typography.Title>
           <Switch />
         </div>
         <div className="w-full mt-3 flex justify-between items-center">
-          <Typography.Title level={5}>Brightness :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.brightness' })} :
+          </Typography.Title>
         </div>
         <Slider
           style={{
@@ -92,7 +98,9 @@ const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: Contr
         {group?.category === 'ww' ? (
           <>
             <div className="w-full mt-3 flex justify-between items-center">
-              <Typography.Title level={5}>Color :</Typography.Title>
+              <Typography.Title level={5}>
+                {formatMessage({ id: 'common.color' })} :
+              </Typography.Title>
             </div>
             <Slider
               style={{
@@ -121,7 +129,9 @@ const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: Contr
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Current consumption :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.consumption' })} :
+          </Typography.Title>
           <Typography.Text>0.0 W</Typography.Text>
         </div>
         <div
@@ -130,7 +140,9 @@ const GroupDrawer = ({ group, icon, onClickEdit, onClickDelete, ...rest }: Contr
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Total energy use :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'group.totalEnergyUse' })} :
+          </Typography.Title>
           <Typography.Text>0.0 kWh</Typography.Text>
         </div>
       </Flex>

@@ -1,10 +1,9 @@
-import { getIntlText } from '@/locales';
 import { EConditionsTypeName } from '@/utils/constant';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Col, Dropdown, Row, Space, theme, Typography } from 'antd';
 import { memo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { ISceneRule } from '../scene';
 import ActionCard from './ActionCard';
 import { CardContent } from './ChainLink';
@@ -20,7 +19,7 @@ interface SceneRenderProps {
 }
 
 const ColLayout = {
-  md: {
+  xs: {
     span: 19,
     offset: 1,
   },
@@ -48,6 +47,7 @@ const SceneRender = memo((props: SceneRenderProps) => {
     viewOnly = false,
   } = props;
   const { conditions, actions } = scene;
+  const { formatMessage } = useIntl();
   const { token } = theme.useToken();
 
   const dropItems: MenuProps['items'] = [
@@ -91,8 +91,8 @@ const SceneRender = memo((props: SceneRenderProps) => {
               >
                 <Space>
                   {conditions.type.name === EConditionsTypeName.All
-                    ? getIntlText({ id: 'common.scene.ALL' })
-                    : getIntlText({ id: 'common.scene.ANY' })}
+                    ? formatMessage({ id: 'common.scene.ALL' })
+                    : formatMessage({ id: 'common.scene.ANY' })}
                   {viewOnly ? null : <DownOutlined />}
                 </Space>
               </Typography.Text>

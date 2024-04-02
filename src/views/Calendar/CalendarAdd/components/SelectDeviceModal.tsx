@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IDevicesListItem1 } from '@/utils/constant';
 import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import type { CheckboxProps } from 'antd';
@@ -27,6 +28,8 @@ interface ModalProps {
 
 const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: ModalProps) => {
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
+
   const [checkedList, setCheckedList] = useState<number[]>(listDevices);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<IDevicesListItem1[]>([]);
@@ -68,9 +71,9 @@ const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: Moda
   return (
     <Modal
       open={open}
-      title={'Chọn thiết bị'}
-      okText="Lưu"
-      cancelText="Hủy"
+      title={formatMessage({ id: 'group.selectDevice' })}
+      okText={formatMessage({ id: 'manageAccount.save' })}
+      cancelText={formatMessage({ id: 'group.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose
@@ -84,7 +87,7 @@ const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: Moda
         <Col span={24}>
           <Row gutter={16} className=" items-center mb-2">
             <Col xxl={6} xl={8} lg={10} md={12}>
-              <Input.Search placeholder="Tìm kiếm thiết bị" />
+              <Input.Search placeholder={formatMessage({ id: 'calendar.searchDevice' })} />
             </Col>
             <Col xxl={18} xl={16} lg={14} md={12}>
               <Flex justify="end">
@@ -93,7 +96,7 @@ const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: Moda
                   onChange={onCheckAllChange}
                   checked={checkAll}
                 >
-                  Chọn tất cả
+                  {formatMessage({ id: 'group.selectAll' })}
                 </Checkbox>
               </Flex>
             </Col>

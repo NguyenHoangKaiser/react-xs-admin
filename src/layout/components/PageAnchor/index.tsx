@@ -1,3 +1,4 @@
+import { defaultDimension } from '@/utils/constant';
 import { Anchor, Col, ConfigProvider, Row, theme } from 'antd';
 import type { AnchorProps } from 'antd/lib';
 
@@ -54,7 +55,7 @@ const PageAnchor: React.FC<PageAnchorProps> = ({ children, anchorProps, title })
       </Col>
       <Col
         style={{
-          height: 'calc(100vh - 110px)',
+          height: defaultDimension.height,
           overflowY: 'auto',
         }}
         span={21}

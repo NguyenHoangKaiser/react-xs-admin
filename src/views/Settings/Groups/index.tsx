@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import type { IGroupDevices, IconVariant } from '@/utils/constant';
 import { FAKE_GROUP_CHILD } from '@/utils/constant';
 import { CollapseProp } from '@/views/Home';
@@ -32,31 +33,13 @@ export default () => {
 
   const thme = theme.useToken();
 
+  const { formatMessage } = useLocale();
+
   const onCreate = (values: IGroupDevices) => {
     if (selectedGroup) {
       if (type === 'normal') {
-        // const updateIndex = listGroupNormal.findIndex((item) => item.id === selectedGroup.id);
-        // listGroupNormal[updateIndex] = {
-        //   category: values.category,
-        //   group_name: values.group_name,
-        //   icon: values.icon,
-        //   section: values.section,
-        //   devices: values.devices,
-        // };
-        // setListGroupNormal(listGroupNormal);
-        // setSelectedGroup(listGroupNormal[updateIndex]);
         setOpenModalSelect(true);
       } else {
-        // const updateIndex = listGroupLighting.findIndex((item) => item.id === selectedGroup.id);
-        // listGroupLighting[updateIndex] = {
-        //   category: values.category,
-        //   group_name: values.group_name,
-        //   icon: values.icon,
-        //   section: values.section,
-        //   devices: values.devices,
-        // };
-        // setListGroupLighting(listGroupLighting);
-        // setSelectedGroup(listGroupLighting[updateIndex]);
         setOpenModalSelect(true);
       }
     } else {
@@ -69,11 +52,11 @@ export default () => {
 
   const onDelete = () => {
     confirm({
-      title: 'Xác nhận',
+      title: formatMessage({ id: 'group.confirm' }),
       icon: <ExclamationCircleOutlined />,
-      content: 'Bạn muốn xóa nhóm này?',
-      okText: 'Đồng ý',
-      cancelText: 'Hủy',
+      content: formatMessage({ id: 'group.confirmDelete' }),
+      okText: formatMessage({ id: 'common.agree' }),
+      cancelText: formatMessage({ id: 'group.cancel' }),
       onOk: () => {},
       centered: true,
     });
@@ -101,7 +84,7 @@ export default () => {
       label: (
         <div className="flex flex-row gap-3">
           <Typography.Title style={{ marginBottom: 0 }} level={4}>
-            Nhóm thường
+            {formatMessage({ id: 'group.normalGroup' })}
           </Typography.Title>
           <PlusCircleFilled
             style={{ fontSize: 24, color: thme.token.colorPrimary }}
@@ -120,7 +103,7 @@ export default () => {
       label: (
         <div className="flex flex-row gap-3">
           <Typography.Title style={{ marginBottom: 0 }} level={4}>
-            Nhóm lighting
+            {formatMessage({ id: 'group.lightingGroup' })}
           </Typography.Title>
           <PlusCircleFilled
             style={{ fontSize: 24, color: thme.token.colorPrimary }}

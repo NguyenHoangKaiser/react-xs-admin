@@ -1,8 +1,9 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { ISchedule, Out } from '@/server/calendarApi';
 import { useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
-import { FAKE_DATA, ListIconImage } from '@/utils/constant';
+import { FAKE_DATA, ListIconImage, TypeRepeat, getRepeat } from '@/utils/constant';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import type { MenuProps } from 'antd';
@@ -76,6 +77,7 @@ const colLayout3 = {
 const CalendarAdd = () => {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
   const { hotel_id } = useAppSelector(hotelSelector);
 
   const [color, setColor] = useState<string>('D50000');
@@ -148,8 +150,6 @@ const CalendarAdd = () => {
     repeat_type: 0,
   };
 
-  console.log(repeatType);
-
   return (
     <Form<FormCalendar>
       {...layout}
@@ -197,7 +197,7 @@ const CalendarAdd = () => {
                           backgroundColor: `#${color}`,
                         }}
                       />
-                      Chọn màu
+                      {formatMessage({ id: 'calendar.selectColor' })}
                       <DownOutlined />
                     </Space>
                   </Button>
@@ -206,13 +206,13 @@ const CalendarAdd = () => {
             </Col>
             <Col {...colLayout2}>
               <Form.Item name={'name'} wrapperCol={{ span: 22 }}>
-                <Input placeholder="Tên lịch" />
+                <Input placeholder={formatMessage({ id: 'calendar.calendarName' })} />
               </Form.Item>
             </Col>
             <Col {...colLayout3}>
               <Form.Item wrapperCol={{ span: 24 }}>
                 <Button className="w-full" type="primary" htmlType="submit">
-                  Lưu
+                  {formatMessage({ id: 'manageAccount.save' })}
                 </Button>
               </Form.Item>
             </Col>
@@ -230,26 +230,32 @@ const CalendarAdd = () => {
             `}
           >
             <Tabs defaultActiveKey="1" size="large">
-              <TabPane key={'1'} tab="Chi tiết thiết bị">
+              <TabPane key={'1'} tab={formatMessage({ id: 'calendar.detailDevice' })}>
                 <Row className="pb-4 gap-4">
                   <Col xl={6} lg={8}>
                     <Select
                       className="w-full"
-                      placeholder="Chọn loại thiết bị"
+                      placeholder={formatMessage({ id: 'group.selectTypeDevice' })}
                       defaultValue={deviceType}
                       onChange={(value) => {
                         setDeviceType(value);
                         setListDevicesId([]);
                       }}
                     >
-                      <Select.Option value="LIGHT">Đèn</Select.Option>
-                      <Select.Option value="AC">Điều hòa</Select.Option>
-                      <Select.Option value="PW">Bơm</Select.Option>
+                      <Select.Option value="LIGHT">
+                        {formatMessage({ id: 'calendar.light' })}
+                      </Select.Option>
+                      <Select.Option value="AC">
+                        {formatMessage({ id: 'calendar.ac' })}
+                      </Select.Option>
+                      <Select.Option value="PW">
+                        {formatMessage({ id: 'calendar.pw' })}
+                      </Select.Option>
                     </Select>
                   </Col>
                   <Col span={4}>
                     <Button disabled={!deviceType} onClick={() => setSelectedDeviceModal(true)}>
-                      Thêm thiết bị
+                      {formatMessage({ id: 'calendar.addDevice' })}
                     </Button>
                   </Col>
                 </Row>
@@ -299,11 +305,15 @@ const CalendarAdd = () => {
             `}
           >
             <Tabs defaultActiveKey="2" size="large">
-              <TabPane key={'2'} tab="Trạng thái thiết bị" className="mx-2">
+              <TabPane
+                key={'2'}
+                tab={formatMessage({ id: 'calendar.statusDevice' })}
+                className="mx-2"
+              >
                 <Row>
                   <Col span={24}>
                     <Form.Item
-                      label={'Ngày bắt đầu'}
+                      label={formatMessage({ id: 'calendar.dateStart' })}
                       labelCol={{ xxl: 6, xl: 8, md: 5 }}
                       wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
@@ -312,7 +322,7 @@ const CalendarAdd = () => {
                       <DatePicker showTime={{ format: 'HH:mm' }} format="DD/MM/YYYY HH:mm" />
                     </Form.Item>
                     <Form.Item
-                      label="Trạng thái"
+                      label={formatMessage({ id: 'calendar.status' })}
                       labelCol={{ xxl: 6, xl: 8, md: 5 }}
                       wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
@@ -323,12 +333,14 @@ const CalendarAdd = () => {
                       <Row>
                         <Col span={24}>
                           <Row>
-                            <Col span={6}>NHIỆT ĐỘ</Col>
+                            <Col span={6}>
+                              {formatMessage({ id: 'calendar.temperature' }).toUpperCase()}
+                            </Col>
                             <Col span={6} offset={3}>
-                              TỐC ĐỘ
+                              {formatMessage({ id: 'calendar.speed' }).toUpperCase()}
                             </Col>
                             <Col span={6} offset={2}>
-                              CHẾ ĐỘ
+                              {formatMessage({ id: 'calendar.mode' }).toUpperCase()}
                             </Col>
                           </Row>
                         </Col>
@@ -355,7 +367,7 @@ const CalendarAdd = () => {
                             className="w-full"
                             onClick={() => setControlACModal(true)}
                           >
-                            Tùy chỉnh thiết bị
+                            {formatMessage({ id: 'calendar.configDevice' })}
                           </Button>
                         </Col>
                       </Row>
@@ -376,26 +388,32 @@ const CalendarAdd = () => {
             `}
           >
             <Tabs defaultActiveKey="3" size="large">
-              <TabPane key={'3'} tab="Lặp lại sự kiện">
+              <TabPane key={'3'} tab={formatMessage({ id: 'calendar.repeatEvent' })}>
                 <Row>
                   <Col span={24}>
                     <Form.Item
-                      label={'Lặp lại'}
+                      label={formatMessage({ id: 'calendar.repeat' })}
                       labelCol={{ xxl: 6, xl: 8, md: 3 }}
                       wrapperCol={{ xxl: 10, xl: 14, md: 6 }}
                       labelAlign="left"
                       name={'repeat_type'}
                     >
-                      <Select onChange={(value) => setRepeatType(value)}>
-                        <Select.Option value={0}>Không lặp</Select.Option>
-                        <Select.Option value={1}>Hàng ngày</Select.Option>
-                        <Select.Option value={2}>Hàng tuần</Select.Option>
-                        <Select.Option value={3}>Hàng tháng</Select.Option>
-                        <Select.Option value={4}>Hàng năm</Select.Option>
+                      <Select
+                        onChange={(value) => {
+                          setRepeatType(value);
+                        }}
+                      >
+                        {Object.values(TypeRepeat)
+                          .filter((value) => typeof value === 'number')
+                          .map((value, index) => (
+                            <Select.Option key={value} value={index}>
+                              {getRepeat(index)}
+                            </Select.Option>
+                          ))}
                       </Select>
                     </Form.Item>
                     {/* component repeat type */}
-                    {repeatType !== 0 && (
+                    {repeatType > 1 && (
                       <Form.Item wrapperCol={{ span: 24 }}>
                         <RepeatTypeRender
                           repeatType={repeatType}
@@ -405,7 +423,7 @@ const CalendarAdd = () => {
                       </Form.Item>
                     )}
                     <Form.Item
-                      label={'Ngày kết thúc'}
+                      label={formatMessage({ id: 'calendar.dateEnd' })}
                       labelCol={{ xxl: 6, xl: 8, md: 3 }}
                       wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"

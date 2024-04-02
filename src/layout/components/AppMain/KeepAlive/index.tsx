@@ -1,5 +1,6 @@
 import LayoutSpin from '@/components/LayoutSpin';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { deleteExceedTabs } from '@/store/modules/route';
 import type { ReactNode, RefObject } from 'react';
 import React, { Suspense, memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -14,7 +15,7 @@ export const KeepAlive = memo(({ maxLen = 10 }: Props) => {
   const params = useParams();
   const activeName = location.pathname + location.search;
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
-
+  const dispatch = useAppDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const [cacheReactNodes, setCacheReactNodes] = useState<Array<{ name: string; ele?: ReactNode }>>(
     [],
@@ -43,6 +44,7 @@ export const KeepAlive = memo(({ maxLen = 10 }: Props) => {
       // The cache exceeds the upper limit
       if (reactNodes.length >= maxLen) {
         reactNodes.splice(0, 1);
+        dispatch(deleteExceedTabs());
       }
       // Add to
       const reactNode = reactNodes.find((res) => res.name === activeName);

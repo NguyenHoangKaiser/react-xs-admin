@@ -1,3 +1,4 @@
+import { FormatMessage } from '@/locales';
 import { Tabs } from 'antd';
 import React from 'react';
 import StatisticEcology from './component/StatisticEcology';
@@ -7,17 +8,17 @@ import StatisticSavings from './component/StatisticSavings';
 const Statistical: React.FC = () => {
   const items = [
     {
-      label: 'General',
+      label: FormatMessage({ id: 'statistic.general' }),
       key: 'general',
       children: <StatisticGeneral />,
     },
     {
-      label: 'Savings',
+      label: FormatMessage({ id: 'statistic.savings' }),
       key: 'savings',
       children: <StatisticSavings />,
     },
     {
-      label: 'Ecology',
+      label: FormatMessage({ id: 'statistic.ecology' }),
       key: 'ecology',
       children: <StatisticEcology />,
     },

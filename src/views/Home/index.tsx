@@ -23,8 +23,8 @@ export const CollapseProp: CollapseProps = {
 
 export const collapseListLayout = {
   gutter: 16,
-  xs: 1,
-  sm: 2,
+  xs: 2,
+  sm: 3,
   md: 4,
   lg: 4,
   xl: 6,

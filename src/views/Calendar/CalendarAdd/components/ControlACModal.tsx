@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import { css } from '@emotion/react';
 import type { SliderSingleProps } from 'antd';
 import { Button, Col, Modal, Row, Segmented, Slider, theme } from 'antd';
@@ -12,6 +13,7 @@ interface ControlACProps {
 
 const ControlACModal = (props: ControlACProps) => {
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
   const { open, onOk, onCancel } = props;
   const [modeAC, setModeAC] = useState<'cool' | 'wet' | 'heat' | 'fan' | 'auto'>('cool');
   const marks: SliderSingleProps['marks'] = {
@@ -37,9 +39,9 @@ const ControlACModal = (props: ControlACProps) => {
   return (
     <Modal
       open={open}
-      title={'Điều khiển điều hòa'}
-      okText="Lưu"
-      cancelText={'Đóng'}
+      title={formatMessage({ id: 'calendar.controlAC' })}
+      okText={formatMessage({ id: 'manageAccount.save' })}
+      cancelText={formatMessage({ id: 'tab.close' })}
       onOk={onOk}
       onCancel={onCancel}
       width={'40%'}
@@ -66,8 +68,8 @@ const ControlACModal = (props: ControlACProps) => {
         </Col>
         <Col span={24}>
           <Row gutter={16} className="pb-2">
-            <Col span={12}>Chế độ</Col>
-            <Col span={12}>Quạt</Col>
+            <Col span={12}>{formatMessage({ id: 'calendar.mode' })}</Col>
+            <Col span={12}>{formatMessage({ id: 'calendar.fan' })}</Col>
           </Row>
         </Col>
         <Col span={24}>
@@ -129,8 +131,8 @@ const ControlACModal = (props: ControlACProps) => {
         </Col>
         <Col span={24}>
           <Row gutter={16} className="pb-2">
-            <Col span={12}>Cánh gió dọc</Col>
-            <Col span={12}>Cánh gió ngang</Col>
+            <Col span={12}>{formatMessage({ id: 'calendar.verticalWind' })}</Col>
+            <Col span={12}>{formatMessage({ id: 'calendar.horizontalWind' })}</Col>
           </Row>
         </Col>
 

@@ -1,12 +1,12 @@
-import { getIntlText } from '@/locales';
 import { useGetDevicesQuery } from '@/server/devicesApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
 import { editSceneActionData } from '@/store/modules/scene';
 import type { CSSObject } from '@emotion/react';
+import type { SelectProps } from 'antd';
 import { App, Button, Flex, Form, InputNumber, Select, Switch, Tag } from 'antd';
 import { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { ILightTrait, ISceneDeviceAction, IStates } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
@@ -28,6 +28,7 @@ const DeviceAction = ({
   viewOnly?: boolean;
 }) => {
   const { message } = App.useApp();
+  const { formatMessage } = useIntl();
   const [form] = Form.useForm<DeviceFormType>();
   const watchDeviceId = Form.useWatch('deviceId', form);
   const watchTraitSelect = Form.useWatch('traitSelect', form);
@@ -50,9 +51,9 @@ const DeviceAction = ({
     label: item.name,
   }));
   const selectedDevice = data?.items?.find((item) => item.devid === (watchDeviceId || deviceId));
-  const traitsSelect = selectedDevice?.traits?.map((item) => ({
+  const traitsSelect: SelectProps['options'] = selectedDevice?.traits?.map((item) => ({
     value: item.name,
-    label: item.name,
+    label: formatMessage({ id: `common.scene.traits.${item.name}` }),
   }));
 
   const handleSubmit = (values: DeviceFormType) => {
@@ -69,7 +70,7 @@ const DeviceAction = ({
         for: mode,
       }),
     );
-    message.success(getIntlText({ id: 'common.scene.deviceActionSave' }));
+    message.success(formatMessage({ id: 'common.scene.actionSaved' }));
   };
 
   // useEffect to watch watchTraitSelect and update value of OnOff, Brightness, ColdWarmColor
@@ -158,7 +159,7 @@ const DeviceAction = ({
           rules={[
             {
               required: true,
-              message: getIntlText({ id: 'common.requireDevice' }),
+              message: formatMessage({ id: 'common.requireDevice' }),
             },
           ]}
           style={{ marginBottom: 4, marginTop: 8 }}
@@ -168,7 +169,7 @@ const DeviceAction = ({
             style={{
               width: '100%',
             }}
-            placeholder={getIntlText({ id: 'common.selectDevice' })}
+            placeholder={formatMessage({ id: 'common.selectDevice' })}
             options={deviceSelect}
             onChange={(_deviceId) => {
               form.setFieldsValue({
@@ -188,9 +189,9 @@ const DeviceAction = ({
                     if (traits.includes('OnOff')) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error(getIntlText({ id: 'common.requireOnOff' })));
+                    return Promise.reject(new Error(formatMessage({ id: 'common.requireOnOff' })));
                   }
-                  return Promise.reject(new Error(getIntlText({ id: 'common.requireTraits' })));
+                  return Promise.reject(new Error(formatMessage({ id: 'common.requireTraits' })));
                 },
               }),
             ]}
@@ -205,7 +206,7 @@ const DeviceAction = ({
               allowClear
               // mode={canSelectMultiple ? 'multiple' : undefined}
               // allowClear={canSelectMultiple}
-              placeholder={getIntlText({ id: 'common.selectTrait' })}
+              placeholder={formatMessage({ id: 'common.selectTrait' })}
               options={traitsSelect}
               // dropdownRender={(menu) => (
               //   <>
@@ -245,7 +246,7 @@ const DeviceAction = ({
                           const traits = getFieldValue('traitSelect');
                           if (traits.includes('ColdWarmColor') || traits.includes('Brightness')) {
                             return Promise.reject(
-                              new Error(getIntlText({ id: 'common.requireOnOff' })),
+                              new Error(formatMessage({ id: 'common.requireOnOff' })),
                             );
                           }
                           return Promise.resolve();
@@ -276,6 +277,12 @@ const DeviceAction = ({
                 <Form.Item<DeviceFormType>
                   name={['states', 'Brightness', 'brightness']}
                   style={{ marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'common.requireBrightness' }),
+                    },
+                  ]}
                 >
                   <InputNumber
                     min={0}
@@ -306,6 +313,12 @@ const DeviceAction = ({
                 <Form.Item<DeviceFormType>
                   name={['states', 'ColdWarmColor', 'coldWarmColor']}
                   style={{ marginBottom: 4 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'common.requireColorTemp' }),
+                    },
+                  ]}
                 >
                   <InputNumber
                     min={0}
@@ -332,7 +345,7 @@ const DeviceAction = ({
               type="primary"
               onClick={() => form.submit()}
             >
-              {getIntlText({ id: 'manageAccount.save' })}
+              {formatMessage({ id: 'manageAccount.save' })}
             </Button>
           ) : (
             <Button

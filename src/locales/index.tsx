@@ -1,4 +1,4 @@
-import type { IntlShape, MessageDescriptor } from 'react-intl';
+import type { IntlShape, MessageDescriptor, PrimitiveType } from 'react-intl';
 import { FormattedMessage as IntFormattedMessage, createIntl, useIntl } from 'react-intl';
 import en_US from './en_US';
 import vi_VN from './vi_VN';
@@ -25,7 +25,10 @@ export const FormatMessage: React.FC<Props> = (props) => {
   return <IntFormattedMessage {...props} id={props.id} />;
 };
 
-type FormatMessageProps = (descriptor: Props) => string;
+type FormatMessageProps = (
+  descriptor: Props,
+  values?: Record<string, PrimitiveType> | undefined,
+) => string;
 
 export const useLocale = () => {
   const { formatMessage: intlFormatMessage, ...rest } = useIntl();
