@@ -1,6 +1,7 @@
 import { useLocale } from '@/locales';
 import { Button, Result } from 'antd';
 import { memo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 export default memo(() => {
@@ -20,7 +21,7 @@ export default memo(() => {
             navigate('/');
           }}
         >
-          Back Home
+          <FormattedMessage id="layout.backHome" />
         </Button>
       }
     />

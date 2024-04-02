@@ -6,6 +6,7 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import type { CSSProperties, ReactNode } from 'react';
 import { useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useTabsChange } from '../hooks/useTabsChange';
 import type { RightClickTags } from '../hooks/useTabsState';
 import { useTabsState } from '../hooks/useTabsState';
@@ -21,6 +22,7 @@ interface TabsItemLabelProps {
 
 const TabsItemLabel = (props: TabsItemLabelProps) => {
   const [open, setOpen] = useState<boolean>(false);
+  const { formatMessage } = useIntl();
   const { menuItems } = useTabsState(props.pathKey, open);
   const { onTabsDropdownChange } = useTabsChange();
   const { addingScene, editingScene } = useAppSelector(sceneSelector);
@@ -29,8 +31,8 @@ const TabsItemLabel = (props: TabsItemLabelProps) => {
     e.domEvent.stopPropagation();
     onTabsDropdownChange(e.key as RightClickTags['code'], props.pathKey, {
       route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
-      title: 'Are you sure you want to close these tabs?',
-      content: 'Any unsaved changes will be lost.',
+      title: formatMessage({ id: 'common.closeTabsConfirm' }),
+      content: formatMessage({ id: 'common.scene.lostUnsaved' }),
       trigger: addingScene || editingScene,
     });
   };

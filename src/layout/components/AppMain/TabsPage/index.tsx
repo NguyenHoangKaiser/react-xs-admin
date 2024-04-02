@@ -1,15 +1,16 @@
+import { useRouteList } from '@/hooks/useRouteList';
+import { FormatMessage } from '@/locales';
+import { defaultRoute } from '@/router/modules';
+import { RouteEnum, findRouteByPath } from '@/router/utils';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { deleteExceedTabs } from '@/store/modules/route';
+import { sceneSelector } from '@/store/modules/scene';
+import { defaultDimension } from '@/utils/constant';
 import type { TabsProps } from 'antd';
 import { Tabs, theme } from 'antd';
 import { memo, useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
-// import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
-import { defaultRoute } from '@/router/modules';
-import { findRouteByPath, RouteEnum } from '@/router/utils';
-import { useAppSelector } from '@/store/hooks';
-// import { useRefresh } from '@/hooks/web/useRefresh';
-import { useRouteList } from '@/hooks/useRouteList';
-import { FormatMessage } from '@/locales';
-import { sceneSelector } from '@/store/modules/scene';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
 import { getTabsStyle } from './style';
@@ -18,9 +19,11 @@ interface Props {
   maxLen?: number;
 }
 
-const TabsPage = memo((_props: Props) => {
+const TabsPage = memo(({ maxLen }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { formatMessage } = useIntl();
   const mark = useMatch(location.pathname);
   const { routeListToTab } = useRouteList();
   const menuList = routeListToTab(defaultRoute);
@@ -28,11 +31,14 @@ const TabsPage = memo((_props: Props) => {
   const multiTabs = useAppSelector((state) => state.route.multiTabs);
   const { addingScene, editingScene } = useAppSelector(sceneSelector);
   const { addRouteTabs, removeTab } = useTabsChange();
-  // const { refresh } = useRefresh();
-
   const thme = theme.useToken();
 
   const tabsItem = useMemo(() => {
+    if (!multiTabs.length) return [];
+    if (maxLen && multiTabs.length > maxLen) {
+      dispatch(deleteExceedTabs());
+    }
+
     return multiTabs.map((i) => {
       let routeBy = null;
       if (!i.label) routeBy = findRouteByPath(i.key, menuList);
@@ -54,8 +60,8 @@ const TabsPage = memo((_props: Props) => {
     if (action === 'remove') {
       removeTab(targetKey as string, {
         route: [RouteEnum.SettingsScenesAdd, RouteEnum.SettingsScenesEdit],
-        title: 'Are you sure you want to leave this page?',
-        content: 'Any unsaved changes will be lost.',
+        title: formatMessage({ id: 'common.leavePageConfirm' }),
+        content: formatMessage({ id: 'common.scene.lostUnsaved' }),
         trigger: addingScene || editingScene,
       });
     }
@@ -82,25 +88,11 @@ const TabsPage = memo((_props: Props) => {
       type={tabsItem.length > 1 ? 'editable-card' : 'card'}
       onChange={(key) => navigate(key)}
       onEdit={onEdit}
-      // tabBarExtraContent={{
-      //   right: (
-      //     <div className="tabs-right-content">
-      //       <div className="right-down-more" onClick={() => refresh()}>
-      //         <ReloadOutlined />
-      //       </div>
-      //       <TabsItemLabel
-      //         eventType="click"
-      //         pathKey={location.pathname + location.search}
-      //         className="right-down-more"
-      //       >
-      //         <CaretDownFilled />
-      //       </TabsItemLabel>
-      //     </div>
-      //   ),
-      // }}
+      tabBarGutter={4}
+      tabPosition="top"
+      style={{ width: defaultDimension.width }}
       tabBarStyle={{
         margin: 0,
-        marginLeft: 11,
         paddingTop: 8,
       }}
       items={tabsItem}

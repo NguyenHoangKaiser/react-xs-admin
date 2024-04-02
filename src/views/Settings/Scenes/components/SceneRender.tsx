@@ -19,7 +19,7 @@ interface SceneRenderProps {
 }
 
 const ColLayout = {
-  md: {
+  xs: {
     span: 19,
     offset: 1,
   },
