@@ -1,3 +1,4 @@
+import { useLocale } from '@/locales';
 import type { DataType } from '@/utils/constant';
 import { Button, Col, Row, Typography, theme } from 'antd';
 import { memo } from 'react';
@@ -7,6 +8,7 @@ const { Title } = Typography;
 const Advance = memo(({ record }: { record: DataType | undefined }) => {
   const { token } = theme.useToken();
   console.log('record', record);
+  const { formatMessage } = useLocale();
 
   return (
     <div className="flex-1">
@@ -15,7 +17,7 @@ const Advance = memo(({ record }: { record: DataType | undefined }) => {
           <Row>
             <Col span={12}>
               <Typography style={{ color: token.colorTextDescription, paddingBottom: 8 }}>
-                NodeID:
+                Node ID:
               </Typography>
               <Typography style={{ color: token.colorTextDescription, paddingBottom: 8 }}>
                 Parameters template:
@@ -36,21 +38,21 @@ const Advance = memo(({ record }: { record: DataType | undefined }) => {
           </Row>
         </Col>
         <Col span={16} className="pl-8">
-          <Title level={5}>Energy Consumption</Title>
+          <Title level={5}>{formatMessage({ id: 'common.energyConsumption' })}</Title>
           <Row className="justify-evenly">
             <Col className="items-center justify-center flex-col flex">
               <Title level={1}>8.9</Title>
-              <Typography>Current</Typography>
+              <Typography>{formatMessage({ id: 'common.current' })}</Typography>
               <Typography style={{ color: token.colorPrimary }}>[W]</Typography>
             </Col>
             <Col className="items-center justify-center flex-col flex">
               <Title level={1}>8.9</Title>
-              <Typography>Current</Typography>
+              <Typography>{formatMessage({ id: 'common.current' })}</Typography>
               <Typography style={{ color: token.colorPrimary }}>[kWh]</Typography>
             </Col>
             <Col className="items-center justify-center flex-col flex">
               <Title level={1}>8.9</Title>
-              <Typography>Current</Typography>
+              <Typography>{formatMessage({ id: 'common.current' })}</Typography>
               <Typography style={{ color: token.colorPrimary }}>[kW]h</Typography>
             </Col>
             <Col className="items-center justify-center flex-col flex">
