@@ -5,6 +5,6 @@
   "login.passwordRules": "Vui lòng nhập mật khẩu của bạn!",
   "login.rememberPassword": "Nhớ mật khẩu",
   "login.signOut": "Đăng xuất",
-  "login.userNameRules": "Nhập email người dùng",
+  "login.userNameRules": "Email không được để trống",
   "login.username": "Email người dùng: demo@gmail.com"
 }
