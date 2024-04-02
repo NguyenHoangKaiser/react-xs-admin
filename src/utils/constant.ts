@@ -1,5 +1,5 @@
+import { getIntlText } from '@/locales';
 import type { IDevice } from '@/server/apiTypes';
-import type { ICalendarResult } from '@/server/calendarApi';
 import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'antd';
 import dayjs from 'dayjs';
 import _ from 'lodash';
@@ -75,11 +75,11 @@ export enum TypeCalendar {
 }
 
 export enum TypeRepeat {
-  None = 'none',
-  Daily = 'daily',
-  Weekly = 'weekly',
-  Monthly = 'monthly',
-  Yearly = 'yearly',
+  None = 0,
+  Daily = 1,
+  Weekly = 2,
+  Monthly = 3,
+  Yearly = 4,
 }
 
 export type TIconType =
@@ -5618,19 +5618,19 @@ export interface DataType {
   image: TIconType;
 }
 
-export function getRepeat(data: ICalendarResult) {
+export function getRepeat(type?: number) {
   return (() => {
-    switch (data.schedule?.repeat_type) {
+    switch (type) {
       case 0:
-        return 'Không lặp';
+        return getIntlText({ id: 'calendar.noRepeat' });
       case 1:
-        return 'Lặp lại hàng ngày';
+        return getIntlText({ id: 'calendar.repeatEveryDay' });
       case 2:
-        return 'Lặp lại hàng tuần';
+        return getIntlText({ id: 'calendar.repeatWeekly' });
       case 3:
-        return 'Lặp lại hàng tháng';
+        return getIntlText({ id: 'calendar.repeatMonthly' });
       case 4:
-        return 'Lặp lại hàng năm';
+        return getIntlText({ id: 'calendar.repeatYearly' });
       default:
     }
   })();

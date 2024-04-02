@@ -18,7 +18,7 @@
     "thme",
     "Todos"
   ],
-  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.sourceLanguage": "vi",
   "i18n-ally.refactor.templates": [
     {
       "key": "i18n-ally.refactor.templates.react-intl",

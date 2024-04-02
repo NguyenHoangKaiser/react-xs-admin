@@ -5,13 +5,37 @@ import { Col, Flex, List, Row, Statistic, Typography, theme } from 'antd';
 import ColumnChart from './ColumnChart';
 import LineChart from './LineChart';
 
+const colLayout = {
+  xs: { span: 24 },
+  md: { span: 24 },
+  lg: { span: 24 },
+  xl: { span: 12 },
+  xxl: { span: 12 },
+};
+
+const colLayout2 = {
+  xs: { span: 24 },
+  md: { span: 24 },
+  lg: { span: 24 },
+  xl: { span: 16 },
+  xxl: { span: 16 },
+};
+
+const colLayout3 = {
+  xs: { span: 24 },
+  md: { span: 24 },
+  lg: { span: 24 },
+  xl: { span: 8 },
+  xxl: { span: 8 },
+};
+
 const StatisticGeneral = () => {
   const thme = theme.useToken();
   const { formatMessage } = useLocale();
 
   return (
     <Row className="h-full w-full">
-      <Col span={12}>
+      <Col {...colLayout}>
         <div
           style={{
             border: `1px solid ${thme.token.colorBorderSecondary}`,
@@ -80,14 +104,12 @@ const StatisticGeneral = () => {
           </Flex>
         </div>
       </Col>
-      <Col span={12}>
+      <Col {...colLayout}>
         <div
           style={{
             border: `1px solid ${thme.token.colorBorderSecondary}`,
             borderRadius: 8,
-            marginLeft: 8,
             padding: 4,
-            height: '100%',
           }}
         >
           <Flex vertical={false} align="center" justify="space-between">
@@ -161,7 +183,7 @@ const StatisticGeneral = () => {
         </div>
       </Col>
       <Row className="w-full mt-2">
-        <Col span={16}>
+        <Col {...colLayout2}>
           <div
             style={{
               border: `1px solid ${thme.token.colorBorderSecondary}`,
@@ -178,14 +200,12 @@ const StatisticGeneral = () => {
             <LineChart />
           </div>
         </Col>
-        <Col span={8}>
+        <Col {...colLayout3}>
           <div
             style={{
               border: `1px solid ${thme.token.colorBorderSecondary}`,
               borderRadius: 8,
-              marginLeft: 8,
               padding: 8,
-              height: '100%',
             }}
           >
             <div className="flex flex-row gap-4 items-center">

@@ -4,6 +4,23 @@ import type { FieldType } from '@/utils/constant';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { memo, useState } from 'react';
 
+const formLayout = {
+  labelCol: {
+    xs: 24,
+    md: 24,
+    lg: 6,
+    xl: 6,
+    xxl: 4,
+  },
+  wrapperCol: {
+    xs: 20,
+    md: 20,
+    lg: 12,
+    xl: 12,
+    xxl: 8,
+  },
+};
+
 const InfoAccount = memo(({ userInfo }: { userInfo: IUserInfo | undefined }) => {
   const { formatMessage } = useLocale();
   const [disabled, setDisabled] = useState(true);
@@ -12,13 +29,8 @@ const InfoAccount = memo(({ userInfo }: { userInfo: IUserInfo | undefined }) => 
     <div className="flex-1">
       <span className="text-2xl font-semibold">{formatMessage({ id: 'manageAccount.info' })}</span>
       <Row className="mt-8">
-        <Col span={16}>
-          <Form
-            layout="horizontal"
-            labelCol={{ xs: 6, xl: 4 }}
-            wrapperCol={{ span: 10, offset: 2 }}
-            labelAlign="left"
-          >
+        <Col span={24}>
+          <Form layout="horizontal" {...formLayout} labelAlign="left">
             <Form.Item label={formatMessage({ id: 'manageAccount.fullName' })}>
               <Input value={userInfo?.name} disabled={disabled} />
             </Form.Item>
@@ -31,7 +43,7 @@ const InfoAccount = memo(({ userInfo }: { userInfo: IUserInfo | undefined }) => 
             <Form.Item label={formatMessage({ id: 'manageAccount.authGroup' })}>
               <Input value={userInfo?.current_role_name} disabled={disabled} />
             </Form.Item>
-            <Form.Item<FieldType> wrapperCol={{ offset: 6, span: 10 }}>
+            <Form.Item<FieldType> wrapperCol={{ offset: 6 }}>
               <Button
                 disabled={!disabled}
                 onClick={() => {
@@ -39,7 +51,7 @@ const InfoAccount = memo(({ userInfo }: { userInfo: IUserInfo | undefined }) => 
                 }}
                 className="mr-2"
               >
-                Edit
+                {formatMessage({ id: 'manageAccount.edit' })}
               </Button>
               <Button
                 type="primary"
@@ -48,15 +60,14 @@ const InfoAccount = memo(({ userInfo }: { userInfo: IUserInfo | undefined }) => 
                   setDisabled(true);
                 }}
               >
-                Save
+                {formatMessage({ id: 'manageAccount.save' })}
               </Button>
             </Form.Item>
           </Form>
         </Col>
-        <Col span={8} className="flex items-center justify-center">
-          {/* avatar */}
+        {/* <Col span={8} className="flex items-center justify-center">
           Avatar here
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );

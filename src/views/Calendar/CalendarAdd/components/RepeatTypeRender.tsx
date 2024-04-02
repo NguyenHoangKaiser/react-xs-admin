@@ -1,5 +1,5 @@
-import { useLocale } from '@/locales';
-import { Checkbox, Divider, Flex, Space, Tag } from 'antd';
+import { getIntlText, useLocale } from '@/locales';
+import { Checkbox, Divider, Flex, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as LocalData from 'dayjs/plugin/localeData';
@@ -33,8 +33,10 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
   if (repeatType === 2) {
     return (
       <Space size={[8, 16]} wrap>
-        {dayjs.weekdays().map((day) => (
-          <Checkbox key={day}>{day}</Checkbox>
+        {dayjs.weekdays(true).map((day) => (
+          <Checkbox key={day} style={{ textTransform: 'capitalize' }}>
+            {day}
+          </Checkbox>
         ))}
         <Checkbox>{formatMessage({ id: 'common.all' })}</Checkbox>
       </Space>
@@ -42,35 +44,9 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
   }
   if (repeatType === 3) {
     return (
-      <Flex gap="16px" wrap="wrap" align="center">
-        {getListDayOfMonth(dayjs().daysInMonth()).map((day) => (
-          <Tag.CheckableTag
-            key={day}
-            checked={listDayOfMonth.includes(day) || listDayOfMonth.includes(0)}
-            onChange={(checked) => handleChange(day, checked)}
-          >
-            {day < 10 ? `0${day}` : day}
-          </Tag.CheckableTag>
-        ))}
-        <Tag.CheckableTag
-          checked={listDayOfMonth.includes(0)}
-          onChange={(checked) => {
-            if (checked) {
-              setListDayOfMonth([0]);
-            } else {
-              setListDayOfMonth([]);
-            }
-          }}
-        >
-          {formatMessage({ id: 'common.all' })}
-        </Tag.CheckableTag>
-      </Flex>
-    );
-  }
-  if (repeatType === 4) {
-    return (
       <div>
-        <Flex gap="16px" wrap="wrap" align="center">
+        <Typography.Text>{getIntlText({ id: 'calendar.chooseDate' })}:</Typography.Text>
+        <Flex gap="16px" wrap="wrap" align="center" className="pt-2">
           {getListDayOfMonth(dayjs().daysInMonth()).map((day) => (
             <Tag.CheckableTag
               key={day}
@@ -93,6 +69,38 @@ const RepeatTypeRender = ({ repeatType, listDayOfMonth, setListDayOfMonth }: Pro
             {formatMessage({ id: 'common.all' })}
           </Tag.CheckableTag>
         </Flex>
+      </div>
+    );
+  }
+  if (repeatType === 4) {
+    return (
+      <div>
+        <div>
+          <Typography.Text>{getIntlText({ id: 'calendar.chooseDate' })}:</Typography.Text>
+          <Flex gap="16px" wrap="wrap" align="center" className="pt-2">
+            {getListDayOfMonth(dayjs().daysInMonth()).map((day) => (
+              <Tag.CheckableTag
+                key={day}
+                checked={listDayOfMonth.includes(day) || listDayOfMonth.includes(0)}
+                onChange={(checked) => handleChange(day, checked)}
+              >
+                {day < 10 ? `0${day}` : day}
+              </Tag.CheckableTag>
+            ))}
+            <Tag.CheckableTag
+              checked={listDayOfMonth.includes(0)}
+              onChange={(checked) => {
+                if (checked) {
+                  setListDayOfMonth([0]);
+                } else {
+                  setListDayOfMonth([]);
+                }
+              }}
+            >
+              {formatMessage({ id: 'common.all' })}
+            </Tag.CheckableTag>
+          </Flex>
+        </div>
         <Divider />
         <Flex gap="16px" wrap="wrap" align="center">
           <Space size={[8, 16]} wrap>

@@ -3,7 +3,7 @@ import { useLocale } from '@/locales';
 import type { ISchedule, Out } from '@/server/calendarApi';
 import { useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
-import { FAKE_DATA, ListIconImage } from '@/utils/constant';
+import { FAKE_DATA, ListIconImage, TypeRepeat, getRepeat } from '@/utils/constant';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import type { MenuProps } from 'antd';
@@ -398,16 +398,22 @@ const CalendarAdd = () => {
                       labelAlign="left"
                       name={'repeat_type'}
                     >
-                      <Select onChange={(value) => setRepeatType(value)}>
-                        <Select.Option value={0}>Không lặp</Select.Option>
-                        <Select.Option value={1}>Hàng ngày</Select.Option>
-                        <Select.Option value={2}>Hàng tuần</Select.Option>
-                        <Select.Option value={3}>Hàng tháng</Select.Option>
-                        <Select.Option value={4}>Hàng năm</Select.Option>
+                      <Select
+                        onChange={(value) => {
+                          setRepeatType(value);
+                        }}
+                      >
+                        {Object.values(TypeRepeat)
+                          .filter((value) => typeof value === 'number')
+                          .map((value, index) => (
+                            <Select.Option key={value} value={index}>
+                              {getRepeat(index)}
+                            </Select.Option>
+                          ))}
                       </Select>
                     </Form.Item>
                     {/* component repeat type */}
-                    {repeatType !== 0 && (
+                    {repeatType > 1 && (
                       <Form.Item wrapperCol={{ span: 24 }}>
                         <RepeatTypeRender
                           repeatType={repeatType}

@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { Calendar as BigCalendar, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { useDayJs } from '@/hooks/useDayJs';
 import { useLocale } from '@/locales';
 import { TypeCalendar } from '@/utils/constant';
 import { useNavigate } from 'react-router-dom';
@@ -33,6 +34,7 @@ const localizer = dayjsLocalizer(dayjs);
 const Calendar = () => {
   const { hotel_id } = useAppSelector(hotelSelector);
   const { token } = theme.useToken();
+  const { DAYJS } = useDayJs();
   const { formatMessage } = useLocale();
   const navigate = useNavigate();
   const [selectedDay, setSelectedDay] = useState<Dayjs>(dayjs());
@@ -105,7 +107,7 @@ const Calendar = () => {
                           <li>
                             <Badge
                               color={item.color}
-                              text={`${dayjs((item.schedule?.run_time ?? 0) * 1000).format(
+                              text={`${DAYJS((item.schedule?.run_time ?? 0) * 1000).format(
                                 'hh:mm A',
                               )}, ${item.name}`}
                             />
@@ -221,11 +223,8 @@ const Calendar = () => {
           </Col>
 
           <Col span={4}>
-            <div>
-              {`${
-                dayjs(selectedDay).format('dddd').charAt(0).toUpperCase() +
-                dayjs(selectedDay).format('dddd').slice(1)
-              }, ${dayjs(selectedDay).format('LL')}`}
+            <div style={{ textTransform: 'capitalize' }}>
+              {DAYJS(selectedDay.toDate()).format('dddd, D MMMM, YYYY')}
             </div>
           </Col>
 
@@ -249,13 +248,13 @@ const Calendar = () => {
                 ...data,
                 id,
                 title: data.name,
-                start: dayjs((data.schedule?.run_time ?? 0) * 1000).toDate(),
-                end: dayjs((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
+                start: DAYJS((data.schedule?.run_time ?? 0) * 1000).toDate(),
+                end: DAYJS((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
               }))}
               defaultDate={selectedDay.toDate()}
               date={selectedDay.toDate()}
               onNavigate={(date) => {
-                setSelectedDay(dayjs(date));
+                setSelectedDay(DAYJS(date));
                 setMode(TypeCalendar.Day);
               }}
               toolbar={false}
@@ -282,13 +281,13 @@ const Calendar = () => {
                 ...data,
                 id,
                 title: data.name,
-                start: dayjs((data.schedule?.run_time ?? 0) * 1000).toDate(),
-                end: dayjs((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
+                start: DAYJS((data.schedule?.run_time ?? 0) * 1000).toDate(),
+                end: DAYJS((data.schedule?.run_time ?? 0) * 1000 + 3600000).toDate(),
               }))}
               defaultDate={selectedDay.toDate()}
               date={selectedDay.toDate()}
               onNavigate={(date) => {
-                setSelectedDay(dayjs(date));
+                setSelectedDay(DAYJS(date));
               }}
               toolbar={false}
               startAccessor="start"

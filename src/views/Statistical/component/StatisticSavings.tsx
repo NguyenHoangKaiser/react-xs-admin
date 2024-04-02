@@ -4,6 +4,22 @@ import { Col, DatePicker, Flex, List, Row, Segmented, Statistic, Typography, the
 import dayjs from 'dayjs';
 import SavingsChart from './TinyLine';
 
+const colLayout2 = {
+  xs: { span: 24 },
+  md: { span: 24 },
+  lg: { span: 24 },
+  xl: { span: 16 },
+  xxl: { span: 16 },
+};
+
+const colLayout3 = {
+  xs: { span: 24 },
+  md: { span: 24 },
+  lg: { span: 24 },
+  xl: { span: 8 },
+  xxl: { span: 8 },
+};
+
 const StatisticSavings = () => {
   const thme = theme.useToken();
   const { formatMessage } = useLocale();
@@ -19,7 +35,8 @@ const StatisticSavings = () => {
           }}
         >
           <Flex vertical={false} align="center" justify="space-between">
-            <div
+            <Col
+              span={8}
               className="flex flex-1 flex-row gap-4 mr-4"
               style={{ borderRight: `2px solid ${thme.token.colorBorderSecondary}` }}
             >
@@ -37,7 +54,7 @@ const StatisticSavings = () => {
                 valueStyle={{ color: thme.token.colorText, fontSize: 14 }}
                 suffix="kWh"
               />
-            </div>
+            </Col>
             <div
               className="flex flex-1 flex-row gap-4 mr-4"
               style={{ borderRight: `2px solid ${thme.token.colorBorderSecondary}` }}
@@ -99,13 +116,13 @@ const StatisticSavings = () => {
         className="w-full h-full mt-2 p-4"
         style={{ border: `1px solid ${thme.token.colorBorderSecondary}`, borderRadius: 8 }}
       >
-        <Col span={16}>
+        <Col {...colLayout2}>
           {/* <Typography.Title level={5} className="pb-4">
             Energy balance in time
           </Typography.Title> */}
           <SavingsChart />
         </Col>
-        <Col span={8} className="pl-2">
+        <Col {...colLayout3} className="pl-2">
           <Row>
             <Col span={12}>
               <div className="flex justify-end pr-8">

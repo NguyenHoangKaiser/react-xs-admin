@@ -37,7 +37,7 @@ const GroupCard = ({ group, icon, ...rest }: DeviceCardProps) => {
           {group.group_name || 'Name'}
         </Typography.Title>
         <Typography.Text>
-          {group.devices?.length} {formatMessage({ id: 'common.devices' })}
+          {formatMessage({ id: 'group.device' }, { count: group.devices?.length })}
         </Typography.Text>
       </Flex>
     </Card>

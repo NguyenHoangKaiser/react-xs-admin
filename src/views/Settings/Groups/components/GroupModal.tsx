@@ -51,7 +51,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         name="section"
         rules={[{ required: true }]}
       >
-        <Select placeholder={formatMessage({ id: 'group.selectGroup' })}>
+        <Select placeholder={formatMessage({ id: 'group.selectArea' })}>
           {FAKE_DATA.sectionList.items.map((section) => {
             return (
               <Select.Option value={section.id} key={section.id}>

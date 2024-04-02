@@ -20,7 +20,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
       title: formatMessage({ id: 'group.confirm' }),
       icon: <ExclamationCircleOutlined />,
       content: formatMessage({ id: 'calendar.confirmDelete' }),
-      okText: formatMessage({ id: 'common.delete' }),
+      okText: formatMessage({ id: 'common.agree' }),
       cancelText: formatMessage({ id: 'group.cancel' }),
     });
   };
@@ -122,7 +122,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
         </Col>
         <Col span={22} offset={1}>
           <Typography.Text>
-            {formatMessage({ id: 'calendar.typeRepeat' })}: {getRepeat(data)}
+            {formatMessage({ id: 'calendar.typeRepeat' })}: {getRepeat(data.schedule?.repeat_type)}
           </Typography.Text>
         </Col>
       </Row>
