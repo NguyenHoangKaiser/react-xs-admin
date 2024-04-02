@@ -1,8 +1,8 @@
-import { getIntlText } from '@/locales';
 import type { CSSObject } from '@emotion/react';
 import type { GlobalToken } from 'antd';
 import { Card, theme, Typography } from 'antd';
 import type { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 
 const ChainLink = ({
   style,
@@ -13,6 +13,7 @@ const ChainLink = ({
   active?: boolean;
   text?: 1 | 2;
 }) => {
+  const { formatMessage } = useIntl();
   const { token } = theme.useToken();
   return (
     <div style={style} css={getDivCss(token, active)}>
@@ -24,7 +25,7 @@ const ChainLink = ({
         }}
         // type={active ? 'success' : 'secondary'}
       >
-        {text === 2 ? getIntlText({ id: 'common.OR' }) : getIntlText({ id: 'common.AND' })}
+        {text === 2 ? formatMessage({ id: 'common.OR' }) : formatMessage({ id: 'common.AND' })}
       </Typography.Text>
     </div>
   );

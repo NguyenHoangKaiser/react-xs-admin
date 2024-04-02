@@ -179,7 +179,7 @@ const Notification = () => {
         <Table
           columns={columns}
           dataSource={data}
-          scroll={{ x: 1000 }}
+          // scroll={{ x: 1000 }}
           bordered
           onChange={onChange}
         />

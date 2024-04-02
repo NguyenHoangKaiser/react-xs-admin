@@ -1,6 +1,7 @@
 import LayoutSpin from '@/components/LayoutSpin';
+import { defaultDimension } from '@/utils/constant';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import type { TreeProps } from 'antd';
+import type { ButtonProps, SiderProps, TreeProps } from 'antd';
 import { Button, Col, Layout, Tree, theme } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,6 +11,8 @@ const { Sider, Content } = Layout;
 interface TreeAnchorProps {
   children: React.ReactNode;
   treeProps?: TreeProps;
+  siderProps?: SiderProps;
+  buttonProps?: ButtonProps;
   title?: React.ReactNode;
   loading?: {
     content?: boolean;
@@ -17,7 +20,14 @@ interface TreeAnchorProps {
   };
 }
 
-const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) => {
+const TreeAnchor = ({
+  children,
+  treeProps,
+  siderProps,
+  buttonProps,
+  title,
+  loading,
+}: TreeAnchorProps) => {
   const { token } = theme.useToken();
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,26 +75,28 @@ const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) =>
         style={{
           backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
-          height: 'calc(100vh - 110px)',
+          height: defaultDimension.height,
         }}
+        {...siderProps}
       >
-        {!!loading?.tree && loading.tree ? (
-          <div className="h-full w-full relative">
-            <LayoutSpin position="absolute" />
-          </div>
-        ) : (
+        {!collapsed && (
           <>
-            {title}
-            {/* {!collapsed && ( */}
-            <Tree
-              style={{ marginTop: 8 }}
-              defaultSelectedKeys={[hash]}
-              defaultExpandAll
-              rootStyle={{ display: collapsed ? 'none' : 'block' }}
-              onSelect={onSelect || onDefaultSelect}
-              {...rest}
-            />
-            {/* )} */}
+            {!!loading?.tree && loading.tree ? (
+              <div className="h-full w-full relative">
+                <LayoutSpin position="absolute" />
+              </div>
+            ) : (
+              <>
+                {title}
+                <Tree
+                  style={{ marginTop: 8 }}
+                  defaultSelectedKeys={[hash]}
+                  defaultExpandAll
+                  onSelect={onSelect || onDefaultSelect}
+                  {...rest}
+                />
+              </>
+            )}
           </>
         )}
         <Button
@@ -100,12 +112,13 @@ const TreeAnchor = ({ children, treeProps, title, loading }: TreeAnchorProps) =>
           type="text"
           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           onClick={() => setCollapsed(!collapsed)}
+          {...buttonProps}
         />
       </Sider>
       <Content>
         <Col
           style={{
-            height: 'calc(100vh - 110px)',
+            height: defaultDimension.height,
             overflowY: 'auto',
             position: 'initial',
           }}

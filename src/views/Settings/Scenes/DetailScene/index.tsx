@@ -1,16 +1,18 @@
+import { useInfoPageTabs } from '@/hooks/useInfoPageTabs';
 import { RouteEnum } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setStoreMultiTabs } from '@/store/modules/route';
 import { listSceneSelector, sceneSelector, setEditScene } from '@/store/modules/scene';
-import { useInfoPageTabs } from '@/views/DetailsPage/hooks/useInfoPageTabs';
 import { EditOutlined } from '@ant-design/icons';
 import { App, Button, Col, Flex, Row, Typography, theme } from 'antd';
 import { useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SceneRender from '../components/SceneRender';
 import { getSceneContainerCss } from '../style';
 
 const DetailScene = () => {
+  const { formatMessage } = useIntl();
   const { token } = theme.useToken();
   const params = useParams();
   const { pathname } = useLocation();
@@ -37,11 +39,10 @@ const DetailScene = () => {
   const onEdit = () => {
     if (editingScene) {
       modal.confirm({
-        title: 'You have unsaved changes in Edit Scene page',
-        content:
-          'Proceed to Edit this scene will lose all unsaved changes. Do you want to proceed?',
-        okText: 'Proceed',
-        cancelText: 'Keep Editing',
+        title: formatMessage({ id: 'common.scene.editUnsaved' }),
+        content: formatMessage({ id: 'common.scene.editUnsavedContent' }),
+        okText: formatMessage({ id: 'common.proceed' }),
+        cancelText: formatMessage({ id: 'common.scene.editUnsavedContinue' }),
         onOk: () => {
           dispatch(setEditScene(scene));
           const oldPath = `${RouteEnum.SettingsScenesEdit}/${editScene.metadata.created}`;
@@ -68,7 +69,7 @@ const DetailScene = () => {
           <Flex justify="space-between" align="center">
             {metadata.name && <Typography.Title level={3}>{metadata.name}</Typography.Title>}
             <Button type="default" icon={<EditOutlined />} onClick={onEdit}>
-              Edit Scene
+              <FormattedMessage id="common.scene.editScene" />
             </Button>
           </Flex>
         </Col>

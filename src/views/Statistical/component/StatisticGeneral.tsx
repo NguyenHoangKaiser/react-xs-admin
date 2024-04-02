@@ -146,7 +146,7 @@ const StatisticGeneral = () => {
               <Statistic
                 title={
                   <Typography.Title level={5}>
-                    {formatMessage({ id: 'statistic..currentPeriod' })}
+                    {formatMessage({ id: 'statistic.currentPeriod' })}
                   </Typography.Title>
                 }
                 value={-0.08}

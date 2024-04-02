@@ -8,48 +8,11 @@ import { DATE_UTILS, EConditionsTypeName, ESceneOperator, ETimeType } from '@/ut
 import { App, Button, Checkbox, DatePicker, Flex, Form, Select, TimePicker } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { ISceneTimeCondition } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
 const { RangePicker } = DatePicker;
-// const onChange = (value: DatePickerProps['value'], dateString: string | string[]) => {
-//   console.log('Selected Time: ', value);
-//   console.log('Formatted Selected Time: ', dateString);
-// };
-
-const timeSelect: {
-  label: string;
-  value: ETimeType;
-}[] = [
-  {
-    label: 'Exact time',
-    value: ETimeType.TimeExact,
-  },
-  {
-    label: 'Date range',
-    value: ETimeType.DateRange,
-  },
-  {
-    label: 'Time range',
-    value: ETimeType.TimeRange,
-  },
-  // {
-  //   label: 'Set',
-  //   value: ETimeType.TimeSet,
-  // },
-  // {
-  //   label: 'Schedule',
-  //   value: ETimeType.TimeSchedule,
-  // },
-  // {
-  //   label: 'Repeat',
-  //   value: ETimeType.TimeRepeat,
-  // },
-  // {
-  //   label: 'Delay',
-  //   value: ETimeType.TimeDelay,
-  // },
-];
 
 interface TimeFormType {
   formType: ETimeType;
@@ -71,6 +34,41 @@ const TimeCondition = ({
   mode: 'add' | 'edit';
   viewOnly?: boolean;
 }) => {
+  const { formatMessage } = useIntl();
+  const timeSelect: {
+    label: string;
+    value: ETimeType;
+  }[] = [
+    {
+      label: formatMessage({ id: 'common.scene.exactTime' }),
+      value: ETimeType.TimeExact,
+    },
+    {
+      label: formatMessage({ id: 'common.scene.dateRange' }),
+      value: ETimeType.DateRange,
+    },
+    {
+      label: formatMessage({ id: 'common.scene.timeRange' }),
+      value: ETimeType.TimeRange,
+    },
+    // {
+    //   label: 'Set',
+    //   value: ETimeType.TimeSet,
+    // },
+    // {
+    //   label: 'Schedule',
+    //   value: ETimeType.TimeSchedule,
+    // },
+    // {
+    //   label: 'Repeat',
+    //   value: ETimeType.TimeRepeat,
+    // },
+    // {
+    //   label: 'Delay',
+    //   value: ETimeType.TimeDelay,
+    // },
+  ];
+
   const { created, category, editing } = condition;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
@@ -79,6 +77,7 @@ const TimeCondition = ({
   const { type: addType } = useAppSelector(addSceneConditionsSelector);
   const { type: editType } = useAppSelector(editSceneConditionsSelector);
   const conditionsType = mode === 'add' ? addType : editType;
+
   const handleSelectTimeType = (value: ETimeType) => {
     switch (value) {
       case ETimeType.TimeExact:
@@ -126,7 +125,7 @@ const TimeCondition = ({
               for: mode,
             }),
           );
-          message.success('Time condition saved');
+          message.success(formatMessage({ id: 'common.scene.conditionSaved' }));
         }
         break;
       }
@@ -148,7 +147,7 @@ const TimeCondition = ({
               for: mode,
             }),
           );
-          message.success('Time condition saved');
+          message.success(formatMessage({ id: 'common.scene.conditionSaved' }));
         }
         break;
       }
@@ -170,7 +169,7 @@ const TimeCondition = ({
               for: mode,
             }),
           );
-          message.success('Time condition saved');
+          message.success(formatMessage({ id: 'common.scene.conditionSaved' }));
         }
         break;
       }
@@ -190,7 +189,6 @@ const TimeCondition = ({
   return (
     <div className="mx-6">
       <Form
-        // layout="vertical"
         disabled={!editing || viewOnly}
         form={form}
         onFinish={handleSubmit}
@@ -217,7 +215,9 @@ const TimeCondition = ({
       >
         <Form.Item<TimeFormType>
           name="formType"
-          rules={[{ required: true, message: 'Please select a time type' }]}
+          rules={[
+            { required: true, message: formatMessage({ id: 'common.scene.requireTimeType' }) },
+          ]}
           style={{
             marginBottom: 4,
             marginTop: 8,
@@ -228,7 +228,7 @@ const TimeCondition = ({
               width: '100%',
             }}
             options={timeSelect}
-            placeholder="Select a time type"
+            placeholder={formatMessage({ id: 'common.scene.selectTimeType' })}
             onChange={handleSelectTimeType}
           />
         </Form.Item>
@@ -242,7 +242,11 @@ const TimeCondition = ({
                 name="formValue"
                 style={{ marginBottom: 0 }}
                 rules={[
-                  { type: 'object' as const, required: true, message: 'Please select time!' },
+                  {
+                    type: 'object' as const,
+                    required: true,
+                    message: formatMessage({ id: 'common.requireExactTime' }),
+                  },
                 ]}
               >
                 <DatePicker
@@ -253,7 +257,7 @@ const TimeCondition = ({
                   // needConfirm={false}
                   showTime
                   showNow={false}
-                  renderExtraFooter={() => 'Tip: You can only select time after 12 hours'}
+                  renderExtraFooter={() => <FormattedMessage id="common.scene.timeAfter12" />}
                   disabledDate={DATE_UTILS.disabledDate}
                   disabledTime={DATE_UTILS.disabledDateTime}
                 />
@@ -264,7 +268,13 @@ const TimeCondition = ({
             <Form.Item<TimeFormType>
               name="formDateRange"
               style={{ marginBottom: 0 }}
-              rules={[{ type: 'array' as const, required: true, message: 'Please select time!' }]}
+              rules={[
+                {
+                  type: 'array' as const,
+                  required: true,
+                  message: formatMessage({ id: 'common.requireDateRange' }),
+                },
+              ]}
             >
               <RangePicker
                 format={DATE_UTILS.dateFormat}
@@ -282,7 +292,13 @@ const TimeCondition = ({
             <Form.Item<TimeFormType>
               name="formTimeRange"
               style={{ marginBottom: 0 }}
-              rules={[{ type: 'array' as const, required: true, message: 'Please select time!' }]}
+              rules={[
+                {
+                  type: 'array' as const,
+                  required: true,
+                  message: formatMessage({ id: 'common.requireTimeRange' }),
+                },
+              ]}
             >
               <TimePicker.RangePicker
                 format={DATE_UTILS.timeFormat}
@@ -295,7 +311,7 @@ const TimeCondition = ({
           {conditionsType.name === EConditionsTypeName.Any && (
             <Form.Item<TimeFormType>
               name="trigger"
-              label="Use as trigger"
+              label={formatMessage({ id: 'common.scene.asTrigger' })}
               valuePropName="checked"
               style={{ marginBottom: 4 }}
             >
@@ -314,7 +330,7 @@ const TimeCondition = ({
               type="primary"
               onClick={() => form.submit()}
             >
-              Save
+              <FormattedMessage id="common.save" />
             </Button>
           ) : (
             <Button
@@ -334,7 +350,7 @@ const TimeCondition = ({
               block
               type="default"
             >
-              Edit
+              <FormattedMessage id="common.edit" />
             </Button>
           )}
         </>
