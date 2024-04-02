@@ -1,53 +1,15 @@
 import { useAppDispatch } from '@/store/hooks';
 import { editSceneActionData } from '@/store/modules/scene';
 import { DATE_UTILS, ESceneOperator, ETimeType } from '@/utils/constant';
-import { App, Button, DatePicker, Flex, Form, Select, TimePicker } from 'antd';
+import { App, Button, Flex, Form, Select, TimePicker } from 'antd';
 import dayjs from 'dayjs';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { ISceneTimeAction } from '../scene';
 import { OperatorSelect } from './ConditionCard';
-
-const { RangePicker } = DatePicker;
-
-const timeSelect: {
-  label: string;
-  value: ETimeType;
-}[] = [
-  {
-    label: 'Delay time',
-    value: ETimeType.TimeDelay,
-  },
-  // {
-  //   label: 'Date range',
-  //   value: ETimeType.DateRange,
-  // },
-  // {
-  //   label: 'Time range',
-  //   value: ETimeType.TimeRange,
-  // },
-  // {
-  //   label: 'Set',
-  //   value: ETimeType.TimeSet,
-  // },
-  // {
-  //   label: 'Schedule',
-  //   value: ETimeType.TimeSchedule,
-  // },
-  // {
-  //   label: 'Repeat',
-  //   value: ETimeType.TimeRepeat,
-  // },
-  // {
-  //   label: 'Delay',
-  //   value: ETimeType.TimeDelay,
-  // },
-];
 
 interface TimeFormType {
   formType: ETimeType;
   formOperator?: ESceneOperator;
-  formValue?: dayjs.Dayjs | null;
-  formDateRange?: [dayjs.Dayjs | null, dayjs.Dayjs | null];
-  formTimeRange?: [dayjs.Dayjs | null, dayjs.Dayjs | null];
   formDuration?: dayjs.Dayjs | null;
 }
 
@@ -62,6 +24,17 @@ const TimeAction = ({
   mode: 'add' | 'edit';
   viewOnly?: boolean;
 }) => {
+  const { formatMessage } = useIntl();
+  const timeSelect: {
+    label: string;
+    value: ETimeType;
+  }[] = [
+    {
+      label: formatMessage({ id: 'common.scene.timeDelay' }),
+      value: ETimeType.TimeDelay,
+    },
+  ];
+
   const { created, category, editing } = action;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
@@ -75,25 +48,6 @@ const TimeAction = ({
         form.setFieldsValue({
           // formOperator: ESceneOperator.Equal,
           formDuration: dayjs().startOf('day').add(5, 'm'),
-        });
-        break;
-      case ETimeType.TimeExact:
-        if (action.type === ETimeType.TimeExact) break;
-        form.setFieldsValue({
-          // formOperator: ESceneOperator.Equal,
-          formValue: dayjs().add(12, 'h'),
-        });
-        break;
-      case ETimeType.DateRange:
-        if (action.type === ETimeType.DateRange) break;
-        form.setFieldsValue({
-          formDateRange: [dayjs().add(12, 'h'), dayjs().add(12, 'h').add(7, 'd')],
-        });
-        break;
-      case ETimeType.TimeRange:
-        if (action.type === ETimeType.TimeRange) break;
-        form.setFieldsValue({
-          formTimeRange: [dayjs().add(12, 'h'), dayjs().add(12, 'h').add(6, 'h')],
         });
         break;
       default:
@@ -121,70 +75,7 @@ const TimeAction = ({
               for: mode,
             }),
           );
-          message.success('Time action saved');
-        }
-        break;
-      }
-      case ETimeType.TimeExact: {
-        const { formOperator, formValue } = values;
-        if (formOperator && formValue) {
-          dispatch(
-            editSceneActionData({
-              index,
-              condition: {
-                editing: false,
-                created,
-                category,
-                type: formType,
-                operator: formOperator,
-                value: formValue?.unix(),
-              },
-              for: mode,
-            }),
-          );
-          message.success('Time action saved');
-        }
-        break;
-      }
-      case ETimeType.DateRange: {
-        const { formDateRange } = values;
-        if (formDateRange && formDateRange[0] && formDateRange[1]) {
-          dispatch(
-            editSceneActionData({
-              index,
-              condition: {
-                editing: false,
-                created,
-                category,
-                type: formType,
-                startDate: formDateRange[0]?.unix(),
-                endDate: formDateRange[1]?.unix(),
-              },
-              for: mode,
-            }),
-          );
-          message.success('Time action saved');
-        }
-        break;
-      }
-      case ETimeType.TimeRange: {
-        const { formTimeRange } = values;
-        if (formTimeRange && formTimeRange[0] && formTimeRange[1]) {
-          dispatch(
-            editSceneActionData({
-              index,
-              condition: {
-                editing: false,
-                created,
-                category,
-                type: formType,
-                startTime: formTimeRange[0]?.format(DATE_UTILS.timeFormat),
-                endTime: formTimeRange[1]?.format(DATE_UTILS.timeFormat),
-              },
-              for: mode,
-            }),
-          );
-          message.success('Time action saved');
+          message.success(formatMessage({ id: 'common.scene.actionSaved' }));
         }
         break;
       }
@@ -203,18 +94,6 @@ const TimeAction = ({
         initialValues={{
           formType: action.type,
           formOperator: ESceneOperator.Equal,
-          formValue: action.value ? dayjs.unix(action.value) : undefined,
-          formDateRange:
-            action.startDate && action.endDate
-              ? [dayjs.unix(action.startDate), dayjs.unix(action.endDate)]
-              : [undefined, undefined],
-          formTimeRange:
-            action.startTime && action.endTime
-              ? [
-                  dayjs(action.startTime, DATE_UTILS.timeFormat),
-                  dayjs(action.endTime, DATE_UTILS.timeFormat),
-                ]
-              : [undefined, undefined],
           formDuration: action.duration
             ? dayjs().startOf('day').add(action.duration, 's')
             : undefined,
@@ -222,7 +101,9 @@ const TimeAction = ({
       >
         <Form.Item<TimeFormType>
           name="formType"
-          rules={[{ required: true, message: 'Please select a time type' }]}
+          rules={[
+            { required: true, message: formatMessage({ id: 'common.scene.requireTimeType' }) },
+          ]}
           style={{
             marginBottom: 4,
             marginTop: 8,
@@ -233,100 +114,41 @@ const TimeAction = ({
               width: '100%',
             }}
             options={timeSelect}
-            placeholder="Select a time type"
+            placeholder={formatMessage({ id: 'common.scene.selectTimeType' })}
             onChange={handleSelectTimeType}
           />
         </Form.Item>
         <div className="mt-4 flex flex-col gap-3">
           {watchTimeType === ETimeType.TimeDelay && (
             <Flex justify="space-between" align="center" gap={12}>
-              <Form.Item<TimeFormType>
-                // initialValue={ESceneOperator.Equal}
-                name="formOperator"
-                style={{ width: 100, marginBottom: 0 }}
-              >
+              <Form.Item<TimeFormType> name="formOperator" style={{ width: 100, marginBottom: 0 }}>
                 <OperatorSelect disabled />
               </Form.Item>
               <Form.Item<TimeFormType>
                 name="formDuration"
                 style={{ marginBottom: 0 }}
                 rules={[
-                  { type: 'object' as const, required: true, message: 'Please select time!' },
+                  {
+                    type: 'object' as const,
+                    required: true,
+                    message: formatMessage({ id: 'common.requireTimeDelay' }),
+                  },
                 ]}
               >
                 <TimePicker
                   format={DATE_UTILS.timeFormat}
                   placeholder={DATE_UTILS.timeFormat}
                   allowClear={false}
+                  showNow={false}
                   // changeOnScroll
                   // needConfirm={false}
                   // showTime
-                  showNow={false}
                   // renderExtraFooter={() => 'Tip: You can only select time after 12 hours'}
                   // disabledDate={DATE_UTILS.disabledDate}
                   // disabledTime={DATE_UTILS.disabledDateTime}
                 />
               </Form.Item>
             </Flex>
-          )}
-          {watchTimeType === ETimeType.TimeExact && (
-            <Flex justify="space-between" align="center" gap={12}>
-              <Form.Item<TimeFormType> name="formOperator" style={{ width: 100, marginBottom: 0 }}>
-                <OperatorSelect />
-              </Form.Item>
-              <Form.Item<TimeFormType>
-                name="formValue"
-                style={{ marginBottom: 0 }}
-                rules={[
-                  { type: 'object' as const, required: true, message: 'Please select time!' },
-                ]}
-              >
-                <DatePicker
-                  format={DATE_UTILS.dateFormat}
-                  placeholder={DATE_UTILS.dateFormat}
-                  allowClear={false}
-                  // changeOnScroll
-                  // needConfirm={false}
-                  showTime
-                  showNow={false}
-                  renderExtraFooter={() => 'Tip: You can only select time after 12 hours'}
-                  disabledDate={DATE_UTILS.disabledDate}
-                  disabledTime={DATE_UTILS.disabledDateTime}
-                />
-              </Form.Item>
-            </Flex>
-          )}
-          {watchTimeType === ETimeType.DateRange && (
-            <Form.Item<TimeFormType>
-              name="formDateRange"
-              style={{ marginBottom: 0 }}
-              rules={[{ type: 'array' as const, required: true, message: 'Please select time!' }]}
-            >
-              <RangePicker
-                format={DATE_UTILS.dateFormat}
-                disabledDate={DATE_UTILS.disabledDate}
-                disabledTime={DATE_UTILS.disabledDateTime}
-                presets={DATE_UTILS.timeRangePickerRangePresets}
-                allowClear={false}
-                showTime
-                // changeOnScroll
-                // needConfirm={false}
-              />
-            </Form.Item>
-          )}
-          {watchTimeType === ETimeType.TimeRange && (
-            <Form.Item<TimeFormType>
-              name="formTimeRange"
-              style={{ marginBottom: 0 }}
-              rules={[{ type: 'array' as const, required: true, message: 'Please select time!' }]}
-            >
-              <TimePicker.RangePicker
-                format={DATE_UTILS.timeFormat}
-                style={{ width: '100%' }}
-                // changeOnScroll
-                // needConfirm={false}
-              />
-            </Form.Item>
           )}
         </div>
       </Form>
@@ -339,7 +161,7 @@ const TimeAction = ({
               type="primary"
               onClick={() => form.submit()}
             >
-              Save
+              <FormattedMessage id="common.save" />
             </Button>
           ) : (
             <Button
@@ -359,7 +181,7 @@ const TimeAction = ({
               block
               type="default"
             >
-              Edit
+              <FormattedMessage id="common.edit" />
             </Button>
           )}
         </>

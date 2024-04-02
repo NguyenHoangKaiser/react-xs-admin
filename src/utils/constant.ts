@@ -4,6 +4,11 @@ import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'a
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
+export const defaultDimension = {
+  width: 'calc(100vw - 77px)',
+  height: 'calc(100vh - 110px)',
+};
+
 export enum APIs {
   LOGIN = '/site/login',
   LOGOUT = '/site/logout',

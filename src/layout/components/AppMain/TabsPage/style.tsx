@@ -4,29 +4,28 @@ import type { GlobalToken } from 'antd';
 export const getTabsStyle = (token: GlobalToken): CSSObject => {
   return {
     ['& .ant-tabs-nav::before']: {
-      marginRight: 11,
       borderBottom: `1px solid ${token.colorBorder}`,
-    },
-    ['& .ant-tabs-nav .ant-tabs-tab']: {
-      padding: 0,
-      paddingRight: token.padding,
-      border: `1px solid ${token.colorBorder}`,
-      ['.tabs-tab-label']: {
-        padding: `${token.paddingContentVerticalSM}px 0 ${token.paddingContentVerticalSM}px ${token.paddingContentVerticalLG}px`,
-      },
     },
     ['& .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active']: {
       border: `1px solid ${token.colorBorder}`,
     },
-    ['&.ant-tabs-small > .ant-tabs-nav .ant-tabs-tab']: {
-      padding: 0,
-      paddingRight: token.padding,
-      ['.tabs-tab-label']: {
-        padding: `${token.paddingContentVerticalSM - 2}px 0 ${
-          token.paddingContentVerticalSM - 2
-        }px ${token.paddingContentVerticalLG}px`,
-      },
-    },
+    // ['& .ant-tabs-nav .ant-tabs-tab']: {
+    //   padding: 0,
+    //   paddingRight: token.padding,
+    //   border: `1px solid ${token.colorBorder}`,
+    //   ['.tabs-tab-label']: {
+    //     padding: `${token.paddingContentVerticalSM}px 0 ${token.paddingContentVerticalSM}px ${token.paddingContentVerticalLG}px`,
+    //   },
+    // },
+    // ['&.ant-tabs-small > .ant-tabs-nav .ant-tabs-tab']: {
+    //   padding: 0,
+    //   paddingRight: token.padding,
+    //   ['.tabs-tab-label']: {
+    //     padding: `${token.paddingContentVerticalSM - 2}px 0 ${
+    //       token.paddingContentVerticalSM - 2
+    //     }px ${token.paddingContentVerticalLG}px`,
+    //   },
+    // },
     // ['& .ant-tabs-nav .tabs-right-content']: {
     //   display: 'flex',
     // },

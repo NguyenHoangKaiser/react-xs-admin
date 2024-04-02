@@ -1,6 +1,6 @@
 {
   "layout.backHome": "Trở về trang chủ",
-  "layout.error.403": "Xin lỗi, bạn không được phép truy cập trang này.",
+  "layout.error.403": "Xin lỗi, bạn không có quyền truy cập trang này.",
   "layout.error.404": "Xin lỗi, trang bạn yêu cầu truy cập không tồn tại.",
   "layout.error.500": "Xin lỗi, đã có lỗi xảy ra.",
   "layout.error.element.content": "Trang bạn yêu cầu đã xảy ra lỗi sau:",

@@ -14,14 +14,6 @@ import type { RouteObject } from 'react-router-dom';
 import { RouteEnum } from '../utils';
 
 const Home = lazy(() => import('@/views/Home'));
-// const Menu1_1 = lazy(() => import('@/views/Nested/Menu1/Menu1-1'));
-// const Menu1_2 = lazy(() => import('@/views/Nested/Menu1/Menu1-2'));
-// const Permissions = lazy(() => import('@/views/Power/Permissions'));
-// const TestPermissionsA = lazy(() => import('@/views/Power/test-permissions-a'));
-// const TestPermissionsB = lazy(() => import('@/views/Power/test-permissions-b'));
-// const DetailsPage = lazy(() => import('@/views/DetailsPage'));
-// const DetailsInfo = lazy(() => import('@/views/DetailsPage/DetailsInfo'));
-// const DetailsParams = lazy(() => import('@/views/DetailsPage/DetailsParams'));
 const ManageAccount = lazy(() => import('@/views/ManageAccount'));
 const SettingLayout = lazy(() => import('@/views/Settings'));
 const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
@@ -42,99 +34,48 @@ export const defaultRoute: RouteList[] = [
     element: <Home />,
     meta: { label: FormatMessage({ id: 'layout.menu.home' }), icon: <HomeOutlined /> },
   },
-  // {
-  //   path: RouteEnum.Nested,
-  //   id: 'Nested',
-  //   redirect: RouteEnum.Menu1,
-  //   meta: { label: FormatMessage({ id: 'layout.menu.nesting' }), icon: <AppstoreOutlined /> },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       id: 'Menu1',
-  //       redirect: RouteEnum.Menu1_1,
-  //       meta: { label: 'menu-1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           id: 'Menu1-1',
-  //           element: <Menu1_1 />,
-  //           meta: { label: 'menu-1-1' },
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           id: 'Menu1-2',
-  //           element: <Menu1_2 />,
-  //           meta: { label: 'menu-1-2' },
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: RouteEnum.Power,
-  //   id: 'Power',
-  //   redirect: RouteEnum.Permissions,
-  //   meta: {
-  //     label: FormatMessage({ id: 'layout.menu.permissions' }),
-  //     icon: <UserSwitchOutlined />,
-  //   },
-  //   children: [
-  //     {
-  //       path: 'permissions',
-  //       id: 'Permissions',
-  //       element: <Permissions />,
-  //       meta: { label: FormatMessage({ id: 'layout.menu.permissionsPage' }) },
-  //     },
-  //     {
-  //       path: 'test-permissions-a',
-  //       id: 'TestPermissionsA',
-  //       element: <TestPermissionsA />,
-  //       meta: { label: FormatMessage({ id: 'layout.menu.testPermissionsPage1' }) },
-  //     },
-  //     {
-  //       path: 'test-permissions-b',
-  //       id: 'TestPermissionsB',
-  //       element: <TestPermissionsB />,
-  //       meta: { label: FormatMessage({ id: 'layout.menu.testPermissionsPage2' }) },
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: RouteEnum.DetailsPage,
-  //   id: 'DetailsPage',
-  //   redirect: RouteEnum.DetailPageIndex,
-  //   alwaysShow: false,
-  //   meta: { label: FormatMessage({ id: 'layout.menu.detailsPage' }), whiteList: true },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       id: 'INDEX',
-  //       element: <DetailsPage />,
-  //       meta: {
-  //         label: FormatMessage({ id: 'layout.menu.detailsPage' }),
-  //         icon: <DatabaseOutlined />,
-  //       },
-  //     },
-  //     {
-  //       path: 'details-info',
-  //       id: 'DetailsInfo',
-  //       element: <DetailsInfo />,
-  //       meta: { label: 'Details info', hideSidebar: true },
-  //     },
-  //     {
-  //       path: 'details-params/:id',
-  //       id: 'DetailsParams',
-  //       element: <DetailsParams />,
-  //       meta: { label: 'Details page', hideSidebar: true },
-  //     },
-  //   ],
-  // },
   {
     path: RouteEnum.ManageAccount,
     id: 'ManageAccount',
     element: <ManageAccount />,
     meta: {
       label: FormatMessage({ id: 'common.manageAccount' }),
+      hideSidebar: true,
+    },
+  },
+  {
+    path: RouteEnum.Statistical,
+    id: 'Statistical',
+    element: <Statistical />,
+    meta: {
+      label: 'Statistical',
+      icon: <BarChartOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Notification,
+    id: 'Notification',
+    element: <Notification />,
+    meta: {
+      label: 'Notification',
+      icon: <NotificationOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.Calendar,
+    id: 'Calendar',
+    element: <Calendar />,
+    meta: {
+      label: 'Calendar',
+      icon: <CalendarOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.CalendarAdd,
+    id: 'CalendarAdd',
+    element: <CalendarAdd />,
+    meta: {
+      label: 'CalendarAdd',
       hideSidebar: true,
     },
   },
@@ -211,43 +152,6 @@ export const defaultRoute: RouteList[] = [
         },
       },
     ],
-  },
-
-  {
-    path: RouteEnum.Statistical,
-    id: 'Statistical',
-    element: <Statistical />,
-    meta: {
-      label: 'Statistical',
-      icon: <BarChartOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.Notification,
-    id: 'Notification',
-    element: <Notification />,
-    meta: {
-      label: 'Notification',
-      icon: <NotificationOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.Calendar,
-    id: 'Calendar',
-    element: <Calendar />,
-    meta: {
-      label: 'Calendar',
-      icon: <CalendarOutlined />,
-    },
-  },
-  {
-    path: RouteEnum.CalendarAdd,
-    id: 'CalendarAdd',
-    element: <CalendarAdd />,
-    meta: {
-      label: 'CalendarAdd',
-      hideSidebar: true,
-    },
   },
 ];
 

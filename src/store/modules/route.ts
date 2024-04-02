@@ -67,6 +67,11 @@ export const routeSlice = createSlice({
           break;
       }
     },
+    deleteExceedTabs: (state) => {
+      if (state.multiTabs.length > 0) {
+        state.multiTabs.splice(0, 1);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => {
@@ -80,7 +85,7 @@ export const routeSlice = createSlice({
   },
 });
 // Each case reducer function generates the corresponding Action Creators
-export const { setStoreAsyncRouter, setStoreMultiTabs } = routeSlice.actions;
+export const { setStoreAsyncRouter, setStoreMultiTabs, deleteExceedTabs } = routeSlice.actions;
 
 export const routeSelector = (state: { route: RouteState }) => state.route;
 export const asyncRouterSelector = (state: { route: RouteState }) => state.route.asyncRouter;

@@ -8,8 +8,10 @@ import {
 } from '@/store/modules/scene';
 import { EConditionsTypeName } from '@/utils/constant';
 import type { CSSObject } from '@emotion/react';
+import type { SelectProps } from 'antd';
 import { App, Button, Checkbox, Flex, Form, InputNumber, Select, Switch, Tag } from 'antd';
 import { useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { ILightTrait, ISceneDeviceCondition, IStates } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
@@ -32,6 +34,7 @@ const DeviceCondition = ({
   viewOnly?: boolean;
 }) => {
   const { message } = App.useApp();
+  const { formatMessage } = useIntl();
   const [form] = Form.useForm<DeviceFormType>();
   const watchDeviceId = Form.useWatch('deviceId', form);
   const watchTraitSelect = Form.useWatch('traitSelect', form);
@@ -56,9 +59,9 @@ const DeviceCondition = ({
     label: item.name,
   }));
   const selectedDevice = data?.items?.find((item) => item.devid === (watchDeviceId || deviceId));
-  const traitsSelect = selectedDevice?.traits?.map((item) => ({
+  const traitsSelect: SelectProps['options'] = selectedDevice?.traits?.map((item) => ({
     value: item.name,
-    label: item.name,
+    label: formatMessage({ id: `common.scene.traits.${item.name}` }),
   }));
 
   const handleSubmit = (values: DeviceFormType) => {
@@ -76,7 +79,7 @@ const DeviceCondition = ({
         for: mode,
       }),
     );
-    message.success('Device condition saved');
+    message.success(formatMessage({ id: 'common.scene.conditionSaved' }));
   };
 
   // useEffect to watch watchTraitSelect and update value of OnOff, Brightness, ColdWarmColor
@@ -176,7 +179,7 @@ const DeviceCondition = ({
           rules={[
             {
               required: true,
-              message: 'Please select a device',
+              message: formatMessage({ id: 'common.requireDevice' }),
             },
           ]}
           style={{ marginBottom: 4, marginTop: 8 }}
@@ -186,7 +189,7 @@ const DeviceCondition = ({
             style={{
               width: '100%',
             }}
-            placeholder="Select a device"
+            placeholder={formatMessage({ id: 'common.selectDevice' })}
             options={deviceSelect}
             onChange={(_deviceId) => {
               form.setFieldsValue({
@@ -199,11 +202,6 @@ const DeviceCondition = ({
           <Form.Item<DeviceFormType>
             name="traitSelect"
             rules={[
-              // {
-              //   required: true,
-              //   message: 'Please select a trait',
-              //   type: 'array',
-              // },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   const traits = getFieldValue('traitSelect');
@@ -211,9 +209,9 @@ const DeviceCondition = ({
                     if (traits.includes('OnOff')) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('Please select OnOFf trait'));
+                    return Promise.reject(new Error(formatMessage({ id: 'common.requireOnOff' })));
                   }
-                  return Promise.reject(new Error('Please select a trait'));
+                  return Promise.reject(new Error(formatMessage({ id: 'common.requireTraits' })));
                 },
               }),
             ]}
@@ -226,10 +224,10 @@ const DeviceCondition = ({
               }}
               mode="multiple"
               allowClear
+              placeholder={formatMessage({ id: 'common.selectTrait' })}
+              options={traitsSelect}
               // mode={canSelectMultiple ? 'multiple' : undefined}
               // allowClear={canSelectMultiple}
-              placeholder="Select a trait"
-              options={traitsSelect}
               // dropdownRender={(menu) => (
               //   <>
               //     {menu}
@@ -248,7 +246,7 @@ const DeviceCondition = ({
           {watchTraitSelect?.includes('OnOff') && (
             <>
               <Tag className="tag-title" color="blue">
-                On-Off Switch
+                <FormattedMessage id="common.switchOnOff" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -266,7 +264,9 @@ const DeviceCondition = ({
                         if (!value) {
                           const traits = getFieldValue('traitSelect');
                           if (traits.includes('ColdWarmColor') || traits.includes('Brightness')) {
-                            return Promise.reject(new Error('Please switch OnOff on'));
+                            return Promise.reject(
+                              new Error(formatMessage({ id: 'common.requireOnOff' })),
+                            );
                           }
                           return Promise.resolve();
                         }
@@ -283,7 +283,7 @@ const DeviceCondition = ({
           {watchTraitSelect?.includes('Brightness') && (
             <>
               <Tag className="tag-title" color="blue">
-                Brightness
+                <FormattedMessage id="common.brightness" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -292,7 +292,7 @@ const DeviceCondition = ({
                   rules={[
                     {
                       required: true,
-                      message: 'Please select an operator',
+                      message: formatMessage({ id: 'common.requireOperator' }),
                     },
                   ]}
                 >
@@ -304,7 +304,7 @@ const DeviceCondition = ({
                   rules={[
                     {
                       required: true,
-                      message: 'Please enter a brightness value',
+                      message: formatMessage({ id: 'common.requireBrightness' }),
                     },
                   ]}
                 >
@@ -324,7 +324,7 @@ const DeviceCondition = ({
           {watchTraitSelect?.includes('ColdWarmColor') && (
             <>
               <Tag className="tag-title" color="blue">
-                Cold-Warm Color
+                <FormattedMessage id="common.colorTemp" />
               </Tag>
               <Flex justify="space-between" align="center" gap={12}>
                 <Form.Item<DeviceFormType>
@@ -333,7 +333,7 @@ const DeviceCondition = ({
                   rules={[
                     {
                       required: true,
-                      message: 'Please select an operator',
+                      message: formatMessage({ id: 'common.requireOperator' }),
                     },
                   ]}
                 >
@@ -345,7 +345,7 @@ const DeviceCondition = ({
                   rules={[
                     {
                       required: true,
-                      message: 'Please enter a cold-warm color value',
+                      message: formatMessage({ id: 'common.requireColorTemp' }),
                     },
                   ]}
                 >
@@ -365,7 +365,7 @@ const DeviceCondition = ({
           {conditionsType.name === EConditionsTypeName.Any && (
             <Form.Item<DeviceFormType>
               name="trigger"
-              label="Use as trigger"
+              label={formatMessage({ id: 'common.scene.asTrigger' })}
               valuePropName="checked"
               style={{ marginBottom: 4 }}
             >
@@ -384,7 +384,7 @@ const DeviceCondition = ({
               type="primary"
               onClick={() => form.submit()}
             >
-              Save
+              <FormattedMessage id="common.save" />
             </Button>
           ) : (
             <Button
@@ -404,7 +404,7 @@ const DeviceCondition = ({
               block
               type="default"
             >
-              Edit
+              <FormattedMessage id="common.edit" />
             </Button>
           )}
         </>

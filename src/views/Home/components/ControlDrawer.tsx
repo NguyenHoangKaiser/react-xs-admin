@@ -8,6 +8,7 @@ import { SettingOutlined } from '@ant-design/icons';
 import type { DrawerProps, SliderSingleProps } from 'antd';
 import { Button, ConfigProvider, Drawer, Flex, Slider, Switch, Typography, theme } from 'antd';
 import type { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 
 interface ControlDrawerProps extends DrawerProps {
   id: string | undefined;
@@ -22,6 +23,7 @@ const TitleRender = ({
   description?: string;
   icon: TIconType;
 }) => {
+  const { formatMessage } = useIntl();
   return (
     <>
       <div className="mb-4">
@@ -29,8 +31,10 @@ const TitleRender = ({
           <SvgIcon name={icon} />
         </span>
       </div>
-      <Typography.Title level={3}>{name || 'Name'}</Typography.Title>
-      <Typography.Text>{description || 'Description'}</Typography.Text>
+      <Typography.Title level={3}>{name || formatMessage({ id: 'common.name' })}</Typography.Title>
+      <Typography.Text>
+        {description || formatMessage({ id: 'common.description' })}
+      </Typography.Text>
     </>
   );
 };
@@ -183,7 +187,7 @@ const ControlDrawer = ({ id, ...rest }: ControlDrawerProps) => {
                 >
                   <div className="w-full mt-3 flex justify-between items-center">
                     <Typography.Title level={5}>
-                      {formatMessage({ id: 'common.color' })}:
+                      {formatMessage({ id: 'common.colorTemp' })}:
                     </Typography.Title>
                   </div>
                   <ConfigProvider
