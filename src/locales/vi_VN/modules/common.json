@@ -78,6 +78,7 @@
   "common.controlPanel": "Bảng điều khiển",
   "common.current": "Hiện tại",
   "common.delete": "Xóa",
+  "common.deleteDevice": "Xóa thiết bị",
   "common.description": "Miêu tả",
   "common.device": "Thiết bị",
   "common.deviceLight": "Loại thiết bị: Đèn",

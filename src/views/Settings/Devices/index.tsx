@@ -104,7 +104,7 @@ export function convertRoom(num: number): string {
 }
 export function convertProtocol(num: number): string {
   const letterMap: { [key: number]: string } = {
-    1: 'Other',
+    1: getIntlText({ id: 'common.other' }),
     2: 'Z-Wave',
     3: 'Zigbee',
     // Add more mappings as needed
@@ -114,9 +114,9 @@ export function convertProtocol(num: number): string {
 }
 export function convertRole(num: number): string {
   const letterMap: { [key: number]: string } = {
-    1: 'Other',
-    2: 'Light',
-    3: 'Temperature sensor',
+    1: getIntlText({ id: 'common.other' }),
+    2: getIntlText({ id: 'common.light' }),
+    3: getIntlText({ id: 'common.temperatureSensor' }),
     // Add more mappings as needed
   };
 
@@ -322,9 +322,9 @@ const SettingDevices: React.FC = () => {
       dataIndex: 'role',
       key: 'role',
       filters: [
-        { text: 'Other', value: '1' },
-        { text: 'Light', value: '2' },
-        { text: 'Temperature sensor', value: '3' },
+        { text: formatMessage({ id: 'common.other' }), value: '1' },
+        { text: formatMessage({ id: 'common.light' }), value: '2' },
+        { text: formatMessage({ id: 'common.temperatureSensor' }), value: '3' },
       ],
       filteredValue: filteredInfo.role || null,
       onFilter: (value, record) => {
