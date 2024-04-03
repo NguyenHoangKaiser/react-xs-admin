@@ -1,4 +1,4 @@
-import { defaultDimension } from '@/utils/constant';
+import { AppDefault } from '@/utils/constant';
 import { Layout } from 'antd';
 const { Content } = Layout;
 interface PageProps {
@@ -10,7 +10,7 @@ const Page = ({ children }: PageProps) => {
     <Layout>
       <Content
         style={{
-          height: defaultDimension.height,
+          height: AppDefault.height,
           width: '100%',
           padding: '4px 4px',
         }}

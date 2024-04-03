@@ -3,12 +3,14 @@ import { useLocale } from '@/locales';
 import type { IDevicesListItem, TIconType } from '@/utils/constant';
 import { Card, Flex, Typography } from 'antd';
 import type { CardProps } from 'antd/es/card';
+import { useIntl } from 'react-intl';
 
 interface DeviceCardProps extends CardProps {
   device: IDevicesListItem;
 }
 
 const IconRender = ({ icon, name }: { icon: TIconType; name: string }) => {
+  const { formatMessage } = useIntl();
   return (
     <>
       <div className="h-[60px]">
@@ -18,11 +20,15 @@ const IconRender = ({ icon, name }: { icon: TIconType; name: string }) => {
       </div>
       <Typography.Title
         style={{
-          margin: 0,
+          fontSize: 16,
+          lineHeight: '20px',
+          textAlign: 'center',
+          marginTop: 4,
+          marginBottom: 0,
         }}
-        level={5}
+        ellipsis={{ tooltip: true }}
       >
-        {name || 'Name'}
+        {name || formatMessage({ id: 'common.name' })}
       </Typography.Title>
     </>
   );

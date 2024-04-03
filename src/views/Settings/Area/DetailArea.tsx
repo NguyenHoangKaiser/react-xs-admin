@@ -80,13 +80,18 @@ const DetailArea = ({
             children: (
               <List
                 grid={{
-                  gutter: 16,
+                  gutter: {
+                    xs: 32,
+                    sm: 16,
+                    md: 8,
+                    lg: 8,
+                  },
                   xs: 1,
                   sm: 2,
                   md: 4,
-                  lg: 6,
-                  xl: 8,
-                  xxl: 10,
+                  lg: 5,
+                  xl: 6,
+                  xxl: 8,
                 }}
                 style={{ paddingTop: 24 }}
                 dataSource={item.renderDevice}

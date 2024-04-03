@@ -18,7 +18,7 @@ import { App, Button, Col, Drawer, Flex, Form, Input, Row, Select, Space, theme 
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import SceneRender from '../components/SceneRender';
 import { getSceneContainerCss } from '../style';
 
@@ -52,7 +52,6 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const dispatch = useAppDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const { removeTab } = useTabsChange();
 
   const onFinish = (values: FormFieldType) => {
@@ -191,7 +190,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         // navigate(RouteEnum.SettingsScenes, { replace: true });
       },
     });
-  }, [actions.data.length, conditions.data.length, pathKey, metadata.name, navigate, mode]);
+  }, [actions.data.length, conditions.data.length, pathKey, metadata.name, metadata.created, mode]);
 
   return (
     <div css={getSceneContainerCss(token)}>
