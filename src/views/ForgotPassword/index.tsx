@@ -78,7 +78,7 @@ const Forgot = memo(() => {
         submitter={{
           searchConfig: {
             submitText:
-              forgotStep == 'verify'
+              forgotStep === 'verify'
                 ? formatMessage({ id: 'common.continue' })
                 : formatMessage({ id: 'common.changePassword' }),
           },
@@ -92,10 +92,12 @@ const Forgot = memo(() => {
               style={{ color: '#1677FF ' }}
               type="text"
               onClick={() => {
-                forgotStep == 'verify' ? navigate('/') : setForgotStep('verify');
+                forgotStep === 'verify' ? navigate('/') : setForgotStep('verify');
               }}
             >
-              {formatMessage({ id: 'common.backToLogin' })}
+              {forgotStep !== 'verify'
+                ? formatMessage({ id: 'common.back' })
+                : formatMessage({ id: 'common.backToLogin' })}
             </Button>
             <Divider plain>
               <span

@@ -1,6 +1,8 @@
+import { useLocale } from '@/locales';
 import { AppDefault } from '@/utils/constant';
 import { Form, Input, Modal, type FormInstance } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 interface EditAreaFormProps {
   initialValues: DataT;
@@ -18,16 +20,27 @@ interface EditAreaFormModalProps {
 }
 const EditAreaForm: React.FC<EditAreaFormProps> = ({ initialValues, onFormInstanceReady }) => {
   const [form] = Form.useForm();
+  const { formatMessage } = useLocale();
+
   useEffect(() => {
     onFormInstanceReady(form);
   }, []);
   return (
     <Form layout="vertical" form={form} name="form_in_modal" initialValues={initialValues}>
-      <Form.Item label="Tên khu vực" name="titleWithNoIcon" rules={[{ required: true }]}>
-        <Input placeholder="Tên khu vực" />
+      <Form.Item
+        label={formatMessage({ id: 'common.areaName' })}
+        name="titleWithNoIcon"
+        rules={[
+          {
+            required: true,
+            message: <FormattedMessage id="common.areaNameRequire" />,
+          },
+        ]}
+      >
+        <Input placeholder={formatMessage({ id: 'common.areaName' })} />
       </Form.Item>
-      <Form.Item label="Thuộc khu vực" name="location">
-        <Input placeholder="Thuộc khu vực" disabled />
+      <Form.Item label={formatMessage({ id: 'common.belong' })} name="location">
+        <Input placeholder={formatMessage({ id: 'common.belong' })} disabled />
       </Form.Item>
     </Form>
   );
@@ -40,12 +53,14 @@ const EditAreaFormModal: React.FC<EditAreaFormModalProps> = ({
   initialValues,
 }) => {
   const [formInstance, setFormInstance] = useState<FormInstance>();
+  const { formatMessage } = useLocale();
+
   return (
     <Modal
       open={open}
-      title="Chỉnh sửa thiết bị"
-      okText="Đồng ý"
-      cancelText="Hủy"
+      title={formatMessage({ id: 'common.editDevice' })}
+      okText={formatMessage({ id: 'common.agree' })}
+      cancelText={formatMessage({ id: 'common.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose

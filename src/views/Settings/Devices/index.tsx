@@ -1,5 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
-import { useLocale } from '@/locales';
+import { getIntlText, useLocale } from '@/locales';
 import type { DataType } from '@/utils/constant';
 import { DownOutlined, InfoCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
@@ -12,7 +12,6 @@ import DeviceDetail from './components/DeviceDetail';
 import Preview from './components/Preview';
 import { getDevicesListCss } from './style';
 
-const { Option } = Select;
 type OnChange = NonNullable<TableProps<DataType>['onChange']>;
 type Filters = Parameters<OnChange>[1];
 
@@ -95,9 +94,9 @@ const data: DataType[] = [
 ];
 export function convertRoom(num: number): string {
   const letterMap: { [key: number]: string } = {
-    1: 'Living Room',
-    2: 'Bed Room',
-    3: 'Kitchen',
+    1: getIntlText({ id: 'common.livingRoom' }),
+    2: getIntlText({ id: 'common.bedRoom' }),
+    3: getIntlText({ id: 'common.kitchen' }),
     // Add more mappings as needed
   };
 
@@ -105,7 +104,7 @@ export function convertRoom(num: number): string {
 }
 export function convertProtocol(num: number): string {
   const letterMap: { [key: number]: string } = {
-    1: 'Other',
+    1: getIntlText({ id: 'common.other' }),
     2: 'Z-Wave',
     3: 'Zigbee',
     // Add more mappings as needed
@@ -115,9 +114,9 @@ export function convertProtocol(num: number): string {
 }
 export function convertRole(num: number): string {
   const letterMap: { [key: number]: string } = {
-    1: 'Other',
-    2: 'Light',
-    3: 'Temperature sensor',
+    1: getIntlText({ id: 'common.other' }),
+    2: getIntlText({ id: 'common.light' }),
+    3: getIntlText({ id: 'common.temperatureSensor' }),
     // Add more mappings as needed
   };
 
@@ -171,9 +170,8 @@ const SettingDevices: React.FC = () => {
   const { search } = useAntdTable(getTableData, {
     form,
     defaultParams: [{ current: 2, pageSize: 5 }],
-    defaultType: 'advance',
   });
-  const { type, changeType, submit, reset } = search;
+  const { submit, reset } = search;
   const clearFilters = () => {
     setFilteredInfo({});
   };
@@ -213,10 +211,11 @@ const SettingDevices: React.FC = () => {
   const advanceSearchForm = (
     <div>
       <Form form={form}>
-        <Row>
-          <Col span={6} className="mr-4">
+        <Row gutter={[24, 16]}>
+          <Col span={5}>
             <Form.Item>
               <Input
+                style={{ textTransform: 'capitalize' }}
                 maxLength={255}
                 placeholder={formatMessage({ id: 'common.name' })}
                 prefix={
@@ -228,63 +227,52 @@ const SettingDevices: React.FC = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={6} className="mr-4">
+          <Col span={5}>
             <Form.Item>
-              <Input placeholder="email" />
+              <Input style={{ textTransform: 'capitalize' }} placeholder="ID" />
             </Form.Item>
           </Col>
-          <Col span={6} className="mr-4">
-            <Form.Item>
-              <Input placeholder="phone" />
-            </Form.Item>
+          <Col span={5}>
+            <Select
+              showSearch
+              style={{ width: '100%' }}
+              placeholder={formatMessage({ id: 'common.room' })}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              onChange={(value) => {
+                console.log(value);
+              }}
+              allowClear
+            >
+              <Select.Option value="1">{formatMessage({ id: 'common.livingRoom' })}</Select.Option>
+            </Select>
           </Col>
           <Col>
             <Button type="primary" onClick={submit}>
               {formatMessage({ id: 'common.search' })}
             </Button>
-            <Button onClick={reset} style={{ marginLeft: 16 }}>
-              Reset
-            </Button>
-            <Button type="link" onClick={changeType}>
-              Simple Search
-            </Button>
+          </Col>
+          <Col>
+            <Button onClick={reset}>{formatMessage({ id: 'common.reset' })}</Button>
           </Col>
         </Row>
       </Form>
     </div>
   );
 
-  const searchForm = (
-    <div>
-      <Form form={form}>
-        <Form.Item name="room" initialValue="all">
-          <Select style={{ width: 120 }} onChange={submit}>
-            <Option value="">{formatMessage({ id: 'common.all' })}</Option>
-            <Option value="1">{formatMessage({ id: 'common.other' })}</Option>
-            <Option value="3">{formatMessage({ id: 'common.kitchen' })}</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="name">
-          <Input.Search placeholder="enter name" style={{ width: 240 }} onSearch={submit} />
-        </Form.Item>
-        <Button type="link" onClick={changeType}>
-          Advanced Search
-        </Button>
-      </Form>
-    </div>
-  );
   const expend = (index: any) => {
     if (expended === index) setExpended('0');
     else setExpended(index);
   };
   const columns: TableColumnsType<DataType> = [
     {
-      title: 'Icon'.toUpperCase(),
+      title: formatMessage({ id: 'common.icon' }).toUpperCase(),
       dataIndex: 'image',
       key: 'image',
       align: 'center',
       width: 120,
-
       render: (text) => (
         <div
           style={{ fontSize: 32, borderLeft: `3px solid ${token.colorPrimary}` }}
@@ -306,7 +294,7 @@ const SettingDevices: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: 'Name'.toUpperCase(),
+      title: formatMessage({ id: 'common.name' }).toUpperCase(),
       dataIndex: 'name',
       key: 'name',
       sorter: (a, b) => a.name.length - b.name.length,
@@ -314,7 +302,7 @@ const SettingDevices: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: 'Protocol'.toUpperCase(),
+      title: formatMessage({ id: 'common.protocol' }).toUpperCase(),
       dataIndex: 'protocol',
       key: 'protocol',
       filters: [
@@ -330,13 +318,13 @@ const SettingDevices: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: 'Role'.toUpperCase(),
+      title: formatMessage({ id: 'common.role' }).toUpperCase(),
       dataIndex: 'role',
       key: 'role',
       filters: [
-        { text: 'Other', value: '1' },
-        { text: 'Light', value: '2' },
-        { text: 'Temperature sensor', value: '3' },
+        { text: formatMessage({ id: 'common.other' }), value: '1' },
+        { text: formatMessage({ id: 'common.light' }), value: '2' },
+        { text: formatMessage({ id: 'common.temperatureSensor' }), value: '3' },
       ],
       filteredValue: filteredInfo.role || null,
       onFilter: (value, record) => {
@@ -346,13 +334,13 @@ const SettingDevices: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: 'Room'.toUpperCase(),
+      title: formatMessage({ id: 'common.room' }).toUpperCase(),
       dataIndex: 'roomId',
       key: 'roomId',
       filters: [
-        { text: 'Living Room', value: '1' },
-        { text: 'Bed Room', value: '2' },
-        { text: 'Kitchen', value: '3' },
+        { text: formatMessage({ id: 'common.livingRoom' }), value: '1' },
+        { text: formatMessage({ id: 'common.bedRoom' }), value: '2' },
+        { text: formatMessage({ id: 'common.kitchen' }), value: '3' },
       ],
       filteredValue: filteredInfo.roomId || null,
       onFilter: (value, record) => record.roomId.toString() === value.toString(),
@@ -383,18 +371,16 @@ const SettingDevices: React.FC = () => {
   return (
     <Row>
       <Col span={24} className=" h-full">
-        <Space className="m-4 items-start">
-          {type === 'simple' ? searchForm : advanceSearchForm}
-        </Space>
-        <Col span={24} className="m-4 items-start">
+        <Space className="mx-4 mt-4">{advanceSearchForm}</Space>
+        <Col span={24} className="mx-4  items-start">
           <Button onClick={clearFilters} className="mr-4">
-            Clear filters
+            {formatMessage({ id: 'common.clearFilters' })}
           </Button>
-          <Button onClick={clearAll}>Clear filters and sorters</Button>
+          <Button onClick={clearAll}>{formatMessage({ id: 'common.clearAll' })}</Button>
         </Col>
 
         <Table
-          style={{ height: 360 }}
+          style={{ height: 360, marginTop: 24 }}
           className="items-start content-start "
           css={getDevicesListCss(token)}
           columns={columns}

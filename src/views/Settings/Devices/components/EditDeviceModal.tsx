@@ -12,27 +12,42 @@ interface DeviceEditFormProps {
 const DeviceEditForm: React.FC<DeviceEditFormProps> = ({ initialValues, onFormInstanceReady }) => {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
   const [selectedIcon, setSelectedIcon] = useState(initialValues.image);
   useEffect(() => {
     onFormInstanceReady(form);
   }, []);
   return (
     <Form layout="vertical" form={form} name="form_in_modal" initialValues={initialValues}>
-      <Form.Item label="Tên thiết bị" name="name" rules={[{ required: true }]}>
-        <Input placeholder="Tên thiết bị" />
+      <Form.Item
+        label={formatMessage({ id: 'common.deviceName' })}
+        name="name"
+        rules={[{ required: true }]}
+      >
+        <Input placeholder={formatMessage({ id: 'common.deviceName' })} />
       </Form.Item>
-      <Form.Item label="Khu vực" name="roomId" rules={[{ required: true }]}>
-        <Select placeholder="Chọn vị trí" allowClear>
-          <Select.Option value={1}>Living Room</Select.Option>
-          <Select.Option value={2}>Bed Room</Select.Option>
-          <Select.Option value={3}>Kitchen</Select.Option>
+      <Form.Item
+        label={formatMessage({ id: 'common.area' })}
+        name="roomId"
+        rules={[{ required: true }]}
+      >
+        <Select placeholder={formatMessage({ id: 'common.choseLocation' })} allowClear>
+          <Select.Option value={1}>{formatMessage({ id: 'common.room' })}</Select.Option>
+          <Select.Option value={2}>{formatMessage({ id: 'common.bedRoom' })}</Select.Option>
+          <Select.Option value={3}>{formatMessage({ id: 'common.kitchen' })}</Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item label="Loại thiết bị" name="role" rules={[{ required: true }]}>
-        <Select placeholder="Chọn loại thiết bị">
-          <Select.Option value={1}>Other</Select.Option>
-          <Select.Option value={2}>Light</Select.Option>
-          <Select.Option value={3}>Temperature sensor</Select.Option>
+      <Form.Item
+        label={formatMessage({ id: 'common.deviceType' })}
+        name="role"
+        rules={[{ required: true }]}
+      >
+        <Select placeholder={formatMessage({ id: 'common.choseDevice' })}>
+          <Select.Option value={1}>{formatMessage({ id: 'common.other' })}</Select.Option>
+          <Select.Option value={2}>{formatMessage({ id: 'common.light' })}</Select.Option>
+          <Select.Option value={3}>
+            {formatMessage({ id: 'common.temperatureSensor' })}
+          </Select.Option>
         </Select>
       </Form.Item>
       <Form.Item label="Icon" name="image">

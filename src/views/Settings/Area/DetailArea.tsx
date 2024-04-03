@@ -88,6 +88,7 @@ const DetailArea = ({
                   xl: 8,
                   xxl: 10,
                 }}
+                style={{ paddingTop: 24 }}
                 dataSource={item.renderDevice}
                 renderItem={(device) => {
                   const icon = ListIconImage[device.id % ListIconImage.length] || ListIconImage[0];
@@ -161,7 +162,7 @@ const DetailArea = ({
           {formatMessage({ id: 'common.delete' })}
         </Button>
       </Popconfirm>
-      <Button type="primary" className="absolute top-2 right-20" onClick={() => setOpen(true)}>
+      <Button type="primary" className="absolute top-2 right-24" onClick={() => setOpen(true)}>
         {formatMessage({ id: 'common.edit' })}
       </Button>
       <EditAreaFormModal

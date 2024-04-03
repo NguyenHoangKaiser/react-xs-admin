@@ -1,4 +1,5 @@
 import SvgIcon from '@/components/SvgIcon';
+import { useLocale } from '@/locales';
 import type { IDevicesListItem1, IListIconItem } from '@/utils/constant';
 import { SettingOutlined } from '@ant-design/icons';
 import { Button, Drawer, Flex, Slider, Switch, Typography, theme, type DrawerProps } from 'antd';
@@ -12,6 +13,8 @@ interface DrawerControlProps extends DrawerProps {
 const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
   const { locale } = useIntl();
   const { token } = theme.useToken();
+  const { formatMessage } = useLocale();
+
   return (
     <Drawer
       title="Control Panel"
@@ -31,7 +34,8 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
         </div>
         <Typography.Title level={3}>{device?.name}</Typography.Title>
         <Typography.Text>
-          Description: {locale === 'en-US' ? icon?.name_en : icon?.name}
+          {formatMessage({ id: 'common.description' })}:{' '}
+          {locale === 'en-US' ? icon?.name_en : icon?.name}
         </Typography.Text>
         <div
           style={{
@@ -39,11 +43,15 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Power switch :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.powerSwitch' })} :
+          </Typography.Title>
           <Switch checked={!!device?.status} />
         </div>
         <div className="w-full mt-3 flex justify-between items-center">
-          <Typography.Title level={5}>Brightness :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.brightness' })} :
+          </Typography.Title>
         </div>
         <Slider
           style={{
@@ -63,7 +71,9 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Current consumption :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.consumption' })} :
+          </Typography.Title>
           <Typography.Text>0.0 W</Typography.Text>
         </div>
         <div
@@ -72,12 +82,14 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           }}
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
-          <Typography.Title level={5}>Total energy use :</Typography.Title>
+          <Typography.Title level={5}>
+            {formatMessage({ id: 'common.totalEnergyUse' })} :
+          </Typography.Title>
           <Typography.Text>0.0 kWh</Typography.Text>
         </div>
       </Flex>
       <div className="mt-4 align-bottom justify-end flex">
-        <Button danger>Xóa thiết bị</Button>
+        <Button danger>{formatMessage({ id: 'common.deleteDevice' })}</Button>
       </div>
     </Drawer>
   );

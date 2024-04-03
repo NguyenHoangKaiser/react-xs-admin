@@ -81,6 +81,7 @@ const Login = memo(() => {
           backgroundColor: thme.token.colorBgBase,
           backdropFilter: 'blur(4px)',
         }}
+        submitter={{ searchConfig: { submitText: formatMessage({ id: 'common.login' }) } }}
         subTitle=" "
         actions={
           <div className="flex justify-center items-center flex-col">

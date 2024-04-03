@@ -26,10 +26,18 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
           <Title level={4}>{formatMessage({ id: 'common.basicParameters' })}</Title>
           <Row>
             <Col span={12}>
-              <Typography style={{ color: token.colorTextDescription }}>Name:</Typography>
-              <Typography style={{ color: token.colorTextDescription }}>Room:</Typography>
-              <Typography style={{ color: token.colorTextDescription }}>Role:</Typography>
-              <Typography style={{ color: token.colorTextDescription }}>Category</Typography>
+              <Typography style={{ color: token.colorTextDescription }}>
+                {formatMessage({ id: 'common.name' })}:
+              </Typography>
+              <Typography style={{ color: token.colorTextDescription }}>
+                {formatMessage({ id: 'common.room' })}:
+              </Typography>
+              <Typography style={{ color: token.colorTextDescription }}>
+                {formatMessage({ id: 'common.role' })}:
+              </Typography>
+              <Typography style={{ color: token.colorTextDescription }}>
+                {formatMessage({ id: 'common.category' })}:
+              </Typography>
             </Col>
             <Col span={12} className="text-right">
               <Typography>{record?.name ?? ''}</Typography>
@@ -40,7 +48,7 @@ const DeviceDetail = memo(({ record }: { record: DataType | undefined }) => {
           </Row>
         </Col>
         <Col span={14} className="pl-8">
-          <Title level={4}>Icon</Title>
+          <Title level={4}>{formatMessage({ id: 'common.icon' })}</Title>
           <span style={{ fontSize: 32 }}>
             <SvgIcon name={record?.image ?? 'trophy'} />
           </span>
