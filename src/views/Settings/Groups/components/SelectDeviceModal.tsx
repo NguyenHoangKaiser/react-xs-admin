@@ -25,6 +25,22 @@ interface ModalProps {
   formData?: IGroupDevices;
 }
 
+const colLayout = {
+  xs: { span: 12 },
+  md: { span: 12 },
+  lg: { span: 10 },
+  xl: { span: 8 },
+  xxl: { span: 6 },
+};
+
+const colLayout2 = {
+  xs: { span: 12 },
+  md: { span: 12 },
+  lg: { span: 14 },
+  xl: { span: 16 },
+  xxl: { span: 18 },
+};
+
 const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
   const { token } = theme.useToken();
   const { formatMessage } = useLocale();
@@ -83,10 +99,10 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
       <Row className="pt-4 h-full w-full">
         <Col span={24}>
           <Row className="px-4 items-center mb-2">
-            <Col xxl={6} xl={8} lg={10} md={12}>
+            <Col {...colLayout}>
               <Input.Search placeholder="Search device" />
             </Col>
-            <Col xxl={18} xl={16} lg={14} md={12}>
+            <Col {...colLayout2}>
               <Flex justify="end">
                 <Checkbox
                   indeterminate={indeterminate}

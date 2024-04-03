@@ -1,6 +1,6 @@
 import { useLocale } from '@/locales';
 import { RouteEnum } from '@/router/utils';
-import { defaultDimension } from '@/utils/constant';
+import { AppDefault } from '@/utils/constant';
 import { MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, Typography, theme } from 'antd';
@@ -54,7 +54,7 @@ const SettingLayout = memo(() => {
         style={{
           backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
-          height: defaultDimension.height,
+          height: AppDefault.height,
         }}
       >
         {collapsed ? (
@@ -95,7 +95,7 @@ const SettingLayout = memo(() => {
       <Content
         style={{
           overflowY: 'auto',
-          height: defaultDimension.height,
+          height: AppDefault.height,
         }}
       >
         <Outlet />

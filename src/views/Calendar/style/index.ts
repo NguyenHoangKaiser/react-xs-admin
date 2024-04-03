@@ -1,3 +1,4 @@
+import { mq } from '@/style';
 import type { CSSObject } from '@emotion/react';
 import type { GlobalToken } from 'antd';
 
@@ -17,7 +18,10 @@ export const getCssCalendar = (token: GlobalToken): CSSObject => {
       paddingBottom: 8,
     },
     ['.ant-picker-cell-inner.ant-picker-calendar-date .ant-picker-calendar-date-content']: {
-      overflowY: 'hidden',
+      overflowY: 'auto',
+      [mq[2]]: {
+        overflowY: 'hidden',
+      },
     },
     ['.ant-picker-calendar']: {
       borderLeft: `1px solid ${token.colorBorder}`,

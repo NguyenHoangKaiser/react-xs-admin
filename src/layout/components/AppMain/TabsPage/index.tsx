@@ -5,7 +5,7 @@ import { RouteEnum, findRouteByPath } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { deleteExceedTabs } from '@/store/modules/route';
 import { sceneSelector } from '@/store/modules/scene';
-import { defaultDimension } from '@/utils/constant';
+import { AppDefault } from '@/utils/constant';
 import type { TabsProps } from 'antd';
 import { Tabs, theme } from 'antd';
 import { memo, useEffect, useMemo } from 'react';
@@ -13,6 +13,7 @@ import { useIntl } from 'react-intl';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 // import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
 // import { useRefresh } from '@/hooks/web/useRefresh';
+import { setTabActiveKey } from '@/store/modules/app';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
 import { getTabsStyle } from './style';
@@ -66,6 +67,7 @@ const TabsPage = memo(({ maxLen }: Props) => {
         content: formatMessage({ id: 'common.scene.lostUnsaved' }),
         trigger: addingScene || editingScene,
       });
+      dispatch(setTabActiveKey('info'));
     }
   };
 
@@ -92,7 +94,7 @@ const TabsPage = memo(({ maxLen }: Props) => {
       onEdit={onEdit}
       tabBarGutter={4}
       tabPosition="top"
-      style={{ width: defaultDimension.width }}
+      style={{ width: AppDefault.width }}
       tabBarStyle={{
         margin: 0,
         paddingTop: 8,

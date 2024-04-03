@@ -4,9 +4,11 @@ import type { DatePicker, GetProps, TimeRangePickerProps, TreeDataNode } from 'a
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
-export const defaultDimension = {
+export const AppDefault = {
   width: 'calc(100vw - 77px)',
   height: 'calc(100vh - 110px)',
+  modalWidth: 600,
+  font: 'Arial, apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
 };
 
 export enum APIs {

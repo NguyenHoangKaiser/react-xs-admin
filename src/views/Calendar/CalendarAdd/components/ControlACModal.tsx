@@ -1,5 +1,6 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
+import { AppDefault } from '@/utils/constant';
 import { css } from '@emotion/react';
 import type { SliderSingleProps } from 'antd';
 import { Button, Col, Modal, Row, Segmented, Slider, theme } from 'antd';
@@ -44,7 +45,7 @@ const ControlACModal = (props: ControlACProps) => {
       cancelText={formatMessage({ id: 'tab.close' })}
       onOk={onOk}
       onCancel={onCancel}
-      width={'40%'}
+      width={AppDefault.modalWidth}
     >
       <Row>
         <Col span={24}>

@@ -1,4 +1,4 @@
-import { defaultDimension } from '@/utils/constant';
+import { AppDefault } from '@/utils/constant';
 import { Col, Row, theme } from 'antd';
 
 interface RawPageProps {
@@ -16,7 +16,7 @@ const RawPage = ({ children, side }: RawPageProps) => {
           borderRight: `1px solid ${token.colorBorder}`,
           position: 'sticky',
           top: 0,
-          height: defaultDimension.height,
+          height: AppDefault.height,
           overflow: 'auto',
         }}
       >

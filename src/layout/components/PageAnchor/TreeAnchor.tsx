@@ -1,5 +1,5 @@
 import LayoutSpin from '@/components/LayoutSpin';
-import { defaultDimension } from '@/utils/constant';
+import { AppDefault } from '@/utils/constant';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { ButtonProps, SiderProps, TreeProps } from 'antd';
 import { Button, Col, Layout, Tree, theme } from 'antd';
@@ -75,7 +75,7 @@ const TreeAnchor = ({
         style={{
           backgroundColor: token.colorBgContainer,
           borderRight: `1px solid ${token.colorBorder}`,
-          height: defaultDimension.height,
+          height: AppDefault.height,
         }}
         {...siderProps}
       >
@@ -118,7 +118,7 @@ const TreeAnchor = ({
       <Content>
         <Col
           style={{
-            height: defaultDimension.height,
+            height: AppDefault.height,
             overflowY: 'auto',
             position: 'initial',
           }}

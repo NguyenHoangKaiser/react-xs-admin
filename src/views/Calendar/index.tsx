@@ -10,10 +10,12 @@ import {
   Button,
   Checkbox,
   Col,
+  Flex,
   FloatButton,
   Popover,
   Row,
   Segmented,
+  Typography,
   theme,
 } from 'antd';
 import type { Dayjs } from 'dayjs';
@@ -119,9 +121,9 @@ const Calendar = () => {
                 </div>
               }
             >
-              <a style={{ color: token.colorPrimary }}>
+              <Typography.Link>
                 {formatMessage({ id: 'calendar.otherCard' }, { count: listData.length - 3 })}
-              </a>
+              </Typography.Link>
             </Popover>
           )}
         </ul>
@@ -135,7 +137,7 @@ const Calendar = () => {
 
   return (
     <Row>
-      <Col span={5}>
+      <Col lg={24} xl={6} xxl={5}>
         <Row style={{ borderBottom: `1px solid ${token.colorBorder}` }}>
           <Col>
             <AntCalendar
@@ -146,12 +148,12 @@ const Calendar = () => {
           </Col>
         </Row>
         <Row>
-          <Col className="p-4" span={24}>
+          <Col className="p-4" xxl={24} xl={24} lg={6}>
             <Checkbox onChange={() => setOwner(!owner)} checked={owner}>
               {formatMessage({ id: 'calendar.myCalendar' })}
             </Checkbox>
           </Col>
-          <Col className="p-4" span={24}>
+          <Col className="p-4" xxl={24} xl={24} lg={6}>
             <Checkbox
               checked={type.includes('LIGHT')}
               onChange={(e) => {
@@ -163,7 +165,7 @@ const Calendar = () => {
               {formatMessage({ id: 'calendar.lightCalendar' })}
             </Checkbox>
           </Col>
-          <Col className="p-4" span={24}>
+          <Col className="p-4" xxl={24} xl={24} lg={6}>
             <Checkbox
               checked={type.includes('AC')}
               onChange={(e) => {
@@ -175,7 +177,7 @@ const Calendar = () => {
               {formatMessage({ id: 'calendar.ACCalendar' })}
             </Checkbox>
           </Col>
-          <Col className="p-4" span={24}>
+          <Col className="p-4" xxl={24} xl={24} lg={6}>
             <Checkbox
               checked={type.includes('PW')}
               onChange={(e) => {
@@ -189,7 +191,7 @@ const Calendar = () => {
           </Col>
         </Row>
       </Col>
-      <Col span={19}>
+      <Col xxl={19} xl={18} lg={24}>
         <Row
           style={{
             height: 71,
@@ -199,45 +201,54 @@ const Calendar = () => {
             borderLeft: `1px solid ${token.colorBorder}`,
           }}
         >
-          <Col span={2}>
+          <Col xxl={2} xl={4}>
             <Button onClick={() => setSelectedDay(dayjs())}>
               {formatMessage({ id: 'calendar.today' })}
             </Button>
           </Col>
-          <Col span={2}>
-            <div
+          <Col xxl={2} xl={4}>
+            <Flex
+              align="center"
               style={{
                 fontSize: 16,
-                display: 'flex',
-                alignItems: 'center',
                 cursor: 'pointer',
-                gap: 16,
               }}
             >
-              <LeftOutlined
-                size={24}
+              <Button
+                type="text"
                 onClick={() => setSelectedDay(selectedDay.subtract(1, 'day'))}
-              />
-              <RightOutlined size={24} onClick={() => setSelectedDay(selectedDay.add(1, 'day'))} />
-            </div>
+                style={{ padding: 2 }}
+              >
+                <LeftOutlined size={24} />
+              </Button>
+              <Button
+                type="text"
+                onClick={() => setSelectedDay(selectedDay.add(1, 'day'))}
+                style={{ padding: 2 }}
+              >
+                <RightOutlined size={24} />
+              </Button>
+            </Flex>
           </Col>
 
-          <Col span={4}>
+          <Col xxl={8} xl={6}>
             <div style={{ textTransform: 'capitalize' }}>
               {DAYJS(selectedDay.toDate()).format('dddd, D MMMM, YYYY')}
             </div>
           </Col>
 
-          <Col span={4} offset={12}>
-            <Segmented<TypeCalendar>
-              options={[
-                { value: TypeCalendar.Day, label: formatMessage({ id: 'calendar.day' }) },
-                { value: TypeCalendar.Week, label: formatMessage({ id: 'calendar.week' }) },
-                { value: TypeCalendar.Month, label: formatMessage({ id: 'calendar.month' }) },
-              ]}
-              value={mode}
-              onChange={(value) => setMode(value)}
-            />
+          <Col span={10}>
+            <div className="float-end">
+              <Segmented<TypeCalendar>
+                options={[
+                  { value: TypeCalendar.Day, label: formatMessage({ id: 'calendar.day' }) },
+                  { value: TypeCalendar.Week, label: formatMessage({ id: 'calendar.week' }) },
+                  { value: TypeCalendar.Month, label: formatMessage({ id: 'calendar.month' }) },
+                ]}
+                value={mode}
+                onChange={(value) => setMode(value)}
+              />
+            </div>
           </Col>
         </Row>
         {mode === TypeCalendar.Week && (

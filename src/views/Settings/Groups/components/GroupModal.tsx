@@ -1,7 +1,7 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
 import type { IGroupDevices, IconVariant } from '@/utils/constant';
-import { FAKE_DATA, ListIconVariant } from '@/utils/constant';
+import { AppDefault, FAKE_DATA, ListIconVariant } from '@/utils/constant';
 import {
   Button,
   Form,
@@ -162,6 +162,7 @@ const GroupFormModal: React.FC<GroupFormModalProps> = ({
           console.log('Failed:', error);
         }
       }}
+      width={AppDefault.modalWidth}
     >
       <GroupForm
         initialValues={initialValues}

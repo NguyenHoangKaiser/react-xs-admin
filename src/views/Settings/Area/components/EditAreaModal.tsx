@@ -1,3 +1,4 @@
+import { AppDefault } from '@/utils/constant';
 import { Form, Input, Modal, type FormInstance } from 'antd';
 import React, { useEffect, useState } from 'react';
 
@@ -57,6 +58,7 @@ const EditAreaFormModal: React.FC<EditAreaFormModalProps> = ({
           console.log('Failed:', error);
         }
       }}
+      width={AppDefault.modalWidth}
     >
       <EditAreaForm
         initialValues={initialValues}

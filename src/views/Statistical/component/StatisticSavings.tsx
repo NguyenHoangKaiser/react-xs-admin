@@ -1,8 +1,10 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
+import { AppDefault } from '@/utils/constant';
 import { Col, DatePicker, Flex, List, Row, Segmented, Statistic, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
-import SavingsChart from './TinyLine';
+import type { ReactEChartsProps } from './ReactECharts';
+import { ReactECharts } from './ReactECharts';
 
 const colLayout2 = {
   xs: { span: 24 },
@@ -18,6 +20,114 @@ const colLayout3 = {
   lg: { span: 24 },
   xl: { span: 8 },
   xxl: { span: 8 },
+};
+
+const datasetWithFilters: echarts.DatasetComponentOption[] = [
+  {
+    id: 'dataset_Finland',
+    fromDatasetId: 'dataset_raw',
+    transform: {
+      type: 'filter',
+      config: {
+        and: [
+          { dimension: 'Year', gte: 1800 },
+          { dimension: 'Country', '=': 'Finland' },
+        ],
+      },
+    },
+  },
+];
+const seriesList: echarts.SeriesOption[] = [
+  {
+    type: 'line',
+    datasetId: 'dataset_Finland',
+    showSymbol: false,
+    name: 'Finland',
+    endLabel: {
+      show: true,
+      formatter: function (params: any) {
+        return params.value[1] + ': ' + params.value[0];
+      },
+    },
+    labelLayout: {
+      moveOverlap: 'shiftY',
+    },
+    emphasis: {
+      focus: 'series',
+    },
+    encode: {
+      x: 'Year',
+      y: 'Income',
+      label: ['Country', 'Income'],
+      itemName: 'Year',
+      tooltip: ['Income'],
+    },
+  },
+];
+const option: ReactEChartsProps['option'] = {
+  animationDuration: 5000,
+  textStyle: {
+    fontFamily: AppDefault.font,
+  },
+  dataset: [
+    {
+      id: 'dataset_raw',
+      source: [
+        ['Income', 'Country', 'Year'],
+
+        [1244, 'Finland', 1800],
+
+        [1267, 'Finland', 1810],
+
+        [1290, 'Finland', 1820],
+
+        [1360, 'Finland', 1830],
+
+        [1434, 'Finland', 1840],
+
+        [1512, 'Finland', 1850],
+
+        [1594, 'Finland', 1860],
+
+        [1897, 'Finland', 1870],
+
+        [1925, 'Finland', 1880],
+
+        [2305, 'Finland', 1890],
+
+        [2789, 'Finland', 1900],
+
+        [3192, 'Finland', 1910],
+
+        [3097, 'Finland', 1920],
+
+        [4489, 'Finland', 1930],
+
+        [5439, 'Finland', 1940],
+        [5449, 'Finland', 1950],
+        [5479, 'Finland', 1960],
+        [5489, 'Finland', 1970],
+        [5499, 'Finland', 1980],
+        [5509, 'Finland', 1990],
+      ],
+    },
+    ...datasetWithFilters,
+  ],
+  xAxis: {
+    type: 'category',
+    nameLocation: 'middle',
+  },
+  yAxis: {
+    name: 'Income',
+  },
+  tooltip: {
+    order: 'valueDesc',
+    trigger: 'axis',
+  },
+  series: seriesList,
+  grid: {
+    right: 140,
+  },
 };
 
 const StatisticSavings = () => {
@@ -36,7 +146,11 @@ const StatisticSavings = () => {
         >
           <Flex vertical={false} align="center" justify="space-between">
             <Col
-              span={8}
+              xs={10}
+              md={8}
+              lg={10}
+              xl={10}
+              xxl={8}
               className="flex flex-1 flex-row gap-4 mr-4"
               style={{ borderRight: `2px solid ${thme.token.colorBorderSecondary}` }}
             >
@@ -52,10 +166,14 @@ const StatisticSavings = () => {
                 value={formatMessage({ id: 'statistic.noteSummaryConsumption' })}
                 precision={2}
                 valueStyle={{ color: thme.token.colorText, fontSize: 14 }}
-                suffix="kWh"
               />
             </Col>
-            <div
+            <Col
+              xs={4}
+              md={5}
+              lg={4}
+              xl={4}
+              xxl={8}
               className="flex flex-1 flex-row gap-4 mr-4"
               style={{ borderRight: `2px solid ${thme.token.colorBorderSecondary}` }}
             >
@@ -73,8 +191,13 @@ const StatisticSavings = () => {
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
                 suffix="$"
               />
-            </div>
-            <div
+            </Col>
+            <Col
+              xs={6}
+              md={6}
+              lg={6}
+              xl={6}
+              xxl={8}
               className="flex flex-1 flex-row gap-4 mr-4"
               style={{ borderRight: `2px solid ${thme.token.colorBorderSecondary}` }}
             >
@@ -92,8 +215,8 @@ const StatisticSavings = () => {
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
                 suffix="$"
               />
-            </div>
-            <div className="flex flex-1 flex-row gap-4">
+            </Col>
+            <Col xs={4} md={5} lg={4} xl={4} xxl={8} className="flex flex-1 flex-row gap-4">
               <div className="flex items-center">
                 <SvgIcon name="maintenance" className="text-3xl" />
               </div>
@@ -108,7 +231,7 @@ const StatisticSavings = () => {
                 valueStyle={{ color: thme.token['blue-5'], fontSize: 16, fontWeight: 'bold' }}
                 suffix="$"
               />
-            </div>
+            </Col>
           </Flex>
         </div>
       </Col>
@@ -117,10 +240,9 @@ const StatisticSavings = () => {
         style={{ border: `1px solid ${thme.token.colorBorderSecondary}`, borderRadius: 8 }}
       >
         <Col {...colLayout2}>
-          {/* <Typography.Title level={5} className="pb-4">
-            Energy balance in time
-          </Typography.Title> */}
-          <SavingsChart />
+          <Row style={{ height: 500 }}>
+            <ReactECharts option={option} />
+          </Row>
         </Col>
         <Col {...colLayout3} className="pl-2">
           <Row>

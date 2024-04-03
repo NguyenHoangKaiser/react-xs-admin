@@ -1,6 +1,6 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
-import { ListIconImage, type DataType, type FieldType } from '@/utils/constant';
+import { AppDefault, ListIconImage, type DataType, type FieldType } from '@/utils/constant';
 import { Button, Form, Input, Modal, Select, Space, theme, type FormInstance } from 'antd';
 import React, { useEffect, useState } from 'react';
 
@@ -96,6 +96,7 @@ const DeviceEditFormModal: React.FC<DeviceEditFormModalProps> = ({
           console.log('Failed:', error);
         }
       }}
+      width={AppDefault.modalWidth}
     >
       <DeviceEditForm
         initialValues={initialValues}
