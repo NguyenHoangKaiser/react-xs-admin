@@ -15,6 +15,7 @@ export enum APIs {
   LOGIN = '/site/login',
   LOGOUT = '/site/logout',
   MOCK_GET_TODOS = 'http://localhost:5173/mock_api/todos',
+  MOCK_GET_SECTION = 'http://localhost:5173/mock_api/sections-list',
   FORGOT_PASSWORD = '/site/request-password-reset',
   VERIFY = '/site/verify-password-reset',
   GET_HOTELS = '/hotel',

@@ -1,4 +1,5 @@
 import { api, transformFactory } from '@/server/index';
+import type { ISectionListItem } from '@/utils/constant';
 import { APIs } from '@/utils/constant';
 
 export interface ITodo {
@@ -9,6 +10,9 @@ export interface ITodo {
 }
 
 type GetTodosResponse = ITodo[];
+interface GetSectionListResponse {
+  items: ISectionListItem[];
+}
 
 export const todosApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,8 +25,20 @@ export const todosApi = api.injectEndpoints({
         { type: 'Todos' as const, id: 'LIST' },
       ],
     }),
+    getSectionList: builder.query<GetSectionListResponse, void>({
+      query: () => APIs.MOCK_GET_SECTION,
+      ...transformFactory<GetSectionListResponse>(),
+      providesTags: (
+        result = {
+          items: [],
+        },
+      ) => [
+        ...result.items.map(({ id }) => ({ type: 'Section' as const, id })),
+        { type: 'Section' as const, id: 'LIST' },
+      ],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetTodosQuery } = todosApi;
+export const { useGetTodosQuery, useGetSectionListQuery } = todosApi;

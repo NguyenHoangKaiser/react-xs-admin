@@ -12,8 +12,11 @@ const AppMain = memo(() => {
   const thme = theme.useToken();
   const ref = useRef(null);
   const isKeepAlive = import.meta.env.VITE_KEY_ALIVE === 'TRUE';
-  const maxLen = 10;
-  console.log('isKeepAlive', isKeepAlive);
+  const maxLen = import.meta.env.VITE_KEY_ALIVE_MAX_LEN || 10;
+  console.log('isKeepAlive', {
+    isKeepAlive,
+    maxLen,
+  });
   return (
     <Content css={getAppMainStyle(thme.token)}>
       <div className="main-content">

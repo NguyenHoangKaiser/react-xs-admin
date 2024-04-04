@@ -1,3 +1,4 @@
+import { message } from '@/layout';
 import type { LocaleId } from '@/locales';
 import type { RouteEnum } from '@/router/utils';
 import { authApi } from '@/server/authApi';
@@ -54,9 +55,14 @@ export const routeSlice = createSlice({
       const { type, tabs } = action.payload;
       const tabIndex = state.multiTabs.findIndex((i) => i.key === tabs.key);
       switch (type) {
-        case 'add':
+        case 'add': {
+          const maxLen = import.meta.env.VITE_KEY_ALIVE_MAX_LEN || 10;
+          if (state.multiTabs.length >= maxLen) {
+            message.error(`Has reached the limit of ${maxLen} tabs`);
+          }
           if (tabIndex === -1) state.multiTabs.push(tabs);
           break;
+        }
         case 'delete':
           if (tabIndex !== -1) state.multiTabs.splice(tabIndex, 1);
           break;

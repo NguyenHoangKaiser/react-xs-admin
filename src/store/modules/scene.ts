@@ -61,6 +61,10 @@ export const sceneSlice = createSlice({
   name: 'scene',
   initialState,
   reducers: {
+    setAddScene: (state, action: PayloadAction<ISceneRule>) => {
+      state.addingScene = true;
+      state.addScene = action.payload;
+    },
     setEditScene: (state, action: PayloadAction<ISceneRule>) => {
       state.editingScene = true;
       state.editScene = action.payload;
@@ -280,6 +284,7 @@ export const sceneSlice = createSlice({
 });
 
 export const {
+  setAddScene,
   setEditScene,
   setDetailScene,
   setSceneMetadata,

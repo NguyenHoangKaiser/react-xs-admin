@@ -6,16 +6,29 @@ import {
   listSceneSelector,
   resetAddScene,
   sceneSelector,
+  setAddScene,
   setEditScene,
 } from '@/store/modules/scene';
 import { EStatus } from '@/utils/constant';
 
-import { EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
-import { App, Button, Col, Input, Row, Space, Switch, Table, type TableColumnsType } from 'antd';
+import { CopyIcon, EyeOpenIcon, Pencil1Icon, PlayIcon, TrashIcon } from '@radix-ui/react-icons';
+import {
+  App,
+  Button,
+  Col,
+  Input,
+  Row,
+  Space,
+  Switch,
+  Table,
+  Tooltip,
+  type TableColumnsType,
+} from 'antd';
 
 import { useInfoPageTabs } from '@/hooks/useInfoPageTabs';
 import { RouteEnum } from '@/router/utils';
 import { setStoreMultiTabs } from '@/store/modules/route';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { ISceneRule } from './scene';
@@ -36,12 +49,36 @@ export default () => {
     navigateTabs({
       path,
       localeLabel: 'layout.menu.settingSceneDetail',
-      option: {
-        state: {
-          scene: record,
-        },
-      },
     });
+  };
+
+  const onCopy = (record: ISceneRule) => {
+    const data: ISceneRule = {
+      ...record,
+      metadata: {
+        ...record.metadata,
+        created: dayjs().unix(),
+        name: `${record.metadata.name} - Copy ${dayjs().unix()}`,
+      },
+    };
+    if (addingScene) {
+      modal.confirm({
+        title: formatMessage({ id: 'common.scene.addUnsaved' }),
+        content: formatMessage({ id: 'common.scene.editUnsavedContent' }),
+        okText: formatMessage({ id: 'common.proceed' }),
+        cancelText: formatMessage({ id: 'common.scene.addUnsavedContinue' }),
+        onOk: () => {
+          dispatch(setAddScene(data));
+          navigate(RouteEnum.SettingsScenesAdd);
+        },
+        onCancel: () => {
+          navigate(RouteEnum.SettingsScenesAdd);
+        },
+      });
+    } else {
+      dispatch(setAddScene(data));
+      navigate(RouteEnum.SettingsScenesAdd);
+    }
   };
 
   const onEdit = (record: ISceneRule) => {
@@ -158,33 +195,70 @@ export default () => {
       dataIndex: ['metadata', 'savedAt'],
       render: (_text, record) => (
         <Space size={'large'}>
-          <Button
-            type="default"
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-            onClick={() => {
-              onDetail(record);
-            }}
-          >
-            <EyeOpenIcon height={20} width={20} />
-          </Button>
-          <Button
-            type="default"
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-            onClick={() => {
-              onEdit(record);
-            }}
-          >
-            <Pencil1Icon height={20} width={20} />
-          </Button>
-          <Button
-            danger
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-            onClick={() => {
-              onDelete(record);
-            }}
-          >
-            <TrashIcon height={20} width={20} />
-          </Button>
+          <Tooltip title={formatMessage({ id: 'common.scene.viewDetail' })}>
+            <Button
+              type="default"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 4,
+              }}
+              onClick={() => {
+                onDetail(record);
+              }}
+            >
+              <EyeOpenIcon height={20} width={20} />
+            </Button>
+          </Tooltip>
+          <Tooltip title={formatMessage({ id: 'common.copy' })}>
+            <Button
+              type="default"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 4,
+              }}
+              onClick={() => {
+                onCopy(record);
+              }}
+            >
+              <CopyIcon height={20} width={20} />
+            </Button>
+          </Tooltip>
+          <Tooltip title={formatMessage({ id: 'common.edit' })}>
+            <Button
+              type="default"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 4,
+              }}
+              onClick={() => {
+                onEdit(record);
+              }}
+            >
+              <Pencil1Icon height={20} width={20} />
+            </Button>
+          </Tooltip>
+          <Tooltip title={formatMessage({ id: 'common.delete' })}>
+            <Button
+              danger
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 4,
+              }}
+              onClick={() => {
+                onDelete(record);
+              }}
+            >
+              <TrashIcon height={20} width={20} />
+            </Button>
+          </Tooltip>
         </Space>
       ),
     },
@@ -195,7 +269,7 @@ export default () => {
       <Row>
         <Col
           style={{
-            padding: '8px 16px',
+            padding: 16,
           }}
           span={24}
         >
@@ -205,28 +279,30 @@ export default () => {
           <Input.Search style={{ width: 200, float: 'right' }} />
         </Col>
       </Row>
-      <div>
-        <Table
-          expandable={{
-            expandedRowRender: (record) => (
-              <p style={{ margin: 0 }}>
-                {record.metadata.description || formatMessage({ id: 'common.noDescription' })}
-              </p>
-            ),
-            // rowExpandable: (record) => record.name !== 'Not Expandable',
-          }}
-          columns={columns}
-          rowKey={(record) => record.metadata.created!}
-          dataSource={data}
-          pagination={{
-            defaultPageSize: 20,
-            hideOnSinglePage: true,
-            // showSizeChanger: true,
-            // pageSizeOptions: ['10', '20', '50', '100'],
-            // position: ['topCenter'],
-          }}
-        />
-      </div>
+      <Row>
+        <Col span={24}>
+          <Table
+            expandable={{
+              expandedRowRender: (record) => (
+                <p style={{ margin: 0 }}>
+                  {record.metadata.description || formatMessage({ id: 'common.noDescription' })}
+                </p>
+              ),
+              // rowExpandable: (record) => record.name !== 'Not Expandable',
+            }}
+            columns={columns}
+            rowKey={(record) => record.metadata.created!}
+            dataSource={data}
+            pagination={{
+              defaultPageSize: 20,
+              hideOnSinglePage: true,
+              // showSizeChanger: true,
+              // pageSizeOptions: ['10', '20', '50', '100'],
+              // position: ['topCenter'],
+            }}
+          />
+        </Col>
+      </Row>
     </>
   );
 };

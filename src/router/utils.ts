@@ -21,6 +21,7 @@ export enum RouteEnum {
   SettingsScenes = '/setting/scenes',
   SettingsGroups = '/setting/groups',
   Statistical = '/statistical',
+  SceneView = '/scene',
   Notification = '/notification',
   SettingsArea = '/setting/area',
   SettingsScenesList = '/setting/scenes/list',
@@ -43,6 +44,10 @@ const arr = [
   {
     path: RouteEnum.Statistical,
     id: 'Statistical',
+  },
+  {
+    path: RouteEnum.SceneView,
+    id: 'Scene',
   },
   {
     path: RouteEnum.Notification,
