@@ -2,8 +2,9 @@ import { EConditionsTypeName } from '@/utils/constant';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Col, Dropdown, Row, Space, theme, Typography } from 'antd';
-import { memo } from 'react';
+import { forwardRef, memo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import type { ITourRef } from '../AddScene';
 import type { ISceneRule } from '../scene';
 import ActionCard from './ActionCard';
 import { CardContent } from './ChainLink';
@@ -37,7 +38,7 @@ const ColLayout = {
   },
 };
 
-const SceneRender = memo((props: SceneRenderProps) => {
+const Render = forwardRef<ITourRef, SceneRenderProps>((props, ref) => {
   const {
     scene,
     onClickConditionTypeDrop,
@@ -46,6 +47,10 @@ const SceneRender = memo((props: SceneRenderProps) => {
     mode,
     viewOnly = false,
   } = props;
+  if (!ref || !('current' in ref) || !ref.current) {
+    throw new Error('ref is required');
+  }
+  const { ref1, ref2, ref3 } = ref.current;
   const { conditions, actions } = scene;
   const { formatMessage } = useIntl();
   const { token } = theme.useToken();
@@ -75,8 +80,8 @@ const SceneRender = memo((props: SceneRenderProps) => {
   return (
     <Row style={{ height: '100%', paddingBottom: 24 }}>
       <Col {...ColLayout} style={{ marginBottom: 18 }}>
-        <div className="condition-container">
-          <div className="condition-dropdown">
+        <div ref={ref1} className="condition-container">
+          <div ref={ref2} className="condition-dropdown">
             <Dropdown
               trigger={['click']}
               disabled={viewOnly}
@@ -139,7 +144,7 @@ const SceneRender = memo((props: SceneRenderProps) => {
         </div>
       </Col>
       <Col {...ColLayout}>
-        <div className="action-container">
+        <div ref={ref3} className="action-container">
           <div className="action-dropdown">
             <Typography.Text style={{ color: token.blue }}>
               <FormattedMessage id="common.scene.DO" />
@@ -181,5 +186,7 @@ const SceneRender = memo((props: SceneRenderProps) => {
     </Row>
   );
 });
+
+const SceneRender = memo(Render);
 
 export default SceneRender;

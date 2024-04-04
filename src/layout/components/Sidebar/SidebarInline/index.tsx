@@ -65,6 +65,8 @@ const Sidebar = memo(() => {
     }
   }, [sidebarMode, pathname, menuList]);
 
+  const rootPath = `/${pathname.split('/')[1]}`;
+
   const MenuRender = (
     <>
       <AppLogo />
@@ -72,7 +74,7 @@ const Sidebar = memo(() => {
         mode="inline"
         openKeys={openKeys}
         onOpenChange={onOpenChange}
-        selectedKeys={[pathname]}
+        selectedKeys={[rootPath]}
         items={menuItems as MenuProps['items']}
         onClick={(e) => navigate(e.key)}
         style={{ borderWidth: 0 }}

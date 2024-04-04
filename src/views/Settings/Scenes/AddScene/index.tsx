@@ -13,10 +13,11 @@ import {
   setSceneMetadata,
 } from '@/store/modules/scene';
 import { ListIconImage, type TIconType } from '@/utils/constant';
-import { SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { App, Button, Col, Drawer, Flex, Form, Input, Row, Select, Space, theme } from 'antd';
+import { QuestionCircleOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
+import type { TourProps } from 'antd';
+import { App, Button, Col, Drawer, Flex, Form, Input, Row, Select, Space, Tour, theme } from 'antd';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import SceneRender from '../components/SceneRender';
@@ -26,6 +27,12 @@ interface FormFieldType {
   name: string;
   description: string;
   icon: TIconType;
+}
+
+export interface ITourRef {
+  ref1: React.RefObject<HTMLDivElement>;
+  ref2: React.RefObject<HTMLDivElement>;
+  ref3: React.RefObject<HTMLDivElement>;
 }
 
 export default ({ mode }: { mode: 'add' | 'edit' }) => {
@@ -51,6 +58,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const actionHasDevice = actions.data.some((action) => action.category === 'device-action');
   const dispatch = useAppDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openTour, setOpenTour] = useState(false);
   const location = useLocation();
   const { removeTab } = useTabsChange();
 
@@ -192,6 +200,52 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
     });
   }, [actions.data.length, conditions.data.length, pathKey, metadata.name, metadata.created, mode]);
 
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+  const ref5 = useRef(null);
+
+  const tourRef = useRef<ITourRef>({
+    ref1,
+    ref2,
+    ref3,
+  });
+
+  const steps: TourProps['steps'] = [
+    {
+      title: formatMessage({ id: 'common.scene.condition' }),
+      description: formatMessage({ id: 'common.scene.chooseCondition' }),
+      // cover: (
+      //   <img
+      //     alt="tour.png"
+      //     src="https://user-images.githubusercontent.com/5378891/197385811-55df8480-7ff4-44bd-9d43-a7dade598d70.png"
+      //   />
+      // ),
+      target: () => ref1.current,
+    },
+    {
+      title: formatMessage({ id: 'common.scene.conditionType' }),
+      description: formatMessage({ id: 'common.scene.chooseConditionType' }),
+      target: () => ref2.current,
+    },
+    {
+      title: formatMessage({ id: 'common.action' }),
+      description: formatMessage({ id: 'common.scene.chooseAction' }),
+      target: () => ref3.current,
+    },
+    {
+      title: formatMessage({ id: 'common.scene.editInfo' }),
+      description: formatMessage({ id: 'common.scene.clickEditSceneInfo' }),
+      target: () => ref4.current,
+    },
+    {
+      title: formatMessage({ id: 'common.scene.finishScene' }),
+      description: formatMessage({ id: 'common.scene.saveAndFinish' }),
+      target: () => ref5.current,
+    },
+  ];
+
   return (
     <div css={getSceneContainerCss(token)}>
       <Row className="my-4">
@@ -217,10 +271,20 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
               )}
             </Button>
             <Space>
-              <Button type="default" icon={<SettingOutlined />} onClick={showDrawer}>
+              <Button
+                type="default"
+                onClick={() => {
+                  setOpenTour(true);
+                }}
+                icon={<QuestionCircleOutlined />}
+              >
+                {formatMessage({ id: 'common.scene.tour' })}
+              </Button>
+              <Button ref={ref4} type="default" icon={<SettingOutlined />} onClick={showDrawer}>
                 {formatMessage({ id: 'common.scene.editInfo' })}
               </Button>
               <Button
+                ref={ref5}
                 type="primary"
                 disabled={
                   actions.data.length === 0 ||
@@ -238,11 +302,24 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
         </Col>
       </Row>
       <SceneRender
+        ref={tourRef}
         mode={mode}
         scene={scene}
         onClick={onClick}
         onClickActionTypeDrop={onClickActionTypeDrop}
         onClickConditionTypeDrop={onClickConditionTypeDrop}
+      />
+      <Tour
+        mask={{
+          style: {
+            boxShadow: 'inset 0 0 15px #333',
+          },
+          color: 'rgba(81, 127, 156, .4)',
+        }}
+        open={openTour}
+        onClose={() => setOpenTour(false)}
+        steps={steps}
+        disabledInteraction={true}
       />
       <Drawer
         title={formatMessage({ id: 'common.scene.editInfo' })}
