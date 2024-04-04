@@ -52,7 +52,7 @@ const TreeAnchor = ({
   }, [location]);
 
   const hash = window.location.hash.slice(1);
-  const { onSelect, ...rest } = treeProps || {};
+  const { onSelect, selectable, ...rest } = treeProps || {};
   const onDefaultSelect: TreeProps['onSelect'] = (selectedKeys) => {
     navigate(`#${selectedKeys[0]}`);
   };
@@ -92,6 +92,7 @@ const TreeAnchor = ({
                   style={{ marginTop: 8 }}
                   defaultSelectedKeys={[hash]}
                   defaultExpandAll
+                  selectable={selectable}
                   onSelect={onSelect || onDefaultSelect}
                   {...rest}
                 />

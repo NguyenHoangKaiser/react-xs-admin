@@ -6,12 +6,14 @@ import { useLoginMutation } from '@/server/authApi';
 import { useAppSelector } from '@/store/hooks';
 import { AlipayOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginFormPage, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
+import { css } from '@emotion/react';
 import { Divider, Space, theme } from 'antd';
 import type { CSSProperties } from 'react';
 import { memo, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from './type';
+
 const Login = memo(() => {
   const { formatMessage } = useLocale();
 
@@ -68,6 +70,15 @@ const Login = memo(() => {
       }}
     >
       <LoginFormPage
+        css={css`
+          input:-webkit-autofill,
+          input:-webkit-autofill:focus {
+            transition: background-color 600000s 0s, color 600000s 0s;
+          }
+          input[data-autocompleted] {
+            background-color: transparent !important;
+          }
+        `}
         backgroundImageUrl="https://wallpapercave.com/wp/wp4756877.jpg"
         logo="src/assets/luci_logo.png"
         backgroundVideoUrl={

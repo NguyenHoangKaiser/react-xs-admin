@@ -3,11 +3,6 @@ import type { GlobalToken } from 'antd';
 
 export const getDevicesListCss = (token: GlobalToken): CSSObject => {
   return {
-    ['tr.ant-table-row > td:nth-of-type(7) ']: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignContent: 'center',
-    },
     ['tr.ant-table-row > td:nth-of-type(1)']: {
       paddingLeft: 0,
       paddingTop: 4,
@@ -23,7 +18,7 @@ export const getDevicesListCss = (token: GlobalToken): CSSObject => {
     ['.ant-table-expanded-row > td:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) ']: {
       paddingLeft: 16,
     },
-    ['.css-var-r0.ant-typography  ']: {
+    ['.css-var-r0.ant-typography']: {
       marginTop: 0,
     },
     ['.ant-table']: {

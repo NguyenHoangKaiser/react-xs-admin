@@ -4,7 +4,7 @@ import type { IDevicesListItem1, ISectionListItem } from '@/utils/constant';
 import { FAKE_DATA } from '@/utils/constant';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import type { TreeDataNode, TreeProps } from 'antd';
-import { Button, Col, Form, Input, Row, Typography, theme } from 'antd';
+import { Button, Col, Flex, Form, Input, Row, Space, Typography, theme } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { memo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -15,7 +15,25 @@ import { generateAnchorList2, getParentKey, getParentTitles } from './utils/util
 interface ExtendedDataNode extends DataNode {
   titleWithNoIcon?: string; // Extending TreeProps and adding the children property
 }
-
+interface FormFieldType {
+  name: string;
+  parent?: string;
+}
+const convertToTreeNode = (data: ExtendedDataNode[]): TreeDataNode[] => {
+  const result: TreeDataNode[] = [];
+  data.forEach((node) => {
+    const { key, titleWithNoIcon, children } = node;
+    const treeNode: TreeDataNode = {
+      key,
+      title: titleWithNoIcon ?? '',
+    };
+    if (children && children.length > 0) {
+      treeNode.children = convertToTreeNode(children);
+    }
+    result.push(treeNode);
+  });
+  return result;
+};
 const SettingArea = memo(() => {
   const anchorItems2 = generateAnchorList2(
     FAKE_DATA.devicesList.items,
@@ -38,7 +56,8 @@ const SettingArea = memo(() => {
         gutter={24}
         className="flex  align-middle justify-between"
         style={{
-          margin: 4,
+          marginLeft: 4,
+          marginRight: 4,
         }}
       >
         <div
@@ -56,7 +75,10 @@ const SettingArea = memo(() => {
           <span style={{ marginLeft: 10 }}>
             <PlusCircleOutlined
               onClick={(e) => {
-                console.log('e', e);
+                if (!add) {
+                  e.preventDefault();
+                  //e.stopPropagation();
+                }
                 setAdd(true);
               }}
             />
@@ -97,6 +119,7 @@ const SettingArea = memo(() => {
   };
   const treeData = generateTreeNode2(FAKE_DATA.devicesList.items, FAKE_DATA.sectionList.items);
   const dataList: { key: React.Key; title: string }[] = [];
+
   const generateList = (data: TreeDataNode[]) => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
@@ -108,21 +131,6 @@ const SettingArea = memo(() => {
       }
     }
   };
-  const convertToTreeNode = (data: ExtendedDataNode[]): TreeDataNode[] => {
-    const result: TreeDataNode[] = [];
-    data.forEach((node) => {
-      const { key, titleWithNoIcon, children } = node;
-      const treeNode: TreeDataNode = {
-        key,
-        title: titleWithNoIcon ?? '',
-      };
-      if (children && children.length > 0) {
-        treeNode.children = convertToTreeNode(children);
-      }
-      result.push(treeNode);
-    });
-    return result;
-  };
 
   generateList(treeData);
 
@@ -130,6 +138,7 @@ const SettingArea = memo(() => {
     setData(info.node);
     setKeyChose(info.node.key);
   };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const newExpandedKeys = dataList
@@ -140,39 +149,85 @@ const SettingArea = memo(() => {
         return null;
       })
       .filter((item, i, self): item is React.Key => !!(item && self.indexOf(item) === i));
+
     setExpandedKeys(newExpandedKeys);
     setSearchValue(value);
     setAutoExpandParent(true);
   };
+
   const onExpand = (newExpandedKeys: React.Key[]) => {
     setExpandedKeys(newExpandedKeys);
     setAutoExpandParent(false);
   };
+  const onFinish = (values: FormFieldType) => {
+    setAdd(false);
+    console.log(values);
+  };
   return (
     <TreeAnchor
-      treeProps={{ treeData, onExpand, expandedKeys, autoExpandParent, onSelect }}
+      treeProps={{
+        treeData,
+        onExpand,
+        expandedKeys,
+        autoExpandParent,
+        onSelect,
+        selectable: !add,
+      }}
       siderProps={{ breakpoint: 'xl' }}
       title={
-        <Input.Search
-          style={{ marginBottom: 8, paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
-          placeholder={formatMessage({ id: 'common.search' })}
-          onChange={onChange}
-          allowClear
-        />
+        <Col>
+          <Input.Search
+            style={{ marginBottom: 8, paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
+            placeholder={formatMessage({ id: 'common.search' })}
+            onChange={onChange}
+            allowClear
+          />
+          {treeData.length === 0 && (
+            <span style={{ margin: 16 }}>
+              <PlusCircleOutlined
+                onClick={(e) => {
+                  if (add) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+                  setAdd(true);
+                }}
+              />
+            </span>
+          )}
+        </Col>
       }
     >
-      {add || treeData.length === 0 ? (
+      {add ? (
         <Row className="px-4 pt-4">
           <Col span={24}>
-            <Typography.Title level={4}>{formatMessage({ id: 'common.newArea' })}</Typography.Title>
+            <Flex justify="space-between">
+              <Typography.Title level={4}>
+                {formatMessage({ id: 'common.newArea' })}
+              </Typography.Title>
+              <Space>
+                <Button
+                  type="default"
+                  htmlType="button"
+                  style={{ marginRight: 16 }}
+                  onClick={() => setAdd(false)}
+                >
+                  {formatMessage({ id: 'common.cancel' })}
+                </Button>
+                <Button form="form" type="primary" htmlType="submit">
+                  {formatMessage({ id: 'manageAccount.save' })}
+                </Button>
+              </Space>
+            </Flex>
             <Form
+              id="form"
               layout="horizontal"
               labelCol={{ xs: 8, xl: 6, xxl: 4 }}
               wrapperCol={{ span: 8 }}
               labelAlign="left"
-              // onFinish={() => onFinish}
+              onFinish={onFinish}
             >
-              <Form.Item
+              <Form.Item<FormFieldType>
                 name="name"
                 label={formatMessage({ id: 'common.areaName' })}
                 rules={[
@@ -182,23 +237,13 @@ const SettingArea = memo(() => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item name="parent" label={formatMessage({ id: 'common.belong' })}>
+              <Form.Item<FormFieldType>
+                name="parent"
+                label={formatMessage({ id: 'common.belong' })}
+              >
                 <Typography>
                   {getParentTitles(anchorItems2, data?.titleWithNoIcon ?? '', [])}
                 </Typography>
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="default"
-                  htmlType="button"
-                  style={{ marginRight: 16 }}
-                  onClick={() => setAdd(false)}
-                >
-                  {formatMessage({ id: 'common.cancel' })}
-                </Button>
-                <Button type="primary" htmlType="button">
-                  {formatMessage({ id: 'manageAccount.save' })}
-                </Button>
               </Form.Item>
             </Form>
           </Col>
