@@ -1,10 +1,11 @@
 import type { ModalFuncProps } from 'antd';
-import { message, Modal, notification } from 'antd';
+// import { message, Modal, notification } from 'antd';
 
+import { message, modal, notification } from '@/layout';
 import { getIntlText } from '@/locales';
 
 function createElMessageBox(msg: string, title: string, options: ModalFuncProps) {
-  Modal.error({ title, content: msg, ...options });
+  modal.error({ title, content: msg, ...options });
 }
 
 export function createErrorModal(msg: string) {

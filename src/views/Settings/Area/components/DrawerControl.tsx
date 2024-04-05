@@ -1,7 +1,6 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
 import type { IDevicesListItem1, IListIconItem } from '@/utils/constant';
-import { SettingOutlined } from '@ant-design/icons';
 import { Button, Drawer, Flex, Slider, Switch, Typography, theme, type DrawerProps } from 'antd';
 import { useIntl } from 'react-intl';
 
@@ -17,11 +16,10 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
 
   return (
     <Drawer
-      title="Control Panel"
+      title={formatMessage({ id: 'common.controlPanel' })}
       placement="right"
       open={!!device}
       getContainer={false}
-      extra={<Button type="text" shape="circle" icon={<SettingOutlined />} />}
       {...rest}
     >
       <Flex vertical justify="center" align="center">
@@ -44,13 +42,13 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
           <Typography.Title level={5}>
-            {formatMessage({ id: 'common.powerSwitch' })} :
+            {formatMessage({ id: 'common.powerSwitch' })}
           </Typography.Title>
           <Switch checked={!!device?.status} />
         </div>
         <div className="w-full mt-3 flex justify-between items-center">
           <Typography.Title level={5}>
-            {formatMessage({ id: 'common.brightness' })} :
+            {formatMessage({ id: 'common.brightness' })}
           </Typography.Title>
         </div>
         <Slider
@@ -72,7 +70,7 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
           <Typography.Title level={5}>
-            {formatMessage({ id: 'common.consumption' })} :
+            {formatMessage({ id: 'common.consumption' })}
           </Typography.Title>
           <Typography.Text>0.0 W</Typography.Text>
         </div>
@@ -83,7 +81,7 @@ const DrawerControl = ({ device, icon, ...rest }: DrawerControlProps) => {
           className="w-full mt-3 pb-3 flex justify-between items-center"
         >
           <Typography.Title level={5}>
-            {formatMessage({ id: 'common.totalEnergyUse' })} :
+            {formatMessage({ id: 'common.totalEnergyUse' })}
           </Typography.Title>
           <Typography.Text>0.0 kWh</Typography.Text>
         </div>

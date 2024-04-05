@@ -14,7 +14,7 @@ interface DataT {
 }
 interface EditAreaFormModalProps {
   open: boolean;
-  onCreate: () => void;
+  onCreate: (values: DataT) => void;
   onCancel: () => void;
   initialValues: DataT;
 }
@@ -58,17 +58,17 @@ const EditAreaFormModal: React.FC<EditAreaFormModalProps> = ({
   return (
     <Modal
       open={open}
-      title={formatMessage({ id: 'common.editDevice' })}
-      okText={formatMessage({ id: 'common.agree' })}
+      title={formatMessage({ id: 'common.editArea' })}
+      okText={formatMessage({ id: 'common.save' })}
       cancelText={formatMessage({ id: 'common.cancel' })}
       okButtonProps={{ autoFocus: true }}
       onCancel={onCancel}
       destroyOnClose
       onOk={async () => {
         try {
-          //  const values = await formInstance?.validateFields();
+          const values = await formInstance?.validateFields();
           formInstance?.resetFields();
-          onCreate();
+          onCreate(values);
         } catch (error) {
           console.log('Failed:', error);
         }

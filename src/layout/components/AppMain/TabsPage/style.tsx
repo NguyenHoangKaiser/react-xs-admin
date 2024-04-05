@@ -3,12 +3,23 @@ import type { GlobalToken } from 'antd';
 
 export const getTabsStyle = (token: GlobalToken): CSSObject => {
   return {
-    ['& .ant-tabs-nav::before']: {
-      borderBottom: `1px solid ${token.colorBorder}`,
+    ['& .ant-tabs-nav']: {
+      ['&::before']: {
+        borderBottom: `1px solid ${token.colorBorder}`,
+      },
+      ['.ant-tabs-tab']: {
+        border: `1px solid ${token.colorBorder}`,
+      },
+      ['.ant-tabs-tab.ant-tabs-tab-active']: {
+        border: `1px solid ${token.colorBorder}`,
+      },
     },
-    ['& .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active']: {
-      border: `1px solid ${token.colorBorder}`,
-    },
+    // ['& .ant-tabs-nav::before']: {
+    //   borderBottom: `1px solid ${token.colorBorder}`,
+    // },
+    // ['& .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active']: {
+    //   border: `1px solid ${token.colorBorder}`,
+    // },
     // ['& .ant-tabs-nav .ant-tabs-tab']: {
     //   padding: 0,
     //   paddingRight: token.padding,

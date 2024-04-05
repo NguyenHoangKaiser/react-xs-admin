@@ -100,7 +100,7 @@ export default [
       if (!checkUser) {
         return resultError('Invalid token!');
       }
-      return resultSuccess(undefined, { message: 'Token has been destroyed' });
+      return resultSuccess(undefined);
     },
   },
   {

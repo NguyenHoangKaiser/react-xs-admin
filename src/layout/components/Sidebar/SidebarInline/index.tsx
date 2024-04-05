@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppCollapsed } from '@/store/modules/app';
 import { useResponsive } from 'ahooks';
 import type { MenuProps, SiderProps } from 'antd';
-import { Drawer, Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme } from 'antd';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -65,6 +65,8 @@ const Sidebar = memo(() => {
     }
   }, [sidebarMode, pathname, menuList]);
 
+  const rootPath = `/${pathname.split('/')[1]}`;
+
   const MenuRender = (
     <>
       <AppLogo />
@@ -72,7 +74,7 @@ const Sidebar = memo(() => {
         mode="inline"
         openKeys={openKeys}
         onOpenChange={onOpenChange}
-        selectedKeys={[pathname]}
+        selectedKeys={[rootPath]}
         items={menuItems as MenuProps['items']}
         onClick={(e) => navigate(e.key)}
         style={{ borderWidth: 0 }}
@@ -84,23 +86,23 @@ const Sidebar = memo(() => {
     <>
       {(sidebarMode !== 'horizontal' || !responsive.sm) && (
         <>
-          {responsive.sm ? (
-            <Sider
-              className="sidebar"
-              breakpoint="lg"
-              collapsedWidth="55"
-              width={210}
-              theme="light"
-              collapsed={collapsed}
-              // onBreakpoint={onBreakpoint}
-              css={{
-                backgroundColor: thme.token.colorBgContainer,
-                borderRight: `1px solid ${thme.token.colorBorder}`,
-              }}
-            >
-              {MenuRender}
-            </Sider>
-          ) : (
+          {/* {responsive.sm ? ( */}
+          <Sider
+            className="sidebar"
+            breakpoint="lg"
+            collapsedWidth="55"
+            width={210}
+            theme="light"
+            collapsed={collapsed}
+            // onBreakpoint={onBreakpoint}
+            css={{
+              backgroundColor: thme.token.colorBgContainer,
+              borderRight: `1px solid ${thme.token.colorBorder}`,
+            }}
+          >
+            {MenuRender}
+          </Sider>
+          {/* ) : (
             <Drawer
               width={210}
               placement="left"
@@ -112,7 +114,7 @@ const Sidebar = memo(() => {
             >
               <div className="sidebar">{MenuRender}</div>
             </Drawer>
-          )}
+          )} */}
         </>
       )}
     </>

@@ -1,11 +1,10 @@
 import SvgIcon from '@/components/SvgIcon';
 import { getIntlText, useLocale } from '@/locales';
 import type { DataType } from '@/utils/constant';
-import { DownOutlined, InfoCircleOutlined, RightOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
 import type { TableColumnsType, TableProps, TabsProps } from 'antd';
 import { Button, Col, Form, Input, Row, Select, Space, Table, Tabs, Tooltip, theme } from 'antd';
-import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
 import Advance from './components/Advance';
 import DeviceDetail from './components/DeviceDetail';
@@ -18,12 +17,6 @@ type Filters = Parameters<OnChange>[1];
 type GetSingle<T> = T extends (infer U)[] ? U : never;
 type Sorts = GetSingle<Parameters<OnChange>[2]>;
 
-const iconStyles: CSSProperties = {
-  color: 'rgba(0, 0, 0, 0.2)',
-  fontSize: '18px',
-  verticalAlign: 'middle',
-  cursor: 'pointer',
-};
 const data: DataType[] = [
   {
     key: '1',
@@ -180,7 +173,6 @@ const SettingDevices: React.FC = () => {
     setFilteredInfo({});
     setSortedInfo({});
   };
-  const [expended, setExpended] = useState('0');
   const { formatMessage } = useLocale();
 
   const expandedRowRender = (record: DataType) => {
@@ -262,10 +254,6 @@ const SettingDevices: React.FC = () => {
     </div>
   );
 
-  const expend = (index: any) => {
-    if (expended === index) setExpended('0');
-    else setExpended(index);
-  };
   const columns: TableColumnsType<DataType> = [
     {
       title: formatMessage({ id: 'common.icon' }).toUpperCase(),
@@ -281,7 +269,6 @@ const SettingDevices: React.FC = () => {
           <SvgIcon name={text} />
         </div>
       ),
-
       ellipsis: true,
     },
     {
@@ -347,25 +334,9 @@ const SettingDevices: React.FC = () => {
       sorter: (a, b) => convertRoom(a.roomId).localeCompare(convertRoom(b.roomId)),
       sortOrder: sortedInfo.columnKey === 'roomId' ? sortedInfo.order : null,
       render: (_text, record) => <div>{convertRoom(record.roomId)}</div>,
-
       ellipsis: true,
     },
-    {
-      title: '',
-      key: 'action',
-      width: 100,
-      render: (_text, _record, index) => (
-        <div className="flex items-center justify-center ">
-          <a type="text" onClick={() => expend(`${index + 1}`)}>
-            {!expended.includes(`${index + 1}`) ? (
-              <RightOutlined style={{ ...iconStyles, color: token.colorText }} />
-            ) : (
-              <DownOutlined style={{ ...iconStyles, color: token.colorText }} />
-            )}
-          </a>
-        </div>
-      ),
-    },
+    Table.EXPAND_COLUMN,
   ];
 
   return (
@@ -378,7 +349,6 @@ const SettingDevices: React.FC = () => {
           </Button>
           <Button onClick={clearAll}>{formatMessage({ id: 'common.clearAll' })}</Button>
         </Col>
-
         <Table
           style={{ height: 360, marginTop: 24 }}
           className="items-start content-start "
@@ -390,9 +360,6 @@ const SettingDevices: React.FC = () => {
           pagination={{ position: ['none', 'bottomCenter'] }}
           expandable={{
             expandedRowRender,
-            expandIcon: () => undefined,
-            expandedRowKeys: [expended],
-            expandIconColumnIndex: -1,
           }}
         />
       </Col>
@@ -401,136 +368,3 @@ const SettingDevices: React.FC = () => {
 };
 
 export default SettingDevices;
-
-// const columns: TableColumnsType<IDevice> = [
-//   {
-//     title: 'Name',
-//     dataIndex: 'name',
-//     key: 'name',
-//   },
-//   {
-//     title: 'Status',
-//     dataIndex: ['device_status', 'status'],
-//     key: 'status',
-//     align: 'center',
-//     width: 100,
-//     render: (status) => (
-//       <Switch checkedChildren={'Active'} unCheckedChildren={'Inactive'} checked={!!status} />
-//     ),
-//   },
-//   {
-//     title: 'Run',
-//     key: 'run',
-//     align: 'center',
-//     width: 100,
-//     render: () => (
-//       <div className="flex items-center justify-center">
-//         <Button
-//           type="primary"
-//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-//         >
-//           <PlayIcon height={20} width={20} />
-//         </Button>
-//       </div>
-//     ),
-//   },
-//   {
-//     title: 'Action',
-//     key: 'action',
-//     align: 'center',
-//     render: () => (
-//       <Space size={'large'}>
-//         <Button
-//           type="default"
-//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-//         >
-//           <CopyIcon height={20} width={20} />
-//         </Button>
-//         <Button
-//           type="default"
-//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-//         >
-//           <Pencil1Icon height={20} width={20} />
-//         </Button>
-//         <Button
-//           type="dashed"
-//           danger
-//           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 4 }}
-//         >
-//           <TrashIcon height={20} width={20} />
-//         </Button>
-//       </Space>
-//     ),
-//   },
-//   Table.EXPAND_COLUMN,
-// ];
-
-// export default () => {
-//   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
-//   const [pagination, setPagination] = useState<IPagination>({ perPage: 3, currentPage: 1 });
-//   const { data, isFetching } = useGetDevicesQuery(
-//     {
-//       hotel_id: hotel_id?.toString() || '',
-//       floor_id: idx_Floor?.toString() || '',
-//       ...pagination,
-//     },
-//     // {
-//     //   refetchOnFocus: true,
-//     // },
-//   );
-
-//   return (
-//     <ConfigProvider
-//       theme={{
-//         components: {
-//           Table: {
-//             headerBorderRadius: 0,
-//           },
-//         },
-//       }}
-//     >
-//       <Row>
-//         <Col
-//           style={{
-//             padding: '8px 16px',
-//           }}
-//           span={24}
-//         >
-//           <Button type="primary">Add Scene</Button>
-//           <Input.Search style={{ width: 200, float: 'right' }} />
-//         </Col>
-//       </Row>
-//       <div>
-//         <Table
-//           expandable={{
-//             expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.name}</p>,
-//             // rowExpandable: (record) => record.name !== 'Not Expandable',
-//           }}
-//           columns={columns}
-//           loading={isFetching}
-//           rowKey="id"
-//           dataSource={data ? data.items : []}
-//           pagination={{
-//             defaultPageSize: pagination.perPage,
-//             showSizeChanger: true,
-//             defaultCurrent: pagination.currentPage,
-//             current: pagination.currentPage,
-//             pageSizeOptions: ['3', '5', '10', '20'],
-//             position: ['topCenter'],
-//             showTotal(total, range) {
-//               return `${range[0]}-${range[1]} of ${total} items`;
-//             },
-//             total: data?.pagination?.totalCount,
-//             onShowSizeChange(_current, size) {
-//               setPagination((prev) => ({ ...prev, perPage: size }));
-//             },
-//             onChange(page, pageSize) {
-//               setPagination((prev) => ({ ...prev, currentPage: page, perPage: pageSize }));
-//             },
-//           }}
-//           scroll={{ y: 642 }}
-//         />
-//       </div>
-//     </ConfigProvider>
-//   );
-// };

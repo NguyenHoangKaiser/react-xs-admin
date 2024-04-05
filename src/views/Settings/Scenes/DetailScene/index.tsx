@@ -69,6 +69,7 @@ const DetailScene = () => {
           <Flex justify="space-between" align="center">
             {metadata.name && <Typography.Title level={3}>{metadata.name}</Typography.Title>}
             <Button type="default" icon={<EditOutlined />} onClick={onEdit}>
+              {' '}
               <FormattedMessage id="common.scene.editScene" />
             </Button>
           </Flex>

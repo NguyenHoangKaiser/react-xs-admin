@@ -4,7 +4,7 @@ import { FAKE_DATA, ListIconImage } from '@/utils/constant';
 import { getCollapseCss } from '@/views/Home/style';
 import { RightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
-import { Button, Col, Collapse, List, Popconfirm, Row, Typography, message } from 'antd';
+import { Button, Col, Collapse, List, Modal, Row, Typography, message } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useCallback, useState } from 'react';
 import CardDev from './components/Card';
@@ -80,13 +80,18 @@ const DetailArea = ({
             children: (
               <List
                 grid={{
-                  gutter: 16,
+                  gutter: {
+                    xs: 32,
+                    sm: 16,
+                    md: 8,
+                    lg: 8,
+                  },
                   xs: 1,
                   sm: 2,
                   md: 4,
-                  lg: 6,
-                  xl: 8,
-                  xxl: 10,
+                  lg: 5,
+                  xl: 6,
+                  xxl: 8,
                 }}
                 style={{ paddingTop: 24 }}
                 dataSource={item.renderDevice}
@@ -115,15 +120,9 @@ const DetailArea = ({
     const render = getChild(list);
     return render;
   }, []);
-  const confirm = (e?: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
-    message.success('Click on Yes');
-  };
-  const cancel = (e?: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
-    message.error('Click on No');
-  };
+
   const [open, setOpen] = useState<boolean>(false);
+  const [open2, setOpen2] = useState<boolean>(false);
 
   const [selectedDevice, setSelectedDevice] = useState<IDevicesListItem1 | null>(null);
   const [selectedIcon, setSelectedIcon] = useState<IListIconItem>();
@@ -138,6 +137,16 @@ const DetailArea = ({
     setOpen(false);
   };
   const { formatMessage } = useLocale();
+  const confirm = (e?: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    message.success('Click on Yes');
+    setOpen2(false);
+  };
+  const cancel = (e?: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    message.error('Click on No');
+    setOpen2(false);
+  };
 
   return data ? (
     <div css={getCollapseCss()}>
@@ -150,18 +159,19 @@ const DetailArea = ({
         )}
       />
       <DrawerControl icon={selectedIcon} device={selectedDevice} onClose={onClose} />
-      <Popconfirm
-        title="Delete the area"
-        description="Are you sure to delete this area?"
-        onConfirm={confirm}
+      <Button danger className="absolute top-2 right-4" onClick={() => setOpen2(true)}>
+        {formatMessage({ id: 'common.delete' })}
+      </Button>
+      <Modal
+        title={formatMessage({ id: 'common.deleteArea' })}
+        open={open2}
+        onOk={confirm}
         onCancel={cancel}
-        okText="Yes"
-        cancelText="No"
+        okText={formatMessage({ id: 'common.agree' })}
+        cancelText={formatMessage({ id: 'common.cancel' })}
       >
-        <Button danger className="absolute top-2 right-4">
-          {formatMessage({ id: 'common.delete' })}
-        </Button>
-      </Popconfirm>
+        <p>{formatMessage({ id: 'common.deleteAreaContent' })}</p>
+      </Modal>
       <Button type="primary" className="absolute top-2 right-24" onClick={() => setOpen(true)}>
         {formatMessage({ id: 'common.edit' })}
       </Button>

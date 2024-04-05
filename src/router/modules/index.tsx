@@ -8,6 +8,7 @@ import {
   HomeOutlined,
   NotificationOutlined,
   SettingOutlined,
+  YoutubeOutlined,
 } from '@ant-design/icons';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
@@ -20,6 +21,7 @@ const SettingDevices = lazy(() => import('@/views/Settings/Devices'));
 const SettingsScenes = lazy(() => import('@/views/Settings/Scenes'));
 const SettingsGroups = lazy(() => import('@/views/Settings/Groups'));
 const Statistical = lazy(() => import('@/views/Statistical'));
+const SceneView = lazy(() => import('@/views/SceneView'));
 const Notification = lazy(() => import('@/views/Notification'));
 const Calendar = lazy(() => import('@/views/Calendar'));
 const CalendarAdd = lazy(() => import('@/views/Calendar/CalendarAdd'));
@@ -50,6 +52,15 @@ export const defaultRoute: RouteList[] = [
     meta: {
       label: FormatMessage({ id: 'common.statistical' }),
       icon: <BarChartOutlined />,
+    },
+  },
+  {
+    path: RouteEnum.SceneView,
+    id: 'Scene',
+    element: <SceneView />,
+    meta: {
+      label: FormatMessage({ id: 'common.scenes' }),
+      icon: <YoutubeOutlined />,
     },
   },
   {
