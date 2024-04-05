@@ -3,17 +3,30 @@ import { FormatMessage } from '@/locales';
 import { defaultRoute } from '@/router/modules';
 import { RouteEnum, findRouteByPath } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { deleteExceedTabs } from '@/store/modules/route';
+import { setTabActiveKey } from '@/store/modules/app';
+import {
+  asyncRouterSelector,
+  deleteExceedTabs,
+  multiTabsSelector,
+  setSortMultiTabs,
+} from '@/store/modules/route';
 import { sceneSelector } from '@/store/modules/scene';
 import { AppDefault } from '@/utils/constant';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { DndContext, PointerSensor, closestCenter, useSensor } from '@dnd-kit/core';
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { TabsProps } from 'antd';
 import { Tabs, theme } from 'antd';
-import { memo, useEffect, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
-// import { CaretDownFilled, ReloadOutlined } from '@ant-design/icons';
-// import { useRefresh } from '@/hooks/web/useRefresh';
-import { setTabActiveKey } from '@/store/modules/app';
 import TabsItemLabel from './components/TabsItemLabel';
 import { useTabsChange } from './hooks/useTabsChange';
 import { getTabsStyle } from './style';
@@ -21,6 +34,41 @@ import { getTabsStyle } from './style';
 interface Props {
   maxLen?: number;
 }
+
+interface DraggableTabPaneProps extends React.HTMLAttributes<HTMLDivElement> {
+  'data-node-key': string;
+}
+
+const commonStyle: React.CSSProperties = {
+  cursor: 'move',
+  transition: 'unset', // Prevent element from shaking after drag
+};
+
+// combination of Tags and Tabs draggable example from antd 5
+const DraggableTabNode = (props: DraggableTabPaneProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: props['data-node-key'],
+  });
+
+  const style: React.CSSProperties = transform
+    ? {
+        ...props.style,
+        transform: CSS.Transform.toString(transform),
+        transition: isDragging ? 'unset' : transition,
+        cursor: 'move',
+      }
+    : {
+        ...commonStyle,
+        ...props.style,
+      };
+
+  return React.cloneElement(props.children as React.ReactElement, {
+    ref: setNodeRef,
+    style,
+    ...attributes,
+    ...listeners,
+  });
+};
 
 const TabsPage = memo(({ maxLen }: Props) => {
   const location = useLocation();
@@ -30,11 +78,23 @@ const TabsPage = memo(({ maxLen }: Props) => {
   const mark = useMatch(location.pathname);
   const { routeListToTab } = useRouteList();
   const menuList = routeListToTab(defaultRoute);
-  const asyncRouter = useAppSelector((state) => state.route.asyncRouter);
-  const multiTabs = useAppSelector((state) => state.route.multiTabs);
+  const asyncRouter = useAppSelector(asyncRouterSelector);
+  const multiTabs = useAppSelector(multiTabsSelector);
   const { addingScene, editingScene } = useAppSelector(sceneSelector);
   const { addRouteTabs, removeTab } = useTabsChange();
   const thme = theme.useToken();
+
+  const sensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
+
+  const onDragEnd = ({ active, over }: DragEndEvent) => {
+    if (active.id !== over?.id) {
+      const activeIndex = multiTabs.findIndex((i) => i.key === active.id);
+      const overIndex = multiTabs.findIndex((i) => i.key === over?.id);
+      const newTabs = arrayMove(multiTabs, activeIndex, overIndex);
+      dispatch(setSortMultiTabs(newTabs));
+      return;
+    }
+  };
 
   const tabsItem = useMemo(() => {
     if (!multiTabs.length) return [];
@@ -100,6 +160,27 @@ const TabsPage = memo(({ maxLen }: Props) => {
         paddingTop: 8,
       }}
       items={tabsItem}
+      renderTabBar={(tabBarProps, DefaultTabBar) => (
+        <DndContext
+          modifiers={[restrictToHorizontalAxis]}
+          sensors={[sensor]}
+          onDragEnd={onDragEnd}
+          collisionDetection={closestCenter}
+        >
+          <SortableContext
+            items={tabsItem.map((i) => i.key)}
+            strategy={horizontalListSortingStrategy}
+          >
+            <DefaultTabBar {...tabBarProps}>
+              {(node) => (
+                <DraggableTabNode {...node.props} key={node.key}>
+                  {node}
+                </DraggableTabNode>
+              )}
+            </DefaultTabBar>
+          </SortableContext>
+        </DndContext>
+      )}
     />
   );
 });

@@ -1,7 +1,9 @@
 import { useAppDispatch } from '@/store/hooks';
 import { deleteSceneAction } from '@/store/modules/scene';
-import { CloseOutlined } from '@ant-design/icons';
-import { Button, Space, Typography } from 'antd';
+import { CloseOutlined, DragOutlined } from '@ant-design/icons';
+import type { DraggableAttributes } from '@dnd-kit/core';
+import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
+import { Button, Popconfirm, Space, Typography } from 'antd';
 import { useIntl } from 'react-intl';
 import type { ISceneAction } from '../scene';
 import DeviceAction from './DeviceAction';
@@ -12,26 +14,40 @@ interface Props {
   index: number;
   mode: 'add' | 'edit';
   viewOnly?: boolean;
+  attributes?: DraggableAttributes;
+  listeners?: SyntheticListenerMap;
 }
 
 const ActionCard = (props: Props) => {
-  const { action, index, mode, viewOnly } = props;
+  const { action, index, mode, viewOnly, attributes, listeners } = props;
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
   return (
     <>
       {!viewOnly && (
         <Space style={{ position: 'absolute', top: 2, right: 8 }}>
-          <Button
-            onClick={() =>
+          {attributes && listeners && (
+            <Button
+              {...attributes}
+              {...listeners}
+              style={{ fontSize: 12, padding: 2, cursor: 'move' }}
+              shape="round"
+              type="text"
+            >
+              <DragOutlined />
+            </Button>
+          )}
+          <Popconfirm
+            title={formatMessage({ id: 'common.scene.deleteAction' })}
+            description={formatMessage({ id: 'common.scene.deleteActionDesc' })}
+            onConfirm={() =>
               dispatch(deleteSceneAction({ index, created: action.created, for: mode }))
             }
-            style={{ fontSize: 12, padding: 2 }}
-            shape="round"
-            type="text"
           >
-            <CloseOutlined />
-          </Button>
+            <Button style={{ fontSize: 12, padding: 2 }} shape="round" type="text">
+              <CloseOutlined />
+            </Button>
+          </Popconfirm>
         </Space>
       )}
       <Typography.Text

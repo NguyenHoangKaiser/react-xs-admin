@@ -1,7 +1,10 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { CSSObject } from '@emotion/react';
 import type { GlobalToken } from 'antd';
 import { Card, theme, Typography } from 'antd';
 import type { ReactNode } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 
 const ChainLink = ({
@@ -63,6 +66,59 @@ export const CardContent = ({
         </div>
       )}
     </>
+  );
+};
+
+export const DraggableCardContent = ({
+  children,
+  type = 1,
+  hideChain,
+  id,
+}: {
+  children: ReactNode;
+  type?: 1 | 2;
+  hideChain?: boolean;
+  id: number;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+  });
+
+  const style: React.CSSProperties = transform
+    ? {
+        transform: CSS.Transform.toString(transform),
+        transition: isDragging ? 'unset' : transition,
+        // cursor: 'move',
+      }
+    : {
+        // cursor: 'move',
+        transition: 'unset', // Prevent element from shaking after drag
+      };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card
+        styles={{
+          body: {
+            padding: '12px 24px',
+            position: 'relative',
+            // width: '100%',
+            // height: '100%',
+          },
+        }}
+        style={{ width: '100%', minHeight: 100, padding: 0 }}
+      >
+        {React.cloneElement(children as React.ReactElement, {
+          attributes,
+          listeners,
+        })}
+      </Card>
+      {!hideChain && (
+        <div className="pl-[100px]">
+          <ChainLink text={type} />
+        </div>
+      )}
+    </div>
   );
 };
 
