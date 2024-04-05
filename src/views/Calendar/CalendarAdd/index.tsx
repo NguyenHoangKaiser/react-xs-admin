@@ -26,7 +26,7 @@ import {
 import dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as LocalData from 'dayjs/plugin/localeData';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ControlACModal from './components/ControlACModal';
 import RepeatTypeRender from './components/RepeatTypeRender';
@@ -79,7 +79,7 @@ const colLayout3 = {
 const CalendarAdd = () => {
   const [form] = Form.useForm<FormCalendar>();
   const { token } = theme.useToken();
-  const { formatMessage, locale } = useLocale();
+  const { formatMessage } = useLocale();
   const { hotel_id } = useAppSelector(hotelSelector);
 
   const [color, setColor] = useState<string>('D50000');
@@ -174,30 +174,23 @@ const CalendarAdd = () => {
     form.resetFields();
   };
 
-  const validateErrorStartDate = useCallback(
-    () => ({
-      validator(_: any, value: any) {
-        if (!value || value > dayjs()) {
-          return Promise.resolve();
-        }
-        return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareStartDate' })));
-      },
-    }),
-    [locale],
-  );
+  const validateErrorStartDate = () => ({
+    validator(_: any, value: any) {
+      if (!value || value > dayjs()) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareStartDate' })));
+    },
+  });
 
-  const validateErrorEndDate = useCallback(
-    ({ getFieldValue }: any) => ({
-      validator(_: any, value: any) {
-        if (!value || value > getFieldValue('start_time')) {
-          return Promise.resolve();
-        }
-        return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareDate' })));
-      },
-    }),
-    [locale],
-  );
-
+  const validateErrorEndDate = ({ getFieldValue }: any) => ({
+    validator(_: any, value: any) {
+      if (!value || value > getFieldValue('start_time')) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareDate' })));
+    },
+  });
   const initValues: FormCalendar = {
     color: color,
     repeat_type: 0,

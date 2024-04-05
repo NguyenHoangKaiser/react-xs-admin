@@ -1,3 +1,4 @@
+import useValidateLocale from '@/hooks/useValidateLocale';
 import { useAppDispatch } from '@/store/hooks';
 import { editSceneActionData } from '@/store/modules/scene';
 import { DATE_UTILS, ESceneOperator, ETimeType } from '@/utils/constant';
@@ -38,6 +39,7 @@ const TimeAction = ({
   const { created, category, editing } = action;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
+  useValidateLocale(form);
   const watchTimeType = Form.useWatch('formType', form);
   const dispatch = useAppDispatch();
 

@@ -1,3 +1,4 @@
+import useValidateLocale from '@/hooks/useValidateLocale';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   addSceneConditionsSelector,
@@ -72,6 +73,7 @@ const TimeCondition = ({
   const { created, category, editing } = condition;
   const { message } = App.useApp();
   const [form] = Form.useForm<TimeFormType>();
+  useValidateLocale(form);
   const watchTimeType = Form.useWatch('formType', form);
   const dispatch = useAppDispatch();
   const { type: addType } = useAppSelector(addSceneConditionsSelector);

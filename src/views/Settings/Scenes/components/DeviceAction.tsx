@@ -1,3 +1,4 @@
+import useValidateLocale from '@/hooks/useValidateLocale';
 import { useGetDevicesQuery } from '@/server/devicesApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
@@ -30,6 +31,7 @@ const DeviceAction = ({
   const { message } = App.useApp();
   const { formatMessage } = useIntl();
   const [form] = Form.useForm<DeviceFormType>();
+  useValidateLocale(form);
   const watchDeviceId = Form.useWatch('deviceId', form);
   const watchTraitSelect = Form.useWatch('traitSelect', form);
   const { states, deviceId, editing } = action;
