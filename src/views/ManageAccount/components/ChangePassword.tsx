@@ -1,5 +1,5 @@
 import { useLocale } from '@/locales';
-import { Button, Col, Form, Input, Row } from 'antd';
+import { Button, Col, Flex, Form, Input, Row, Typography } from 'antd';
 import { memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -35,17 +35,38 @@ const ChangePassword = memo(() => {
 
   return (
     <div className="flex-1">
-      <span className="text-2xl font-semibold">
-        {formatMessage({ id: 'manageAccount.changePassword' })}
-      </span>
-      <Row className="mt-8">
-        <Col span={24}>
-          <Form layout="horizontal" {...formLayout} labelAlign="left" onFinish={() => onFinish}>
+      <Form layout="horizontal" {...formLayout} labelAlign="left" onFinish={onFinish}>
+        <Row>
+          <Col span={18}>
+            <Typography.Text className="text-2xl font-semibold">
+              {formatMessage({ id: 'manageAccount.changePassword' })}
+            </Typography.Text>
+          </Col>
+          <Col span={6}>
+            <Flex justify="flex-end" style={{ paddingRight: 16 }}>
+              <Form.Item<FieldType>>
+                <Button type="primary" htmlType="submit">
+                  {formatMessage({ id: 'manageAccount.save' })}
+                </Button>
+              </Form.Item>
+            </Flex>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
             <Form.Item<FieldType>
               name="oldPassword"
               label={formatMessage({ id: 'manageAccount.oldPassword' })}
               rules={[
-                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="common.errorEmpty"
+                      values={{ label: <FormattedMessage id="manageAccount.oldPassword" /> }}
+                    />
+                  ),
+                },
               ]}
               colon
             >
@@ -55,7 +76,15 @@ const ChangePassword = memo(() => {
               name="newPassword"
               label={formatMessage({ id: 'manageAccount.newPassword' })}
               rules={[
-                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="common.errorEmpty"
+                      values={{ label: <FormattedMessage id="manageAccount.newPassword" /> }}
+                    />
+                  ),
+                },
               ]}
               colon
             >
@@ -65,20 +94,23 @@ const ChangePassword = memo(() => {
               name="reNewPassword"
               label={formatMessage({ id: 'manageAccount.reNewPassword' })}
               rules={[
-                { required: true, message: <FormattedMessage id="common.requirePassword" /> },
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="common.errorEmpty"
+                      values={{ label: <FormattedMessage id="manageAccount.reNewPassword" /> }}
+                    />
+                  ),
+                },
               ]}
               colon
             >
               <Input />
             </Form.Item>
-            <Form.Item<FieldType> wrapperCol={{ offset: 8 }}>
-              <Button type="primary" htmlType="submit">
-                {formatMessage({ id: 'manageAccount.save' })}
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Form>
     </div>
   );
 });

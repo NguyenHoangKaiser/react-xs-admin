@@ -8,6 +8,7 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
   ReloadOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Col, Flex, Modal, Row, Tag, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
@@ -26,40 +27,13 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
   };
   return (
     <div className="pl-3 w-[480px] ">
-      {(data.schedule?.run_time ?? 0) >= dayjs().unix() ? (
+      {(data.schedule?.run_time ?? 0) >= dayjs().unix() && (
         <Row>
-          <Col span={21}>
-            <div
-              className="h-[20px] w-full"
-              style={{
-                position: 'relative',
-                top: 10,
-                left: -20,
-                background: `linear-gradient(135deg, ${token.colorPrimary} , transparent )`,
-                filter: 'blur(35px)',
-              }}
-            />
-          </Col>
-          <Col span={2}>
+          <Col span={2} offset={21}>
             <EditOutlined />
           </Col>
           <Col span={1}>
             <DeleteOutlined onClick={confirm} />
-          </Col>
-        </Row>
-      ) : (
-        <Row>
-          <Col span={21}>
-            <div
-              className="h-[20px] w-full"
-              style={{
-                position: 'relative',
-                top: 10,
-                left: -20,
-                background: `linear-gradient(135deg, ${token.colorPrimary} , transparent )`,
-                filter: 'blur(30px)',
-              }}
-            />
           </Col>
         </Row>
       )}
@@ -84,23 +58,29 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
         <Col span={22} offset={1}>
           <Typography.Text>
             {formatMessage({ id: 'calendar.dateStart' })}:{' '}
-            {dayjs((data.schedule?.start_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
+            <Typography.Text style={{ textTransform: 'capitalize' }}>
+              {dayjs((data.schedule?.start_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
+            </Typography.Text>
           </Typography.Text>
         </Col>
       </Row>
-      <Row align={'middle'} className="pt-2">
-        <Col span={1}>
-          <Flex justify="center">
-            <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
-          </Flex>
-        </Col>
-        <Col span={22} offset={1}>
-          <Typography.Text>
-            {formatMessage({ id: 'calendar.dateEnd' })}:{' '}
-            {dayjs((data.schedule?.end_time ?? 0) * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
-          </Typography.Text>
-        </Col>
-      </Row>
+      {data.schedule?.end_time ? (
+        <Row align={'middle'} className="pt-2">
+          <Col span={1}>
+            <Flex justify="center">
+              <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
+            </Flex>
+          </Col>
+          <Col span={22} offset={1}>
+            <Typography.Text>
+              {formatMessage({ id: 'calendar.dateEnd' })}:{' '}
+              <Typography.Text style={{ textTransform: 'capitalize' }}>
+                {dayjs(data.schedule?.end_time * 1000).format('dddd, DD/MM/YYYY - hh:mm A')}
+              </Typography.Text>
+            </Typography.Text>
+          </Col>
+        </Row>
+      ) : null}
       <Row align={'middle'} className="pt-2">
         <Col span={1}>
           <Flex justify="center">
@@ -130,7 +110,7 @@ const PopoverScheduleDetail = ({ data }: { data: ICalendarResult }) => {
         <Row align={'middle'} className="pt-2">
           <Col span={1}>
             <Flex justify="center">
-              <CalendarOutlined style={{ color: token.colorTextQuaternary }} />
+              <UserOutlined style={{ color: token.colorTextQuaternary }} />
             </Flex>
           </Col>
           <Col span={22} offset={1}>

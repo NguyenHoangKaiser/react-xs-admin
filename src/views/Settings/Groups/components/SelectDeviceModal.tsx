@@ -98,9 +98,9 @@ const SelectDeviceModal = ({ open, onCancel, formData }: ModalProps) => {
     >
       <Row className="pt-4 h-full w-full">
         <Col span={24}>
-          <Row className="px-4 items-center mb-2">
+          <Row className="items-center mb-2">
             <Col {...colLayout}>
-              <Input.Search placeholder="Search device" />
+              <Input.Search placeholder={formatMessage({ id: 'calendar.searchDevice' })} />
             </Col>
             <Col {...colLayout2}>
               <Flex justify="end">

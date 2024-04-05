@@ -262,7 +262,7 @@ export const FAKE_DATA: {
     items: [
       {
         id: 24,
-        name: 'A20.01',
+        name: 'A20.01 Villa The Symphony',
         description: null,
         handover: null,
         medias: null,

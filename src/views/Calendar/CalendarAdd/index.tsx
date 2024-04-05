@@ -1,5 +1,6 @@
 import SvgIcon from '@/components/SvgIcon';
-import { useLocale } from '@/locales';
+import useValidateLocale from '@/hooks/useValidateLocale';
+import { getIntlText, useLocale } from '@/locales';
 import type { ISchedule, Out } from '@/server/calendarApi';
 import { useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
@@ -25,7 +26,8 @@ import {
 import dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as LocalData from 'dayjs/plugin/localeData';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import ControlACModal from './components/ControlACModal';
 import RepeatTypeRender from './components/RepeatTypeRender';
 import SelectDeviceModal from './components/SelectDeviceModal';
@@ -75,9 +77,9 @@ const colLayout3 = {
 };
 
 const CalendarAdd = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormCalendar>();
   const { token } = theme.useToken();
-  const { formatMessage } = useLocale();
+  const { formatMessage, locale } = useLocale();
   const { hotel_id } = useAppSelector(hotelSelector);
 
   const [color, setColor] = useState<string>('D50000');
@@ -88,6 +90,8 @@ const CalendarAdd = () => {
   const [repeatType, setRepeatType] = useState<number>(0);
 
   const [listDayOfMonth, setListDayOfMonth] = useState<number[]>([]);
+  const [listMonth, setListMonth] = useState<number[]>([]);
+  const [listWeekdays, setListWeekdays] = useState<number[]>([]);
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setColor(e.key);
@@ -145,10 +149,61 @@ const CalendarAdd = () => {
     onClick: handleMenuClick,
   };
 
+  const onFinish = (values: FormCalendar) => {
+    const data: FormCalendarParams = {
+      hotel_id: hotel_id,
+      color: values.color,
+      name: values.name?.trim(),
+      out: {
+        execution: [],
+        devices: listDevicesId,
+        device_type: deviceType,
+      },
+      schedule: {
+        end_time: values.end_time,
+        start_time: values.start_time,
+        repeat_type: repeatType,
+        run_time: values.start_time,
+        month_chosen: [],
+        monthdays: [],
+        weekdays: [],
+      },
+      type: 0,
+    };
+    console.log('data', data);
+    form.resetFields();
+  };
+
+  const validateErrorStartDate = useCallback(
+    () => ({
+      validator(_: any, value: any) {
+        if (!value || value > dayjs()) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareStartDate' })));
+      },
+    }),
+    [locale],
+  );
+
+  const validateErrorEndDate = useCallback(
+    ({ getFieldValue }: any) => ({
+      validator(_: any, value: any) {
+        if (!value || value > getFieldValue('start_time')) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(getIntlText({ id: 'calendar.errorCompareDate' })));
+      },
+    }),
+    [locale],
+  );
+
   const initValues: FormCalendar = {
     color: color,
     repeat_type: 0,
   };
+
+  useValidateLocale(form);
 
   return (
     <Form<FormCalendar>
@@ -156,36 +211,14 @@ const CalendarAdd = () => {
       form={form}
       initialValues={initValues}
       className="pb-4"
-      onFinish={(values) => {
-        const data: FormCalendarParams = {
-          hotel_id: hotel_id,
-          color: values.color,
-          name: values.name?.trim(),
-          out: {
-            execution: [],
-            devices: listDevicesId,
-            device_type: deviceType,
-          },
-          schedule: {
-            end_time: values.end_time,
-            start_time: values.start_time,
-            repeat_type: repeatType,
-            run_time: values.start_time,
-            month_chosen: [],
-            monthdays: [],
-            weekdays: [],
-          },
-          type: 0,
-        };
-        console.log('data', data);
-      }}
+      onFinish={onFinish}
       labelWrap
     >
       <Row className="pt-6 pl-4">
         <Col span={24}>
           <Row>
             <Col {...colLayout1}>
-              <Form.Item name={'color'}>
+              <Form.Item<FormCalendar> name={'color'}>
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -205,7 +238,21 @@ const CalendarAdd = () => {
               </Form.Item>
             </Col>
             <Col {...colLayout2}>
-              <Form.Item name={'name'} wrapperCol={{ span: 22 }}>
+              <Form.Item<FormCalendar>
+                name={'name'}
+                wrapperCol={{ span: 22 }}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="common.errorEmpty"
+                        values={{ label: <FormattedMessage id="calendar.calendarName" /> }}
+                      />
+                    ),
+                  },
+                ]}
+              >
                 <Input placeholder={formatMessage({ id: 'calendar.calendarName' })} />
               </Form.Item>
             </Col>
@@ -318,6 +365,18 @@ const CalendarAdd = () => {
                       wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
                       name={'start_time'}
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <FormattedMessage
+                              id="common.errorEmpty"
+                              values={{ label: <FormattedMessage id="calendar.dateStart" /> }}
+                            />
+                          ),
+                        },
+                        validateErrorStartDate,
+                      ]}
                     >
                       <DatePicker showTime={{ format: 'HH:mm' }} format="DD/MM/YYYY HH:mm" />
                     </Form.Item>
@@ -419,6 +478,10 @@ const CalendarAdd = () => {
                           repeatType={repeatType}
                           listDayOfMonth={listDayOfMonth}
                           setListDayOfMonth={setListDayOfMonth}
+                          listMonths={listMonth}
+                          listWeekdays={listWeekdays}
+                          setListMonths={setListMonth}
+                          setListWeekdays={setListWeekdays}
                         />
                       </Form.Item>
                     )}
@@ -428,6 +491,18 @@ const CalendarAdd = () => {
                       wrapperCol={{ xxl: 18, xl: 16 }}
                       labelAlign="left"
                       name={'end_time'}
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <FormattedMessage
+                              id="common.errorEmpty"
+                              values={{ label: <FormattedMessage id="calendar.dateEnd" /> }}
+                            />
+                          ),
+                        },
+                        validateErrorEndDate,
+                      ]}
                     >
                       <DatePicker showTime={{ format: 'HH:mm' }} format="DD/MM/YYYY HH:mm" />
                     </Form.Item>

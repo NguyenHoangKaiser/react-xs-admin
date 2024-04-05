@@ -174,14 +174,14 @@ const SelectDeviceModal = ({ open, onCancel, setListDevices, listDevices }: Moda
                               <SvgIcon name={icon.type} />
                             </span>
                           </div>
-                          <Typography.Title
+                          <Typography.Text
                             style={{
                               margin: 0,
                             }}
-                            level={5}
+                            ellipsis={{ tooltip: true }}
                           >
                             {device.name}
-                          </Typography.Title>
+                          </Typography.Text>
                         </Flex>
                       </Card>
                     </List.Item>
