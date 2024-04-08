@@ -82,6 +82,7 @@ const DeviceCondition = ({
           editing: false,
           deviceId,
           states,
+          type: selectedDevice ? selectedDevice.type : null,
         },
         trigger: trigger || false,
         for: mode,

@@ -68,6 +68,7 @@ const DeviceAction = ({
           editing: false,
           deviceId,
           states,
+          type: selectedDevice ? selectedDevice.type : null,
         },
         for: mode,
       }),

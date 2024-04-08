@@ -15,8 +15,6 @@ interface IStates {
 
 export type ILightTrait = keyof IStates;
 
-// type Conditions = '==' | '!=' | '>' | '<' | '>=' | '<=';
-
 interface Brightness {
   brightness: number;
   operator: ESceneOperator;
@@ -78,7 +76,7 @@ interface ISceneDevice {
   editing?: boolean;
   created: number;
   category: 'device' | 'device-action';
-  type: string | null;
+  type: TDeviceType;
   deviceId: string | null;
   states: IStates | null;
 }
@@ -87,7 +85,7 @@ export interface ISceneDeviceCondition extends ISceneDevice {
   editing?: boolean;
   created: number;
   category: 'device';
-  type: string | null;
+  type?: string | null | TDeviceType;
   deviceId: string | null;
   states: IStates | null;
   // states: IStates | Record<string, Record<string, boolean | number | string>> | null;
@@ -170,7 +168,7 @@ export interface ISceneDeviceAction extends ISceneDevice {
   editing?: boolean;
   created: number;
   category: 'device-action';
-  type: string | null;
+  type: TDeviceType;
   deviceId: string | null;
   states: IStates | null;
 }
