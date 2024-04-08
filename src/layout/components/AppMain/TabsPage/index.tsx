@@ -40,7 +40,7 @@ interface DraggableTabPaneProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const commonStyle: React.CSSProperties = {
-  cursor: 'move',
+  cursor: 'grab',
   transition: 'unset', // Prevent element from shaking after drag
 };
 
@@ -55,7 +55,7 @@ const DraggableTabNode = (props: DraggableTabPaneProps) => {
         ...props.style,
         transform: CSS.Transform.toString(transform),
         transition: isDragging ? 'unset' : transition,
-        cursor: 'move',
+        cursor: 'grabbing',
       }
     : {
         ...commonStyle,
@@ -84,7 +84,9 @@ const TabsPage = memo(({ maxLen }: Props) => {
   const { addRouteTabs, removeTab } = useTabsChange();
   const thme = theme.useToken();
 
-  const sensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
+  const sensor = useSensor(PointerSensor, {
+    activationConstraint: { distance: 10, delay: 250, tolerance: 5 },
+  });
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
@@ -104,17 +106,18 @@ const TabsPage = memo(({ maxLen }: Props) => {
 
     return multiTabs.map((i) => {
       let routeBy = null;
-      if (!i.label) routeBy = findRouteByPath(i.key, menuList);
+      if (!i.label) routeBy = findRouteByPath(i.key, menuList, true);
       return {
         key: i.key,
         label: (
           <TabsItemLabel pathKey={i.key}>
-            <div className="tabs-tab-label">
+            <span className="tabs-tab-label">
               {i.localeLabel ? FormatMessage({ id: i.localeLabel }) : ''}
               {i.label || routeBy?.label}
-            </div>
+            </span>
           </TabsItemLabel>
         ),
+        icon: routeBy?.icon,
       };
     });
   }, [multiTabs]);

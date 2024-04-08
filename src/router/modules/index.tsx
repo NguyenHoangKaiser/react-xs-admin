@@ -8,6 +8,7 @@ import {
   HomeOutlined,
   NotificationOutlined,
   SettingOutlined,
+  UserOutlined,
   YoutubeOutlined,
 } from '@ant-design/icons';
 import { lazy } from 'react';
@@ -42,6 +43,7 @@ export const defaultRoute: RouteList[] = [
     element: <ManageAccount />,
     meta: {
       label: FormatMessage({ id: 'common.manageAccount' }),
+      icon: <UserOutlined />,
       hideSidebar: true,
     },
   },

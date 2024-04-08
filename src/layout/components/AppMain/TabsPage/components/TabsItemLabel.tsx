@@ -64,9 +64,9 @@ const TabsItemLabel = (props: TabsItemLabelProps) => {
       }}
       onOpenChange={(visible) => !visible && setOpen(visible)}
     >
-      <div className={props.className} style={props.style} {...contentProps} css={props.css}>
+      <span className={props.className} style={props.style} {...contentProps} css={props.css}>
         {props.children}
-      </div>
+      </span>
     </Dropdown>
   );
 };
