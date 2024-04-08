@@ -183,22 +183,48 @@ export function getBreadcrumbArr(
 }
 
 // Find the routing information of the corresponding path
-export function findRouteByPath(path: Key, routes: MenuItem[]): MenuItem | null {
+export function findRouteByPath(path: Key, routes: MenuItem[], root?: boolean): MenuItem | null {
   const res = routes.find((item) => item.key == path) || null;
-  if (res) {
-    return res;
-  } else {
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].children instanceof Array && routes[i].children?.length) {
-        const miRes = findRouteByPath(path, routes[i].children as MenuItem[]);
-        if (miRes) {
-          return miRes;
-        } else {
-          if (routes[i].key == path) return routes[i];
+  if (root) {
+    const rootPath = path.toString().split('/').slice(0, 2).join('/');
+    const icon = routes.find((item) => item.key == rootPath) || null;
+    if (res) {
+      return {
+        ...res,
+        icon: icon?.icon,
+      };
+    } else {
+      for (let i = 0; i < routes.length; i++) {
+        if (routes[i].children instanceof Array && routes[i].children?.length) {
+          const miRes = findRouteByPath(path, routes[i].children as MenuItem[], root);
+          if (miRes) {
+            return {
+              ...miRes,
+              icon: icon?.icon,
+            };
+          } else {
+            if (routes[i].key == path) return routes[i];
+          }
         }
       }
+      return null;
     }
-    return null;
+  } else {
+    if (res) {
+      return res;
+    } else {
+      for (let i = 0; i < routes.length; i++) {
+        if (routes[i].children instanceof Array && routes[i].children?.length) {
+          const miRes = findRouteByPath(path, routes[i].children as MenuItem[], root);
+          if (miRes) {
+            return miRes;
+          } else {
+            if (routes[i].key == path) return routes[i];
+          }
+        }
+      }
+      return null;
+    }
   }
 }
 

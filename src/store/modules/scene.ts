@@ -105,6 +105,16 @@ export const sceneSlice = createSlice({
         state.editingScene = true;
       }
     },
+    setSortConditionData: (
+      state,
+      action: PayloadAction<{
+        data: ISceneCondition[];
+        for: 'add' | 'edit';
+      }>,
+    ) => {
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].conditions.data = action.payload.data;
+    },
     editSceneConditionData: (
       state,
       action: PayloadAction<{
@@ -138,6 +148,16 @@ export const sceneSlice = createSlice({
           }
         }
       }
+    },
+    setSortActionData: (
+      state,
+      action: PayloadAction<{
+        data: ISceneAction[];
+        for: 'add' | 'edit';
+      }>,
+    ) => {
+      const name = action.payload.for === 'add' ? 'addScene' : 'editScene';
+      state[name].actions.data = action.payload.data;
     },
     editSceneActionData: (
       state,
@@ -288,6 +308,8 @@ export const {
   setEditScene,
   setDetailScene,
   setSceneMetadata,
+  setSortConditionData,
+  setSortActionData,
   addSceneAction,
   addSceneCondition,
   deleteSceneAction,
