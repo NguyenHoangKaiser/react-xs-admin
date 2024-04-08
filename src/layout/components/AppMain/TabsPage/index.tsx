@@ -3,7 +3,6 @@ import { FormatMessage } from '@/locales';
 import { defaultRoute } from '@/router/modules';
 import { RouteEnum, findRouteByPath } from '@/router/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setTabActiveKey } from '@/store/modules/app';
 import {
   asyncRouterSelector,
   deleteExceedTabs,
@@ -130,7 +129,6 @@ const TabsPage = memo(({ maxLen }: Props) => {
         content: formatMessage({ id: 'common.scene.lostUnsaved' }),
         trigger: addingScene || editingScene,
       });
-      dispatch(setTabActiveKey('info'));
     }
   };
 

@@ -1,6 +1,7 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useLocale } from '@/locales';
-import { AppDefault } from '@/utils/constant';
+import { mq } from '@/style';
+import type { CSSObject } from '@emotion/react';
 import { Col, DatePicker, Flex, List, Row, Segmented, Statistic, Typography, theme } from 'antd';
 import dayjs from 'dayjs';
 import type { ReactEChartsProps } from './ReactECharts';
@@ -22,112 +23,21 @@ const colLayout3 = {
   xxl: { span: 8 },
 };
 
-const datasetWithFilters: echarts.DatasetComponentOption[] = [
-  {
-    id: 'dataset_Finland',
-    fromDatasetId: 'dataset_raw',
-    transform: {
-      type: 'filter',
-      config: {
-        and: [
-          { dimension: 'Year', gte: 1800 },
-          { dimension: 'Country', '=': 'Finland' },
-        ],
-      },
-    },
-  },
-];
-const seriesList: echarts.SeriesOption[] = [
-  {
-    type: 'line',
-    datasetId: 'dataset_Finland',
-    showSymbol: false,
-    name: 'Finland',
-    endLabel: {
-      show: true,
-      formatter: function (params: any) {
-        return params.value[1] + ': ' + params.value[0];
-      },
-    },
-    labelLayout: {
-      moveOverlap: 'shiftY',
-    },
-    emphasis: {
-      focus: 'series',
-    },
-    encode: {
-      x: 'Year',
-      y: 'Income',
-      label: ['Country', 'Income'],
-      itemName: 'Year',
-      tooltip: ['Income'],
-    },
-  },
-];
 const option: ReactEChartsProps['option'] = {
-  animationDuration: 5000,
-  textStyle: {
-    fontFamily: AppDefault.font,
-  },
-  dataset: [
-    {
-      id: 'dataset_raw',
-      source: [
-        ['Income', 'Country', 'Year'],
-
-        [1244, 'Finland', 1800],
-
-        [1267, 'Finland', 1810],
-
-        [1290, 'Finland', 1820],
-
-        [1360, 'Finland', 1830],
-
-        [1434, 'Finland', 1840],
-
-        [1512, 'Finland', 1850],
-
-        [1594, 'Finland', 1860],
-
-        [1897, 'Finland', 1870],
-
-        [1925, 'Finland', 1880],
-
-        [2305, 'Finland', 1890],
-
-        [2789, 'Finland', 1900],
-
-        [3192, 'Finland', 1910],
-
-        [3097, 'Finland', 1920],
-
-        [4489, 'Finland', 1930],
-
-        [5439, 'Finland', 1940],
-        [5449, 'Finland', 1950],
-        [5479, 'Finland', 1960],
-        [5489, 'Finland', 1970],
-        [5499, 'Finland', 1980],
-        [5509, 'Finland', 1990],
-      ],
-    },
-    ...datasetWithFilters,
-  ],
   xAxis: {
     type: 'category',
-    nameLocation: 'middle',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   },
   yAxis: {
-    name: 'Income',
+    type: 'value',
   },
-  tooltip: {
-    order: 'valueDesc',
-    trigger: 'axis',
-  },
-  series: seriesList,
-  grid: {
-    right: 140,
-  },
+  series: [
+    {
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line',
+      smooth: true,
+    },
+  ],
 };
 
 const StatisticSavings = () => {
@@ -241,7 +151,9 @@ const StatisticSavings = () => {
       >
         <Col {...colLayout2}>
           <Row style={{ height: 500 }}>
-            <ReactECharts option={option} />
+            <div className="chartContainer" css={getCss()}>
+              <ReactECharts option={option} settings={{ notMerge: false, lazyUpdate: false }} />
+            </div>
           </Row>
         </Col>
         <Col {...colLayout3} className="pl-2">
@@ -349,3 +261,17 @@ const StatisticSavings = () => {
 };
 
 export default StatisticSavings;
+const getCss = (): CSSObject => {
+  return {
+    ['&']: {
+      width: '100%',
+
+      [mq[0]]: {
+        width: 'calc(100vw - 119px)',
+      },
+      [mq[3]]: {
+        width: '100%',
+      },
+    },
+  };
+};

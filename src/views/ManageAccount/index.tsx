@@ -1,6 +1,5 @@
 import { getIntlText } from '@/locales';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setTabActiveKey } from '@/store/modules/app';
+import { useAppSelector } from '@/store/hooks';
 import { Tabs } from 'antd';
 import React from 'react';
 import ChangePassword from './components/ChangePassword';
@@ -9,8 +8,6 @@ import OtherSetting from './components/OtherSetting';
 
 const ManageAccount: React.FC = () => {
   const { userInfo } = useAppSelector((state) => state.user);
-  const { tabActiveKey } = useAppSelector((state) => state.app);
-  const dispatch = useAppDispatch();
 
   const items = [
     {
@@ -35,8 +32,6 @@ const ManageAccount: React.FC = () => {
       style={{ minHeight: '85vh', marginTop: 16 }}
       tabBarStyle={{ width: 200 }}
       tabPosition={'left'}
-      defaultActiveKey={tabActiveKey}
-      onChange={(key) => dispatch(setTabActiveKey(key))}
       items={items.map((_) => {
         return {
           label: _.label,

@@ -13,7 +13,6 @@ export interface AppConfigMode {
   sidebarMode: SidebarMode;
   color: string;
   toggleNotice: boolean;
-  tabActiveKey: string;
 }
 
 const initialState: AppConfigMode = {
@@ -23,7 +22,6 @@ const initialState: AppConfigMode = {
   sidebarMode: 'vertical',
   color: COLORS.PrimaryColor,
   toggleNotice: false,
-  tabActiveKey: 'info',
 };
 
 export const appSlice = createSlice({
@@ -48,9 +46,6 @@ export const appSlice = createSlice({
     setToggleNotice: (state, action: PayloadAction<boolean>) => {
       state.toggleNotice = action.payload;
     },
-    setTabActiveKey: (state, action: PayloadAction<string>) => {
-      state.tabActiveKey = action.payload;
-    },
   },
 });
 // Each case reducer function generates the corresponding Action Creators
@@ -61,7 +56,6 @@ export const {
   setAppSidebarMode,
   setAppThemeMode,
   setToggleNotice,
-  setTabActiveKey,
 } = appSlice.actions;
 
 export default appSlice.reducer;
