@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/vi';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import * as duration from 'dayjs/plugin/duration';
+import * as LocalData from 'dayjs/plugin/localeData';
 import { Suspense, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { shallowEqual } from 'react-redux';
@@ -19,6 +21,8 @@ import type { TSocket } from './socket';
 import { useAppSelector } from './store/hooks';
 import { userSelector } from './store/modules/user';
 import { ELocale } from './utils/constant';
+dayjs.extend(LocalData);
+dayjs.extend(duration);
 
 export interface GlobalContent {
   socket?: TSocket;

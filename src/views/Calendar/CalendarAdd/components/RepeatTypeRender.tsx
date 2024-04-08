@@ -1,10 +1,6 @@
 import { getIntlText, useLocale } from '@/locales';
 import { Checkbox, Divider, Flex, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
-import * as duration from 'dayjs/plugin/duration';
-import * as LocalData from 'dayjs/plugin/localeData';
-dayjs.extend(LocalData);
-dayjs.extend(duration);
 
 interface Props {
   repeatType?: number;
