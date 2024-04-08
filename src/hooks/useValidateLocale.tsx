@@ -6,7 +6,7 @@ const useValidateLocale = (form: FormInstance<any>) => {
   const { locale } = useIntl();
   useEffect(() => {
     const errors = form.getFieldsError();
-    const names = errors.filter((err) => err.errors.length > 0).map((err) => err.name[0]);
+    const names = errors.filter((err) => err.errors.length > 0).map((err) => err.name);
     if (names.length) {
       form.validateFields(names);
     }

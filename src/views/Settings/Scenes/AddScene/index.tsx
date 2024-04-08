@@ -317,9 +317,22 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
           color: 'rgba(81, 127, 156, .4)',
         }}
         open={openTour}
+        onChange={(current) => {
+          if (
+            current === 3 &&
+            ref4 &&
+            'current' in ref4 &&
+            ref4.current &&
+            'scrollIntoView' in ref4.current
+          ) {
+            // @ts-expect-error - scrollIntoView is a valid function
+            ref4.current.scrollIntoView({ block: 'end' });
+          }
+        }}
         onClose={() => setOpenTour(false)}
         steps={steps}
         disabledInteraction={true}
+        scrollIntoViewOptions={{ behavior: 'smooth', block: 'nearest' }}
       />
       <Drawer
         title={formatMessage({ id: 'common.scene.editInfo' })}

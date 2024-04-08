@@ -47,10 +47,17 @@ const Render = forwardRef<ITourRef, SceneRenderProps>((props, ref) => {
     mode,
     viewOnly = false,
   } = props;
-  if (!ref || !('current' in ref) || !ref.current) {
-    throw new Error('ref is required');
+
+  let re1 = null;
+  let re2 = null;
+  let re3 = null;
+
+  if (ref && 'current' in ref && ref.current) {
+    re1 = ref.current.ref1;
+    re2 = ref.current.ref2;
+    re3 = ref.current.ref3;
   }
-  const { ref1, ref2, ref3 } = ref.current;
+
   const { conditions, actions } = scene;
   const { formatMessage } = useIntl();
   const { token } = theme.useToken();
@@ -80,8 +87,8 @@ const Render = forwardRef<ITourRef, SceneRenderProps>((props, ref) => {
   return (
     <Row style={{ height: '100%', paddingBottom: 24 }}>
       <Col {...ColLayout} style={{ marginBottom: 18 }}>
-        <div ref={ref1} className="condition-container">
-          <div ref={ref2} className="condition-dropdown">
+        <div ref={re1} className="condition-container">
+          <div ref={re2} className="condition-dropdown">
             <Dropdown
               trigger={['click']}
               disabled={viewOnly}
@@ -144,7 +151,7 @@ const Render = forwardRef<ITourRef, SceneRenderProps>((props, ref) => {
         </div>
       </Col>
       <Col {...ColLayout}>
-        <div ref={ref3} className="action-container">
+        <div ref={re3} className="action-container">
           <div className="action-dropdown">
             <Typography.Text style={{ color: token.blue }}>
               <FormattedMessage id="common.scene.DO" />
