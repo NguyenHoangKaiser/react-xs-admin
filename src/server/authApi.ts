@@ -47,6 +47,7 @@ export const authApi = api.injectEndpoints({
       }),
       ...transformFactory<ILoginResult>(),
       invalidatesTags: (result) => [{ type: 'User', id: result?.userInfo.id }],
+      extraOptions: { maxRetries: 1 },
     }),
     forgot: builder.mutation<IForgotPasswordResult, IForgotPasswordParams>({
       query: (params) => ({

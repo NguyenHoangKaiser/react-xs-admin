@@ -1,7 +1,8 @@
 import react from '@vitejs/plugin-react';
 // import react from '@vitejs/plugin-react-swc';
-import type { ConfigEnv, PluginOption } from 'vite';
-import { configMockPlugin } from './mock';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { splitVendorChunkPlugin, type ConfigEnv, type PluginOption } from 'vite';
+// import { configMockPlugin } from './mock';
 
 // svg配置
 import { configSvgPlugin } from './svg';
@@ -16,11 +17,13 @@ export function createVitePlugins(_isBuild = false, _configEnv: ConfigEnv) {
         plugins: ['@emotion/babel-plugin'],
       },
     }),
+    visualizer({ template: 'network' }) as unknown as PluginOption,
+    splitVendorChunkPlugin(),
   );
 
   vitePlugins.push(configSvgPlugin());
 
-  vitePlugins.push(configMockPlugin(_isBuild));
+  // vitePlugins.push(configMockPlugin(_isBuild));
 
   return vitePlugins;
 }
