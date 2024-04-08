@@ -13,7 +13,7 @@ import type { SelectProps } from 'antd';
 import { App, Button, Checkbox, Flex, Form, InputNumber, Select, Switch, Tag } from 'antd';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import type { ILightTrait, ISceneDeviceCondition, IStates } from '../scene';
+import type { ILightTrait, ISceneConditionType, ISceneDeviceCondition, IStates } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
 interface DeviceFormType {
@@ -28,11 +28,13 @@ const DeviceCondition = ({
   index,
   mode,
   viewOnly,
+  type: conditionType,
 }: {
   condition: ISceneDeviceCondition;
   index: number;
   mode: 'add' | 'edit';
   viewOnly?: boolean;
+  type: ISceneConditionType;
 }) => {
   const { message } = App.useApp();
   const { formatMessage } = useIntl();
@@ -45,7 +47,11 @@ const DeviceCondition = ({
   const { hotel_id, idx_Floor } = useAppSelector(hotelSelector);
   const { type: addType } = useAppSelector(addSceneConditionsSelector);
   const { type: editType } = useAppSelector(editSceneConditionsSelector);
-  const conditionsType = mode === 'add' ? addType : editType;
+  const conditionsType: ISceneConditionType = viewOnly
+    ? conditionType
+    : mode === 'add'
+    ? addType
+    : editType;
   const { data, isFetching } = useGetDevicesQuery(
     {
       hotel_id: hotel_id?.toString() || '',
@@ -77,7 +83,7 @@ const DeviceCondition = ({
           deviceId,
           states,
         },
-        trigger,
+        trigger: trigger || false,
         for: mode,
       }),
     );
@@ -398,6 +404,7 @@ const DeviceCondition = ({
                       ...condition,
                       editing: true,
                     },
+                    trigger: false,
                     for: mode,
                   }),
                 );

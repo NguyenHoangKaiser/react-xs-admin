@@ -1,10 +1,9 @@
 import TreeAnchor from '@/layout/components/PageAnchor/TreeAnchor';
 import { useGetDevicesQuery } from '@/server/devicesApi';
-import { useGetSectionListQuery } from '@/server/postsApi';
 import { useAppSelector } from '@/store/hooks';
 import { hotelSelector } from '@/store/modules/hotel';
 import type { IAnchorItem, IDevicesListItem } from '@/utils/constant';
-import { generateAnchorList, generateTreeNode } from '@/utils/constant';
+import { FAKE_DATA, generateAnchorList, generateTreeNode } from '@/utils/constant';
 import { RightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
 import { Collapse, List, Typography } from 'antd';
@@ -43,14 +42,18 @@ const Home = memo(() => {
     //   refetchOnFocus: true,
     // },
   );
-  const { sectionData, isFetching: isSectionFetching } = useGetSectionListQuery(undefined, {
-    selectFromResult: (data) => {
-      return {
-        sectionData: data?.data?.items || [],
-        ...data,
-      };
-    },
-  });
+  // const {
+  //   sectionData,
+  //   isFetching: isSectionFetching,
+  //   error,
+  // } = useGetSectionListQuery(undefined, {
+  //   selectFromResult: (data) => {
+  //     return {
+  //       sectionData: data?.data?.items || [],
+  //       ...data,
+  //     };
+  //   },
+  // });
 
   const items = useMemo(
     () =>
@@ -77,11 +80,17 @@ const Home = memo(() => {
   );
 
   const anchorTree = useMemo(() => {
+    // if (error) {
+    //   return {
+    //     anchorItems: generateAnchorList(items, FAKE_DATA.sectionList.items),
+    //     treeData: generateTreeNode(items, FAKE_DATA.sectionList.items),
+    //   };
+    // }
     return {
-      anchorItems: generateAnchorList(items, sectionData),
-      treeData: generateTreeNode(items, sectionData),
+      anchorItems: generateAnchorList(items, FAKE_DATA.sectionList.items),
+      treeData: generateTreeNode(items, FAKE_DATA.sectionList.items),
     };
-  }, [items, sectionData]);
+  }, [items]);
 
   const [selectedDevice, setSelectedDevice] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState(false);
@@ -200,10 +209,7 @@ const Home = memo(() => {
   );
 
   return (
-    <TreeAnchor
-      loading={{ tree: isFetching || isSectionFetching }}
-      treeProps={{ treeData: anchorTree.treeData }}
-    >
+    <TreeAnchor loading={{ tree: isFetching }} treeProps={{ treeData: anchorTree.treeData }}>
       <div css={getCollapseCss()}>
         {defaultActiveKey.length > 0 && (
           <Collapse

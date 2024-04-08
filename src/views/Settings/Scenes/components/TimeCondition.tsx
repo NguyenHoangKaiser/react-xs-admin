@@ -10,7 +10,7 @@ import { App, Button, Checkbox, DatePicker, Flex, Form, Select, TimePicker } fro
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import type { ISceneTimeCondition } from '../scene';
+import type { ISceneConditionType, ISceneTimeCondition } from '../scene';
 import { OperatorSelect } from './ConditionCard';
 
 const { RangePicker } = DatePicker;
@@ -29,11 +29,13 @@ const TimeCondition = ({
   index,
   mode,
   viewOnly,
+  type: conditionType,
 }: {
   condition: ISceneTimeCondition;
   index: number;
   mode: 'add' | 'edit';
   viewOnly?: boolean;
+  type: ISceneConditionType;
 }) => {
   const { formatMessage } = useIntl();
   const timeSelect: {
@@ -78,7 +80,11 @@ const TimeCondition = ({
   const dispatch = useAppDispatch();
   const { type: addType } = useAppSelector(addSceneConditionsSelector);
   const { type: editType } = useAppSelector(editSceneConditionsSelector);
-  const conditionsType = mode === 'add' ? addType : editType;
+  const conditionsType: ISceneConditionType = viewOnly
+    ? conditionType
+    : mode === 'add'
+    ? addType
+    : editType;
 
   const handleSelectTimeType = (value: ETimeType) => {
     switch (value) {
@@ -123,7 +129,7 @@ const TimeCondition = ({
                 operator: formOperator,
                 value: formValue?.unix(),
               },
-              trigger,
+              trigger: trigger || false,
               for: mode,
             }),
           );
@@ -145,7 +151,7 @@ const TimeCondition = ({
                 startDate: formDateRange[0]?.unix(),
                 endDate: formDateRange[1]?.unix(),
               },
-              trigger,
+              trigger: trigger || false,
               for: mode,
             }),
           );
@@ -167,7 +173,7 @@ const TimeCondition = ({
                 startTime: formTimeRange[0]?.format(DATE_UTILS.timeFormat),
                 endTime: formTimeRange[1]?.format(DATE_UTILS.timeFormat),
               },
-              trigger,
+              trigger: trigger || false,
               for: mode,
             }),
           );
@@ -344,6 +350,7 @@ const TimeCondition = ({
                       ...condition,
                       editing: true,
                     },
+                    trigger: false,
                     for: mode,
                   }),
                 );

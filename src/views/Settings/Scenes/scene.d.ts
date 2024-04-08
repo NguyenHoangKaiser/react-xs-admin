@@ -38,11 +38,16 @@ interface OnOff {
   operator: 1;
 }
 
-interface All {
+interface AllOrAny {
+  name: EConditionsTypeName.All | EConditionsTypeName.Any;
+  trigger: Array<ISceneCondition>;
+}
+
+interface All extends AllOrAny {
   name: EConditionsTypeName.All;
 }
 
-interface Any {
+interface Any extends AllOrAny {
   name: EConditionsTypeName.Any;
   trigger: Array<ISceneCondition>;
 }

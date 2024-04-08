@@ -80,7 +80,7 @@ export default ({ mode }: { mode: 'add' | 'edit' }) => {
   const onClick = useCallback(
     ({ key }: { key: string }) => {
       if (Number(key) === 1) {
-        dispatch(editSceneConditionType({ data: { name: 1 }, for: mode }));
+        dispatch(editSceneConditionType({ data: { name: 1, trigger: [] }, for: mode }));
       } else {
         dispatch(editSceneConditionType({ data: { name: 2, trigger: [] }, for: mode }));
       }

@@ -7,7 +7,7 @@ import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import type { SelectProps } from 'antd';
 import { Button, Popconfirm, Select, Space, Typography } from 'antd';
 import { useIntl } from 'react-intl';
-import type { ISceneCondition } from '../scene';
+import type { ISceneCondition, ISceneConditionType } from '../scene';
 import DeviceCondition from './DeviceCondition';
 import TimeCondition from './TimeCondition';
 
@@ -48,11 +48,12 @@ interface Props {
   viewOnly?: boolean;
   attributes?: DraggableAttributes;
   listeners?: SyntheticListenerMap;
+  type: ISceneConditionType;
 }
 
 const ConditionCard = (props: Props) => {
   const { formatMessage } = useIntl();
-  const { condition, index, mode, viewOnly, attributes, listeners } = props;
+  const { condition, index, mode, viewOnly, attributes, listeners, type } = props;
   const dispatch = useAppDispatch();
   return (
     <>
@@ -96,9 +97,21 @@ const ConditionCard = (props: Props) => {
         {condition.category === 'time' && formatMessage({ id: 'common.time' })}
       </Typography.Text>
       {condition.category === 'device' ? (
-        <DeviceCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />
+        <DeviceCondition
+          viewOnly={viewOnly}
+          type={type}
+          mode={mode}
+          condition={condition}
+          index={index}
+        />
       ) : condition.category === 'time' ? (
-        <TimeCondition viewOnly={viewOnly} mode={mode} condition={condition} index={index} />
+        <TimeCondition
+          viewOnly={viewOnly}
+          type={type}
+          mode={mode}
+          condition={condition}
+          index={index}
+        />
       ) : null}
     </>
   );

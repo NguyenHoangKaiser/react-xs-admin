@@ -30,7 +30,7 @@ const initialState: SceneSlice = {
       description: '',
     },
     conditions: {
-      type: { name: 1 },
+      type: { name: 1, trigger: [] },
       data: [],
     },
     actions: {
@@ -43,7 +43,7 @@ const initialState: SceneSlice = {
       description: '',
     },
     conditions: {
-      type: { name: 1 },
+      type: { name: 1, trigger: [] },
       data: [],
     },
     actions: {
@@ -120,7 +120,7 @@ export const sceneSlice = createSlice({
       action: PayloadAction<{
         index: number;
         condition: ISceneCondition;
-        trigger?: boolean;
+        trigger: boolean;
         for: 'add' | 'edit';
       }>,
     ) => {
@@ -331,6 +331,7 @@ export const addSceneConditionsSelector = (state: { scene: SceneSlice }) =>
   state.scene.addScene.conditions;
 export const editSceneConditionsSelector = (state: { scene: SceneSlice }) =>
   state.scene.editScene.conditions;
+export const detailSceneSelector = (state: { scene: SceneSlice }) => state.scene.detailScene;
 export const listSceneSelector = (state: { scene: SceneSlice }) => state.scene.listScene;
 
 export default sceneSlice.reducer;

@@ -157,6 +157,7 @@ const Render = forwardRef<ITourRef, SceneRenderProps>((props, ref) => {
                 >
                   <ConditionCard
                     viewOnly={viewOnly}
+                    type={conditions.type}
                     mode={mode}
                     condition={condition}
                     index={index}
