@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react';
 // import react from '@vitejs/plugin-react-swc';
-import { visualizer } from 'rollup-plugin-visualizer';
 import { splitVendorChunkPlugin, type ConfigEnv, type PluginOption } from 'vite';
 // import { configMockPlugin } from './mock';
 
@@ -17,7 +16,7 @@ export function createVitePlugins(_isBuild = false, _configEnv: ConfigEnv) {
         plugins: ['@emotion/babel-plugin'],
       },
     }),
-    visualizer({ template: 'network' }) as unknown as PluginOption,
+    // visualizer({ template: 'network' }) as unknown as PluginOption,
     splitVendorChunkPlugin(),
   );
 
