@@ -1,3 +1,4 @@
+import luci_logo from '@/assets/luci_logo.png';
 import AppLocale from '@/components/AppLocale';
 import AppTheme from '@/components/AppTheme';
 import { useLocale } from '@/locales';
@@ -80,7 +81,7 @@ const Login = memo(() => {
           }
         `}
         backgroundImageUrl="https://wallpapercave.com/wp/wp4756877.jpg"
-        logo="src/assets/luci_logo.png"
+        logo={luci_logo}
         backgroundVideoUrl={
           autoPlay
             ? 'https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr'

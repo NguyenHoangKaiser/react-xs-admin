@@ -11,7 +11,7 @@ export function createViteBuild(): BuildOptions {
     assetsDir: 'static',
     // Enable/disable the CSS code split. When it is enabled, the CSS guided by the asynchronous Chunk will connect the inner couplet to the asynchronous Chunk itself, and insert it when the block is loaded. If it is disabled, all CSS in the entire project will be extracted into a CSS file.
     cssCodeSplit: true,
-    // manifest: true,
+    manifest: true,
     reportCompressedSize: true,
     // Whether to generate a source maP file after construction。
     sourcemap: false,

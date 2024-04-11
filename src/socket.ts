@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import type { WsResponse } from '../types/socket';
 
 const URL =
-  process.env.NODE_ENV === 'production'
+  import.meta.env.VITE_ENV === 'production'
     ? window.location.host
     : 'https://socket.hotel.luci.vn:4333';
 
